@@ -35,7 +35,7 @@ const page = () => {
                 </div>
             </section>
         </ProtectedPage>
-    )
+     )
 }
 
 export default page
