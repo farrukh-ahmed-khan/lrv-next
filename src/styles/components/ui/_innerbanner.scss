@@ -1,0 +1,34 @@
+.inner-wrapper {
+    background-image: url("/images/home/bottom-style.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: bottom;
+    padding: 100px 0;
+    position: relative;
+    overflow: hidden;
+    height: 50vh;
+    display: flex;
+    align-items: center;
+    &::before {
+      content: "";
+      position: absolute;
+      background: url("/images/home/bg-img-style.png");
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 98%;
+    }
+    .content-wrap {
+      h4 {
+        color: #fff;
+        font-family: var(--fontkarantine);
+        font-size: 107px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        text-transform: uppercase;
+        text-align: center;
+      }
+    }
+  }
+  

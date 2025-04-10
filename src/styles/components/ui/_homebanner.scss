@@ -1,0 +1,71 @@
+:root {
+  --primary-color: #2d4736;
+  --white: #fff;
+  --fontgilroy: "Gilroy-Regular";
+  --fontkarantine: "Karantina";
+}
+.homebanner-wrap {
+  // background-image: url("../../../assets/images/home/home-banner.png");
+  background-size: cover;
+  background-repeat: repeat;
+  background-position: center;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: linear-gradient(180deg, rgba(53, 83, 66, 0) 0%, #355342 100%);
+    width: 100%;
+    height: 100%;
+    // z-index: -1;
+  }
+  .homebanner-content {
+    position: relative;
+    z-index: 2;
+    h5 {
+      color: var(--white);
+      text-align: center;
+      font-family: var(--fontgilroy);
+      font-size: 24px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 34px;
+      text-transform: uppercase;
+    }
+    h4 {
+      color: var(--white);
+      text-align: center;
+      font-family: var(--fontkarantine);
+      font-size: 204px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 230px;
+    }
+    .btns-wrap {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      .banner-btn {
+        background-color: var(--white);
+        color: #0a0a0e;
+        font-family: var(--fontgilroy);
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 24px;
+        padding: 20px 10px;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: all 0.5s ease;
+        &:hover {
+          background-color: var(--primary-color);
+          color: var(--white);
+        }
+      }
+    }
+  }
+}

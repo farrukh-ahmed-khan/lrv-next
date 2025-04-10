@@ -1,0 +1,22 @@
+
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full viewport height */
+  background-color: #000; /* Black background color */
+  img {
+    width: 160px; /* Adjust the size as needed */
+    animation: fadeInOut 2s infinite; /* Apply animation */
+  }
+}
+
+@keyframes fadeInOut {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}

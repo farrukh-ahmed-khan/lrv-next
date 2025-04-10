@@ -1,0 +1,23 @@
+// Import global styles
+@import "./base/variables";
+@import "./base/mixins";
+@import "./base/globals";
+
+// Import component styles
+@import "./components/navbar";
+@import "./components/dashboard/navbar";
+@import "./components/dashboard/sidebar";
+@import "./components/ui/homebanner";
+@import "./components/ui/innerbanner";
+@import "./components/ui/aboutus";
+@import "./components/ui/loader";
+@import "./components/footer";
+
+// Import page styles
+
+@import "./pages/home";
+@import "./pages/about";
+@import "./pages/community";
+@import "./pages/phonedirectory";
+@import "./pages/register";
+// @import "./pages/products";

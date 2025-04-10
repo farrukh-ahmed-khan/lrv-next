@@ -1,0 +1,48 @@
+@import url("https://fonts.googleapis.com/css2?family=Karantina:wght@300;400;700&display=swap");
+
+@font-face {
+  font-family: "Gilroy-Medium";
+  src: local("Gilroy"),
+    url("/fonts/Gilroy-Medium.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Gilroy-SemiBold";
+  src: local("Gilroy"),
+    url("/fonts/Gilroy-SemiBold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Gilroy-Regular";
+  src: local("Gilroy"),
+    url("/fonts/Gilroy-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Gilroy-MediumItalic";
+  src: local("Gilroy"),
+    url("/fonts/Gilroy-MediumItalic.ttf") format("truetype");
+}
+
+html {
+  scroll-behavior: smooth !important;
+  body {
+    font-family: $font-stack;
+    background-color: $background-color;
+    color: $text-color;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+    &.ovr-hiddn {
+      overflow: hidden !important;
+    }
+  }
+}
+
+h1 {
+  color: $primary-color;
+}
