@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { client } from "@/lib/mongodb";
 import User from "@/lib/models/User";
 import { verifyToken } from "@/lib/jwt";
-import bcrypt from "bcryptjs";
 
 export async function POST(req: Request) {
     try {
@@ -34,7 +33,6 @@ export async function POST(req: Request) {
             streetAddress,
             role: "home member",
             ownerId: ownerId,
-            // password: null,
         });
 
         await newMember.save();
