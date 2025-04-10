@@ -3,10 +3,7 @@ import { client } from "@/lib/mongodb";
 import User from "@/lib/models/User";
 import { verifyToken } from "@/lib/jwt";
 
-export async function PUT(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function PU(req: Request, context: { params: { id: string } }) {
   try {
     await client;
 
@@ -25,7 +22,8 @@ export async function PUT(
       );
     }
 
-    const { id } = params;
+    // const { id } = params;
+    const { id } = context.params;
     const body = await req.json();
     const { status } = body;
 
