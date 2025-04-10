@@ -43,12 +43,13 @@ const UsersApproval = () => {
 
 
             toast.success("Status updated successfully!");
-            await fetchUserData();
+            
 
         } catch (error: any) {
             toast.error("Error updating status"
             );
         } finally {
+            fetchUserData();
             setLoadingStates((prev) => ({ ...prev, [record.id]: null }));
         }
     };
