@@ -75,7 +75,7 @@ const Login = () => {
                     router.push('/admin/dashboard');
                     break;
                 case 'home owner':
-                    router.push('/dashboard/homeowner');
+                    router.push("/dashboard/homeowner/members")
                     break;
                 case 'home member':
                     router.push('/dashboard/homemember');

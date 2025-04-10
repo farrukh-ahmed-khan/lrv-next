@@ -46,9 +46,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavClosed }) => {
 
 
     const handleLogout = () => {
+        router.push("/login")
         sessionStorage.removeItem("token");
         sessionStorage.removeItem("user");
-        router.push("/login")
     };
 
     if (role == "superAdmin") {
