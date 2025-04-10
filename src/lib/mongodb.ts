@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 let clientPromise: Promise<typeof mongoose>;
 
 if (process.env.NODE_ENV === "development") {
-  let globalClient: any = global;
+  const globalClient: any = global;
   if (!globalClient._mongooseClientPromise) {
     if (!process.env.MONGODB_URI) {
       throw new Error("MONGODB_URI is not defined.");

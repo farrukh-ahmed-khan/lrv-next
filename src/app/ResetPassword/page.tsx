@@ -4,12 +4,10 @@ import Header from "@/components/layout/Navbar";
 import InnerBanner from "@/components/ui/InnerBanner";
 import { resetPassword } from "@/lib/UsersApi/api";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
 const ResetPassword = () => {
-    const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [password, setPassword] = useState("");
     const token = new URLSearchParams(window.location.search).get("token");
@@ -24,8 +22,12 @@ const ResetPassword = () => {
         try {
             const data = await resetPassword({ token, password });
             toast.success(data.message);
-        } catch (error: any) {
-            toast.error(error.message);
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                toast.error(error.message);
+            } else {
+                toast.error("An unknown error occurred.");
+            }
         }
         finally {
             setLoading(false);
