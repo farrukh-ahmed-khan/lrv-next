@@ -3,7 +3,7 @@ import { client } from "@/lib/mongodb";
 import User from "@/lib/models/User";
 import { verifyToken } from "@/lib/jwt";
 
-export async function PU(req: Request, context: { params: { id: string } }) {
+export async function PUT(req: Request, context: { params: { id: string } }) {
   try {
     await client;
 
