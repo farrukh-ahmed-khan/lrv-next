@@ -3,7 +3,8 @@ import { client } from "@/lib/mongodb";
 import User from "@/lib/models/User";
 import { verifyToken } from "@/lib/jwt";
 
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
+// This will be a function that handles PUT requests
+export async function PUT(req: Request) {
   try {
     await client;
 
@@ -22,7 +23,9 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
       );
     }
 
-    const { id } = params; // Accessing params directly here
+    const url = new URL(req.url);
+    const id = url.pathname.split("/")[3]; 
+
     const body = await req.json();
     const { status } = body;
 
