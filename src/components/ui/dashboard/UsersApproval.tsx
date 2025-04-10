@@ -27,34 +27,6 @@ const UsersApproval = () => {
         role: string;
     }
 
-
-
-    const handleUpdateStatus = async (record: any, status: any) => {
-        const token = sessionStorage.getItem("token");
-        setLoadingStates((prev) => ({ ...prev, [record.id]: "updateStatus" }));
-
-        if (!token) {
-            console.error("No token found.");
-            return;
-        }
-
-        try {
-            await updateUserStatus(token, status, record.id);
-
-
-            toast.success("Status updated successfully!");
-            
-
-        } catch (error: any) {
-            toast.error("Error updating status"
-            );
-        } finally {
-            setLoadingStates((prev) => ({ ...prev, [record.id]: null }));
-            fetchUserData();
-            window.location.reload()
-        }
-    };
-
     const fetchUserData = async () => {
         if (!token) {
             console.error("No token found.");
@@ -81,6 +53,34 @@ const UsersApproval = () => {
             toast.error("Error orders data:", error);
         }
     };
+
+    const handleUpdateStatus = async (record: any, status: any) => {
+        const token = sessionStorage.getItem("token");
+        setLoadingStates((prev) => ({ ...prev, [record.id]: "updateStatus" }));
+
+        if (!token) {
+            console.error("No token found.");
+            return;
+        }
+
+        try {
+            await updateUserStatus(token, status, record.id);
+
+
+            toast.success("Status updated successfully!");
+            
+
+        } catch (error: any) {
+            toast.error("Error updating status"
+            );
+        } finally {
+            setLoadingStates((prev) => ({ ...prev, [record.id]: null }));
+            fetchUserData();
+            // window.location.reload()
+        }
+    };
+
+    
 
 
     const columns = [
