@@ -140,6 +140,7 @@ const Header = () => {
     sessionStorage.removeItem("token");
     sessionStorage.removeItem("user");
     router.push("/login")
+    window.location.reload()
   };
 
   useEffect(() => {

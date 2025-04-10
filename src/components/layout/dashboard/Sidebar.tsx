@@ -47,6 +47,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavClosed }) => {
 
     const handleLogout = () => {
         router.push("/login")
+        window.location.reload()
         sessionStorage.removeItem("token");
         sessionStorage.removeItem("user");
     };
