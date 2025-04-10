@@ -49,8 +49,9 @@ const UsersApproval = () => {
             toast.error("Error updating status"
             );
         } finally {
-            fetchUserData();
             setLoadingStates((prev) => ({ ...prev, [record.id]: null }));
+            fetchUserData();
+            window.location.reload()
         }
     };
 
