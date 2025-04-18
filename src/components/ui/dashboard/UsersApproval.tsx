@@ -110,6 +110,11 @@ const UsersApproval = () => {
             key: "phonenumber",
         },
         {
+            title: "Street Address",
+            dataIndex: "streetAddress",
+            key: "streetAddress",
+        },
+        {
             title: "Actions",
             key: "actions",
             render: (_: any, record: any) => {
