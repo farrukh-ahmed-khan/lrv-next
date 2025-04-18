@@ -147,6 +147,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavClosed }) => {
                 icon: <VerifiedUserRounded />,
                 link: "/dashboard/boardmember/users",
             },
+            {
+                title: "Newsletter",
+                icon: <LocalAtmIcon />,
+                link: "/dashboard/boardmember/newsletter",
+            },
         ];
         return (
             <div className={`sidebar ${isNavClosed ? "nav-closed" : ""}`}>
@@ -172,13 +177,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavClosed }) => {
                     </li>
 
                     <li>
-                    <Link href="/">
-                        <span>
-                            <LogoutOutlinedIcon />
-                        </span>
-                        <span>Back To Home</span>
-                    </Link>
-                </li>
+                        <Link href="/">
+                            <span>
+                                <LogoutOutlinedIcon />
+                            </span>
+                            <span>Back To Home</span>
+                        </Link>
+                    </li>
                 </ul>
             </div>
         );
@@ -214,59 +219,59 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavClosed }) => {
                         </Link>
                     </li>
                     <li>
-                    <Link href="/">
-                        <span>
-                            <LogoutOutlinedIcon />
-                        </span>
-                        <span>Back To Home</span>
-                    </Link>
-                </li>
+                        <Link href="/">
+                            <span>
+                                <LogoutOutlinedIcon />
+                            </span>
+                            <span>Back To Home</span>
+                        </Link>
+                    </li>
                 </ul>
             </div>
         );
     } else if (role == "home member") {
-    const nav = [
-        {
-            title: "Dashboard",
-            icon: <HomeOutlinedIcon />,
-            link: "/single-store/dashboard",
-        },
+        const nav = [
+            {
+                title: "Dashboard",
+                icon: <HomeOutlinedIcon />,
+                link: "/single-store/dashboard",
+            },
 
-    ];
-    return (
-        <div className={`sidebar ${isNavClosed ? "nav-closed" : ""}`}>
-            <ul>
-                {nav.map((item) => (
-                    <li
-                        key={item.link}
-                        className={item.link === activeLink ? "active" : ""}
-                    >
-                        <Link href={item.link} onClick={() => handleLinkClick(item.link)}>
-                            <span>{item.icon}</span>
-                            <span>{item.title}</span>
+        ];
+        return (
+            <div className={`sidebar ${isNavClosed ? "nav-closed" : ""}`}>
+                <ul>
+                    {nav.map((item) => (
+                        <li
+                            key={item.link}
+                            className={item.link === activeLink ? "active" : ""}
+                        >
+                            <Link href={item.link} onClick={() => handleLinkClick(item.link)}>
+                                <span>{item.icon}</span>
+                                <span>{item.title}</span>
+                            </Link>
+                        </li>
+                    ))}
+                    <li>
+                        <Link href="" onClick={() => handleLogout()}>
+                            <span>
+                                <LogoutOutlinedIcon />
+                            </span>
+                            <span>Logout</span>
                         </Link>
                     </li>
-                ))}
-                <li>
-                    <Link href="" onClick={() => handleLogout()}>
-                        <span>
-                            <LogoutOutlinedIcon />
-                        </span>
-                        <span>Logout</span>
-                    </Link>
-                </li>
-                <li>
-                    <Link href="/">
-                        <span>
-                            <LogoutOutlinedIcon />
-                        </span>
-                        <span>Back To Home</span>
-                    </Link>
-                </li>
-            </ul>
-        </div>
-    );
-}
+                    <li>
+                        <Link href="/">
+                            <span>
+                                <LogoutOutlinedIcon />
+                            </span>
+                            <span>Back To Home</span>
+                        </Link>
+                    </li>
+                </ul>
+            </div>
+        );
+    }
 };
 
 export default Sidebar;
