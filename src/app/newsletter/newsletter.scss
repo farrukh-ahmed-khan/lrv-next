@@ -1,0 +1,106 @@
+.newsletter-wrapper {
+  .newsletter-content {
+    background: #f9f9f9;
+    border-radius: 8px;
+  }
+
+  .folder-block {
+    border-bottom: 1px solid #dcdcdc;
+    margin-bottom: 1rem;
+  }
+
+  .folder-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    cursor: pointer;
+
+    input {
+      margin-right: 0.5rem;
+    }
+
+    .folder-icon {
+      width: 24px;
+      height: 18px;
+      background: #6d8b4c;
+      border-radius: 2px;
+    }
+
+    .folder-name {
+      font-weight: 600;
+    }
+
+    .folder-date {
+      margin-left: auto;
+      font-size: 0.9rem;
+    }
+  }
+
+  .newsletter-folder {
+    padding-left: 2rem;
+    padding-bottom: 1rem;
+
+    .newsletter-header {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      font-weight: bold;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .newsletter-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      align-items: center;
+
+      .left {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        .pdf-icon {
+          width: 32px;
+          height: 24px;
+          background: #c93;
+          color: #fff;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 0.75rem;
+          border-radius: 4px;
+        }
+      }
+
+      .right .date {
+        font-size: 0.875rem;
+        color: #555;
+      }
+    }
+  }
+
+  .download-bar {
+    padding-top: 1rem;
+    text-align: right;
+
+    .btn {
+      background-color: #2e4e1e;
+      color: white;
+      font-weight: bold;
+      border-radius: 6px;
+      padding: 0.5rem 1.25rem;
+      border: none;
+
+      &:hover {
+        background-color: #40632f;
+      }
+    }
+  }
+}
+
+.newsletter-content {
+  margin: 50px 0;
+  height: 50vh;
+  overflow-y: auto;
+}
