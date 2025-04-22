@@ -7,8 +7,9 @@ import ProtectedPage from "@/components/ProtectedPage";
 import Navbar from "@/components/layout/dashboard/Navbar";
 import Sidebar from "@/components/layout/dashboard/Sidebar";
 import { Edit, Delete } from "@mui/icons-material";
-import { addNewsletter, getNewsletters, deleteNewsletter, updateNewsletter } from "@/lib/NewsLetterApi/api";
+import { getNewsletters, deleteNewsletter, updateNewsletter } from "@/lib/NewsLetterApi/api";
 import TextArea from "antd/es/input/TextArea";
+import { addMeeting } from "@/lib/MeetingApi/api";
 
 const AddMeeting = () => {
     const [form] = Form.useForm();
@@ -39,7 +40,7 @@ const AddMeeting = () => {
                 key: data._id,
                 id: data._id,
                 title: data.title,
-                file: data.description
+                description: data.description
             }));
             setNewsletterData(fetchedData);
         } catch (error) {
@@ -47,17 +48,17 @@ const AddMeeting = () => {
         }
     };
 
-    const handleAddNewsLetter = async (values: any) => {
+    const handleAddMeeting = async (values: any) => {
         if (!token) return toast.error("Please Login");
-
-        const formData = new FormData();
-        formData.append("titlename", values.titlename);
-        formData.append("description", values.description);
-
         try {
             setLoading(true);
-            const res = await addNewsletter(formData, token);
-            toast.success(res.data.message || "Newsletter uploaded successfully");
+            const meetingData = {
+                title: values.titlename, 
+                description: values.description,
+            };
+
+            const res = await addMeeting(meetingData, token);
+            toast.success(res.data.message || "Meeting uploaded successfully");
             form.resetFields();
             setModalVisible(false);
             getAllMeetings();
@@ -72,7 +73,7 @@ const AddMeeting = () => {
         if (!token) return toast.error("Please Login");
         try {
             await deleteNewsletter(id, token);
-            toast.success("Newsletter deleted");
+            toast.success("Meeting deleted");
             getAllMeetings();
         } catch (err) {
             toast.error("Delete failed");
@@ -96,7 +97,7 @@ const AddMeeting = () => {
         try {
             setLoading(true);
             await updateNewsletter(formData, token);
-            toast.success("Newsletter updated");
+            toast.success("Meeting updated");
             setEditModalVisible(false);
             getAllMeetings();
         } catch (error) {
@@ -162,11 +163,11 @@ const AddMeeting = () => {
                             <div className="col-md-12">
                                 <div className="row store-wrap">
                                     <div className="col-lg-6">
-                                        <h6>Newsletters List</h6>
+                                        <h6>Meetings List</h6>
                                     </div>
                                     <div className="col-lg-6 d-flex justify-content-end">
                                         <Button type="primary" icon={<AddOutlinedIcon />} onClick={() => setModalVisible(true)}>
-                                            Add Newsletter
+                                            Add Meeting
                                         </Button>
                                     </div>
                                 </div>
@@ -175,14 +176,13 @@ const AddMeeting = () => {
                                     <Table columns={columns} dataSource={newsletterData} />
                                 </div>
 
-                                {/* Add Modal */}
                                 <Modal
                                     title="Add Newsletter"
                                     open={modalVisible}
                                     onCancel={() => setModalVisible(false)}
                                     footer={null}
                                 >
-                                    <Form layout="vertical" form={form} onFinish={handleAddNewsLetter}>
+                                    <Form layout="vertical" form={form} onFinish={handleAddMeeting}>
                                         <Form.Item
                                             label="Title Name"
                                             name="titlename"
