@@ -1,19 +1,19 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Modal, Form, Input, Button, Upload, Space, Table, Popconfirm } from "antd";
+import { Modal, Form, Input, Button, Space, Table, Popconfirm } from "antd";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import toast from "react-hot-toast";
 import ProtectedPage from "@/components/ProtectedPage";
 import Navbar from "@/components/layout/dashboard/Navbar";
 import Sidebar from "@/components/layout/dashboard/Sidebar";
-import { UploadOutlined, Edit, Delete } from "@mui/icons-material";
+import { Edit, Delete } from "@mui/icons-material";
 import { addNewsletter, getNewsletters, deleteNewsletter, updateNewsletter } from "@/lib/NewsLetterApi/api";
+import TextArea from "antd/es/input/TextArea";
 
-const AddNewsletter = () => {
+const AddMeeting = () => {
     const [form] = Form.useForm();
     const [editForm] = Form.useForm();
-    const [file, setFile] = useState<File | null>(null);
-    const [editFile, setEditFile] = useState<File | null>(null);
+
     const [loading, setLoading] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
     const [editModalVisible, setEditModalVisible] = useState(false);
@@ -25,21 +25,21 @@ const AddNewsletter = () => {
 
     const [newsletterData, setNewsletterData] = useState<any[]>([]);
 
-    interface NewsLetter {
+    interface Meeting {
         _id: string;
-        fileUrl: string;
+        description: string;
         title: string;
     }
 
-    const getAllNewsletters = async () => {
+    const getAllMeetings = async () => {
         if (!token) return toast.error("Please Login");
         try {
             const res = await getNewsletters(token);
-            const fetchedData = res.newsletters.map((data: NewsLetter, index: number) => ({
+            const fetchedData = res.newsletters.map((data: Meeting, index: number) => ({
                 key: data._id,
                 id: data._id,
                 title: data.title,
-                file: data.fileUrl
+                file: data.description
             }));
             setNewsletterData(fetchedData);
         } catch (error) {
@@ -48,21 +48,19 @@ const AddNewsletter = () => {
     };
 
     const handleAddNewsLetter = async (values: any) => {
-        if (!file) return toast.error("Please upload a PDF file.");
         if (!token) return toast.error("Please Login");
 
         const formData = new FormData();
         formData.append("titlename", values.titlename);
-        formData.append("file", file);
+        formData.append("description", values.description);
 
         try {
             setLoading(true);
             const res = await addNewsletter(formData, token);
             toast.success(res.data.message || "Newsletter uploaded successfully");
             form.resetFields();
-            setFile(null);
             setModalVisible(false);
-            getAllNewsletters();
+            getAllMeetings();
         } catch (error) {
             console.error("Upload Error:", error);
         } finally {
@@ -75,7 +73,7 @@ const AddNewsletter = () => {
         try {
             await deleteNewsletter(id, token);
             toast.success("Newsletter deleted");
-            getAllNewsletters();
+            getAllMeetings();
         } catch (err) {
             toast.error("Delete failed");
         }
@@ -84,8 +82,7 @@ const AddNewsletter = () => {
     const openEditModal = (record: any) => {
         setEditModalVisible(true);
         setEditingId(record.id);
-        editForm.setFieldsValue({ titlename: record.title });
-        setEditFile(null);
+        editForm.setFieldsValue({ titlename: record.title, description: record.description });
     };
 
     const handleUpdate = async (values: any) => {
@@ -94,14 +91,14 @@ const AddNewsletter = () => {
         const formData = new FormData();
         formData.append("id", editingId)
         formData.append("titlename", values.titlename);
-        if (editFile) formData.append("file", editFile);
+        formData.append("description", values.description);
 
         try {
             setLoading(true);
             await updateNewsletter(formData, token);
             toast.success("Newsletter updated");
             setEditModalVisible(false);
-            getAllNewsletters();
+            getAllMeetings();
         } catch (error) {
             toast.error("Update failed");
         } finally {
@@ -119,7 +116,7 @@ const AddNewsletter = () => {
     }, []);
 
     useEffect(() => {
-        getAllNewsletters();
+        getAllMeetings();
     }, []);
 
     const toggleNav = () => setIsNavClosed(!isNavClosed);
@@ -131,14 +128,9 @@ const AddNewsletter = () => {
             key: "title"
         },
         {
-            title: "File",
-            dataIndex: "file",
-            key: "file",
-            render: (file: string) => (
-                <a href={file} target="_blank" rel="noopener noreferrer">
-                    View PDF
-                </a>
-            )
+            title: "Description",
+            dataIndex: "description",
+            key: "description",
         },
         {
             title: "Actions",
@@ -198,26 +190,18 @@ const AddNewsletter = () => {
                                         >
                                             <Input />
                                         </Form.Item>
-                                        <Form.Item label="Upload PDF" required>
-                                            <Upload
-                                                beforeUpload={(file: any) => {
-                                                    const isPdf = file.type === "application/pdf";
-                                                    if (!isPdf) {
-                                                        toast.error("Only PDF files are allowed.");
-                                                        return Upload.LIST_IGNORE;
-                                                    }
-                                                    setFile(file);
-                                                    return false;
-                                                }}
-                                                accept=".pdf"
-                                                maxCount={1}
-                                            >
-                                                <Button icon={<UploadOutlined />}>Select PDF</Button>
-                                            </Upload>
+
+                                        <Form.Item
+                                            label="Description"
+                                            name="description"
+                                            rules={[{ required: true, message: "Please Enter Description" }]}
+                                        >
+                                            <TextArea />
                                         </Form.Item>
+
                                         <Form.Item>
                                             <Button type="primary" htmlType="submit" block loading={loading}>
-                                                Add Newsletter
+                                                Add Meeting
                                             </Button>
                                         </Form.Item>
                                     </Form>
@@ -225,7 +209,7 @@ const AddNewsletter = () => {
 
                                 {/* Edit Modal */}
                                 <Modal
-                                    title="Edit Newsletter"
+                                    title="Edit Meeting"
                                     open={editModalVisible}
                                     onCancel={() => setEditModalVisible(false)}
                                     footer={null}
@@ -238,22 +222,12 @@ const AddNewsletter = () => {
                                         >
                                             <Input />
                                         </Form.Item>
-                                        <Form.Item label="Upload New PDF (optional)">
-                                            <Upload
-                                                beforeUpload={(file: any) => {
-                                                    const isPdf = file.type === "application/pdf";
-                                                    if (!isPdf) {
-                                                        toast.error("Only PDF files are allowed.");
-                                                        return Upload.LIST_IGNORE;
-                                                    }
-                                                    setEditFile(file);
-                                                    return false;
-                                                }}
-                                                accept=".pdf"
-                                                maxCount={1}
-                                            >
-                                                <Button icon={<UploadOutlined />}>Select New PDF</Button>
-                                            </Upload>
+                                        <Form.Item
+                                            label="Description"
+                                            name="description"
+                                            rules={[{ required: true, message: "Please Enter Description" }]}
+                                        >
+                                            <TextArea />
                                         </Form.Item>
                                         <Form.Item>
                                             <Button type="primary" htmlType="submit" block loading={loading}>
@@ -271,4 +245,4 @@ const AddNewsletter = () => {
     );
 };
 
-export default AddNewsletter;
+export default AddMeeting;

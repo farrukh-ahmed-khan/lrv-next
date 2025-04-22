@@ -10,6 +10,7 @@ import LocalAtmIcon from "@mui/icons-material/LocalAtm";
 import {
     AirplaneTicketSharp,
     CatchingPokemon,
+    MeetingRoom,
     PrecisionManufacturingOutlined,
     RequestQuote,
     VerifiedUserRounded,
@@ -52,95 +53,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavClosed }) => {
         sessionStorage.removeItem("user");
     };
 
-    if (role == "superAdmin") {
-        const nav = [
-            {
-                title: "Dashboard",
-                icon: <HomeOutlinedIcon />,
-                link: "/dashboard",
-            },
-            {
-                title: "Sales Representative",
-                icon: <PersonIcon />,
-                link: "/admin/sales-rep",
-            },
-            {
-                title: "Customer Support",
-                icon: <PersonIcon />,
-                link: "/admin/csr",
-            },
-
-            {
-                title: "Orders",
-                icon: <PersonIcon />,
-                link: "/order-list",
-            },
-
-            {
-                title: "Add Store Or Company",
-                icon: <PersonIcon />,
-                link: "/add-store-company",
-            },
-
-            {
-                title: "Subscription Plan",
-                icon: <LocalAtmIcon />,
-                link: "/subscription-plan",
-            },
-            {
-                title: "Corporate Analytics",
-                icon: <VerifiedUserRounded />,
-                link: "/admin/corporateanalytics",
-            },
-            {
-                title: "Store Analytics",
-                icon: <VerifiedUserRounded />,
-                link: "/admin/storeanalytics",
-            },
-            {
-                title: "Tickets",
-                icon: <AirplaneTicketSharp />,
-                link: "/admin/tickets",
-            },
-            {
-                title: "Profiles",
-                icon: <PrecisionManufacturingOutlined />,
-                link: "/admin/profiles",
-            },
-            {
-                title: "Offences",
-                icon: <CatchingPokemon />,
-                link: "/admin/offences",
-            },
-
-        ];
-
-        return (
-            <div className={`sidebar ${isNavClosed ? "nav-closed" : ""}`}>
-                <ul>
-                    {nav.map((item) => (
-                        <li
-                            key={item.link}
-                            className={item.link === activeLink ? "active" : ""}
-                        >
-                            <Link href={item.link} onClick={() => handleLinkClick(item.link)}>
-                                <span>{item.icon}</span>
-                                <span>{item.title}</span>
-                            </Link>
-                        </li>
-                    ))}
-                    <li>
-                        <Link href="#" onClick={() => handleLogout()}>
-                            <span>
-                                <LogoutOutlinedIcon />
-                            </span>
-                            <span>Logout</span>
-                        </Link>
-                    </li>
-                </ul>
-            </div>
-        );
-    } else if (role == "board member") {
+     if (role == "board member") {
         const nav = [
             {
                 title: "Users",
@@ -151,6 +64,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavClosed }) => {
                 title: "Newsletter",
                 icon: <LocalAtmIcon />,
                 link: "/dashboard/boardmember/newsletter",
+            },
+            {
+                title: "Meeting",
+                icon: <MeetingRoom />,
+                link: "/dashboard/boardmember/meeting",
             },
         ];
         return (
