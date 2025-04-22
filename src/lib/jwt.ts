@@ -8,7 +8,7 @@ if (!JWT_SECRET) {
 
 const SECRET = JWT_SECRET as string;
 
-const TOKEN_EXPIRES_IN = '1h';
+// const TOKEN_EXPIRES_IN = '1h';
 
 export interface TokenPayload {
   id: string;
@@ -17,7 +17,10 @@ export interface TokenPayload {
 }
 
 export function generateToken(payload: TokenPayload): string {
-  return jwt.sign(payload, SECRET, { expiresIn: TOKEN_EXPIRES_IN });
+  // return jwt.sign(payload, SECRET, 
+  //   { expiresIn: TOKEN_EXPIRES_IN }
+  // );
+  return jwt.sign(payload, SECRET);
 }
 
 export function verifyToken(token: string): TokenPayload | null {
