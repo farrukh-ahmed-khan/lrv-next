@@ -7,9 +7,8 @@ import ProtectedPage from "@/components/ProtectedPage";
 import Navbar from "@/components/layout/dashboard/Navbar";
 import Sidebar from "@/components/layout/dashboard/Sidebar";
 import { Edit, Delete } from "@mui/icons-material";
-import { getNewsletters, deleteNewsletter, updateNewsletter } from "@/lib/NewsLetterApi/api";
 import TextArea from "antd/es/input/TextArea";
-import { addMeeting } from "@/lib/MeetingApi/api";
+import { addMeeting, deleteMeeting, getMeetings, updateMeeting } from "@/lib/MeetingApi/api";
 
 const AddMeeting = () => {
     const [form] = Form.useForm();
@@ -33,10 +32,9 @@ const AddMeeting = () => {
     }
 
     const getAllMeetings = async () => {
-        if (!token) return toast.error("Please Login");
         try {
-            const res = await getNewsletters(token);
-            const fetchedData = res.newsletters.map((data: Meeting, index: number) => ({
+            const res = await getMeetings();
+            const fetchedData = res.meetings.map((data: Meeting, index: number) => ({
                 key: data._id,
                 id: data._id,
                 title: data.title,
@@ -72,7 +70,7 @@ const AddMeeting = () => {
     const handleDelete = async (id: string) => {
         if (!token) return toast.error("Please Login");
         try {
-            await deleteNewsletter(id, token);
+            await deleteMeeting(id, token);
             toast.success("Meeting deleted");
             getAllMeetings();
         } catch (err) {
@@ -91,12 +89,12 @@ const AddMeeting = () => {
 
         const formData = new FormData();
         formData.append("id", editingId)
-        formData.append("titlename", values.titlename);
+        formData.append("title", values.titlename);
         formData.append("description", values.description);
 
         try {
             setLoading(true);
-            await updateNewsletter(formData, token);
+            await updateMeeting(formData, token);
             toast.success("Meeting updated");
             setEditModalVisible(false);
             getAllMeetings();

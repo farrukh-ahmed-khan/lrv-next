@@ -21,7 +21,7 @@ export const addMeeting = async (
   }
 };
 
-export const getMeetings = async (token: string) => {
+export const getMeetings = async () => {
   try {
     const response = await API.get("/meeting/getAll");
     return response.data;
@@ -29,19 +29,6 @@ export const getMeetings = async (token: string) => {
     throw new Error(error.response?.data?.message || "Failed to fetch users");
   }
 };
-
-// export const getNewsletter = async (token: string) => {
-//   try {
-//     const response = await API.get("/userInfo", {
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//       },
-//     });
-//     return response.data;
-//   } catch (error: any) {
-//     throw new Error(error.response?.data?.message || "Failed to fetch users");
-//   }
-// };
 
 export const updateMeeting = async (formData: FormData, token: string) => {
   try {
