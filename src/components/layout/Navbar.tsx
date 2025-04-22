@@ -29,7 +29,7 @@ const Header = () => {
         },
         {
           title: "Dues",
-          link: "https://frank-ojo-wp.devdesignbuild.com/grants/",
+          link: "/dues",
         },
       ],
       hasSubmenu: true,
@@ -41,7 +41,7 @@ const Header = () => {
       submenu: [
         {
           title: "Board Of Directors",
-          link: "https://frank-ojo-wp.devdesignbuild.com/foundation-donor/",
+          link: "/lrvboard",
         },
         {
           title: "LRV Board Meetings",
