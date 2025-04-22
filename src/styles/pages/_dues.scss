@@ -1,0 +1,73 @@
+:root {
+  --primary-color: #2d4736;
+  --white: #fff;
+  --fontgilroy: "Gilroy-Regular";
+  --fontkarantine: "Karantina";
+}
+
+.Dues-wrapper {
+  .dues-content {
+    padding: 50px 0;
+    .heading {
+      h4 {
+        font-size: 50px;
+        font-weight: 500;
+        text-transform: uppercase;
+        color: var(--primary-color);
+        font-family: var(--fontkarantine);
+        line-height: 60px;
+        // text-align: center;
+      }
+    }
+    .content {
+      p {
+        color: #7a7a7a;
+        font-size: 16px;
+        line-height: 24px;
+        font-family: var(--fontgilroy);
+        margin: 10px 0;
+        font-weight: 400;
+      }
+      ul {
+        li {
+          color: #7a7a7a;
+          font-size: 16px;
+          line-height: 24px;
+          font-family: var(--fontgilroy);
+          margin: 10px 0;
+          font-weight: 400;
+          span {
+            font-weight: 600;
+            margin: 0px 5px;
+          }
+          a {
+            margin: 0px 5px;
+          }
+        }
+      }
+      .btn-img-wrap {
+        margin: 10px 0;
+      }
+      .bottom-img-wrap {
+        margin: 10px 0;
+      }
+      .pay-btn-wrap {
+        .pay-now-btn {
+          background-color: var(--primary-color);
+          color: #fff;
+          padding: 10px 20px;
+          border-radius: 5px;
+          font-family: var(--fontgilroy);
+          transition: all 0.3s ease;
+          &:hover {
+            color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transform: scale(1.05);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+}
