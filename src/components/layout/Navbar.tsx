@@ -62,11 +62,11 @@ const Header = () => {
       submenu: [
         {
           title: "Neighborhood Watch",
-          link: "https://frank-ojo-wp.devdesignbuild.com/foundation-donor/",
+          link: "/neighborhood-watch",
         },
         {
           title: "City of Rulling Hills Estate",
-          link: "https://frank-ojo-wp.devdesignbuild.com/foundation-grants/",
+          link: "/city-of-rolling-hills-estates",
         },
         {
           title: "Nextdoor LRV Group",
