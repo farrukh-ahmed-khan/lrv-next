@@ -79,7 +79,7 @@ const Header = () => {
         },
         {
           title: "Halloween Party",
-          link: "https://frank-ojo-wp.devdesignbuild.com/grants/",
+          link: "/halloween",
         },
         {
           title: "Car Show",
