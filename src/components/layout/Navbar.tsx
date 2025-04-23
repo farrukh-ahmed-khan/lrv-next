@@ -70,7 +70,7 @@ const Header = () => {
         },
         {
           title: "Nextdoor LRV Group",
-          link: "https://frank-ojo-wp.devdesignbuild.com/grants/",
+          link: "/nextdoor-lrv-group",
         },
         {
           title: "Nextdoor LRV Group",
