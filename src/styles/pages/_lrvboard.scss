@@ -1,0 +1,22 @@
+:root {
+  --primary-color: #2d4736;
+  --white: #fff;
+  --fontgilroy: "Gilroy-Regular";
+  --fontkarantine: "Karantina";
+}
+
+.meeting-wrapper {
+  .meeting-content-wrap {
+    padding: 50px 0;
+    .meeting-content {
+      p {
+        color: #7a7a7a;
+        font-size: 16px;
+        line-height: 24px;
+        font-family: var(--fontgilroy);
+        margin: 10px 0;
+        font-weight: 400;
+      }
+    }
+  }
+}

@@ -51,7 +51,7 @@ const AddMeeting = () => {
         try {
             setLoading(true);
             const meetingData = {
-                title: values.titlename, 
+                title: values.titlename,
                 description: values.description,
             };
 
@@ -64,6 +64,7 @@ const AddMeeting = () => {
             console.error("Upload Error:", error);
         } finally {
             setLoading(false);
+            window.location.reload()
         }
     };
 
@@ -102,6 +103,7 @@ const AddMeeting = () => {
             toast.error("Update failed");
         } finally {
             setLoading(false);
+            window.location.reload()
         }
     };
 

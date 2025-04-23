@@ -67,6 +67,7 @@ const AddNewsletter = () => {
             console.error("Upload Error:", error);
         } finally {
             setLoading(false);
+            window.location.reload()
         }
     };
 
@@ -106,6 +107,7 @@ const AddNewsletter = () => {
             toast.error("Update failed");
         } finally {
             setLoading(false);
+            window.location.reload()
         }
     };
 
@@ -183,7 +185,7 @@ const AddNewsletter = () => {
                                     <Table columns={columns} dataSource={newsletterData} />
                                 </div>
 
-                                {/* Add Modal */}
+                         
                                 <Modal
                                     title="Add Newsletter"
                                     open={modalVisible}
@@ -223,7 +225,6 @@ const AddNewsletter = () => {
                                     </Form>
                                 </Modal>
 
-                                {/* Edit Modal */}
                                 <Modal
                                     title="Edit Newsletter"
                                     open={editModalVisible}
