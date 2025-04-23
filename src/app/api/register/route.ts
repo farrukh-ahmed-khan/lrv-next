@@ -1,14 +1,19 @@
-
-
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
-import User from "../../../lib/models/User"; 
-import { client } from "../../../lib/mongodb"; 
+import User from "../../../lib/models/User";
+import { client } from "../../../lib/mongodb";
 
 export async function POST(req: Request) {
   try {
-    const { firstname, lastname, streetAddress, phoneNumber, email, password, role } =
-      await req.json();
+    const {
+      firstname,
+      lastname,
+      streetAddress,
+      phoneNumber,
+      email,
+      password,
+      role,
+    } = await req.json();
 
     if (
       !firstname ||
@@ -28,7 +33,11 @@ export async function POST(req: Request) {
     await client;
 
     if (role === "home member") {
-      const existingUser = await User.findOne({ email });
+      const normalizedEmail = email.toLowerCase();
+
+      const existingUser = await User.findOne({
+        email: normalizedEmail,
+      }).collation({ locale: "en", strength: 3 });
 
       if (existingUser) {
         if (!existingUser.password) {
@@ -47,15 +56,18 @@ export async function POST(req: Request) {
           );
         }
       } else {
-        const homeOwner = await User.findOne({ 
-          streetAddress, 
-          role: "home owner", 
-          status: "approved" 
+        const homeOwner = await User.findOne({
+          streetAddress,
+          role: "home owner",
+          status: "approved",
         });
 
         if (!homeOwner) {
           return NextResponse.json(
-            { message: "No approved home owner found for the given street address." },
+            {
+              message:
+                "No approved home owner found for the given street address.",
+            },
             { status: 404 }
           );
         }
@@ -69,19 +81,24 @@ export async function POST(req: Request) {
           email,
           role: "home member",
           password: hashedPassword,
-          ownerId: homeOwner._id, 
+          ownerId: homeOwner._id,
         });
 
         await newUser.save();
 
         return NextResponse.json(
-          { message: "Home member registered and associated with approved home owner." },
+          {
+            message:
+              "Home member registered and associated with approved home owner.",
+          },
           { status: 201 }
         );
       }
     }
-
-    const existingUser = await User.findOne({ email });
+    const normalizedEmail = email.toLowerCase();
+    const existingUser = await User.findOne({
+      email: normalizedEmail,
+    }).collation({ locale: "en", strength: 3 });
 
     if (existingUser) {
       return NextResponse.json(

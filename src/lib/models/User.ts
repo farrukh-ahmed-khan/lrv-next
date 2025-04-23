@@ -1,6 +1,5 @@
 import { Schema, model, models } from "mongoose";
 
-
 const userSchema = new Schema(
   {
     firstname: { type: String, required: true },
@@ -13,7 +12,7 @@ const userSchema = new Schema(
       },
     },
     streetAddress: { type: String, required: true },
-    phoneNumber: { type: String, required: true },
+    phoneNumber: { type: String, required: true, unique: true },
     status: { type: String, default: "pending" },
     role: {
       type: String,
@@ -31,7 +30,7 @@ const userSchema = new Schema(
     resetToken: { type: String },
     resetTokenExpiry: { type: Date },
   },
-  
+
   { timestamps: true }
 );
 

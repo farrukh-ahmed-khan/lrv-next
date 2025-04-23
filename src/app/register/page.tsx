@@ -30,7 +30,7 @@ const Signup = () => {
     const [loading, setLoading] = useState(false);
 
 
-    const router = useRouter();;
+    const router = useRouter();
 
 
     const handleTabClick = (tab: string) => {
@@ -52,7 +52,7 @@ const Signup = () => {
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
-        setLoading(true)
+
         if (formData.password !== formData.confirmPassword) {
             toast.error("Passwords do not match!");
             return;
@@ -61,6 +61,7 @@ const Signup = () => {
         formData.role = "home owner"
 
         try {
+            setLoading(true)
             const data = await registerUser(formData);
             toast.success(data.message);
             router.push("/login");
@@ -74,7 +75,7 @@ const Signup = () => {
 
     const handleSubmit2 = async (e: any) => {
         e.preventDefault();
-        setLoading(true)
+
         if (formData.password !== formData.confirmPassword) {
             toast.error("Passwords do not match!");
             return;
@@ -82,6 +83,7 @@ const Signup = () => {
         formData.role = "home member"
 
         try {
+            setLoading(true)
             const data = await registerUser(formData);
             toast.success(data.message);
             router.push("/login");
@@ -378,7 +380,7 @@ const Signup = () => {
                                                         htmlFor="First Name"
                                                         className="col-sm-12 col-form-label"
                                                     >
-                                                        First Nameee
+                                                        First Name
                                                     </label>
                                                     <div className="col-sm-12">
                                                         <input
