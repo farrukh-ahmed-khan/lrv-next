@@ -8,11 +8,8 @@ import PersonIcon from "@mui/icons-material/Person";
 import LocalAtmIcon from "@mui/icons-material/LocalAtm";
 
 import {
-    AirplaneTicketSharp,
-    CatchingPokemon,
     MeetingRoom,
-    PrecisionManufacturingOutlined,
-    RequestQuote,
+    Person,
     VerifiedUserRounded,
 } from "@mui/icons-material";
 import Link from "next/link";
@@ -53,11 +50,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavClosed }) => {
         sessionStorage.removeItem("user");
     };
 
-     if (role == "board member") {
+    if (role == "board member") {
         const nav = [
             {
                 title: "Users",
-                icon: <VerifiedUserRounded />,
+                icon: <Person />,
                 link: "/dashboard/boardmember/users",
             },
             {
@@ -69,6 +66,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavClosed }) => {
                 title: "Meeting",
                 icon: <MeetingRoom />,
                 link: "/dashboard/boardmember/meeting",
+            },
+            {
+                title: "Lrv Law",
+                icon: <VerifiedUserRounded />,
+                link: "/dashboard/boardmember/lrvhoa-law",
             },
         ];
         return (
