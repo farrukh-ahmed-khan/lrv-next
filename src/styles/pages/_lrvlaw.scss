@@ -1,0 +1,69 @@
+:root {
+  --primary-color: #2d4736;
+  --white: #fff;
+  --fontgilroy: "Gilroy-Regular";
+  --fontkarantine: "Karantina";
+}
+
+.law-wrapper {
+  .law-content {
+    padding: 50px 0;
+    .heading {
+      h4 {
+        font-size: 50px;
+        font-weight: 500;
+        text-transform: uppercase;
+        color: var(--primary-color);
+        font-family: var(--fontkarantine);
+        line-height: 60px;
+        // text-align: center;
+      }
+    }
+    .content {
+      p {
+        color: #7a7a7a;
+        font-size: 16px;
+        line-height: 24px;
+        font-family: var(--fontgilroy);
+        margin: 10px 0;
+        font-weight: 400;
+      }
+      ul {
+        li {
+          color: #7a7a7a;
+          font-size: 16px;
+          line-height: 24px;
+          font-family: var(--fontgilroy);
+          margin: 10px 0;
+          font-weight: 400;
+          span {
+            font-weight: 600;
+            margin: 0px 5px;
+          }
+          a {
+            margin: 0px 5px;
+          }
+        }
+      }
+    }
+  }
+  .pdfs-wrap {
+    .title {
+      font-size: 32px;
+      font-weight: 500;
+      text-transform: uppercase;
+      color: var(--primary-color);
+      font-family: var(--fontkarantine);
+      line-height: 50px;
+    }
+    .pdf-name {
+      margin-top: 8px;
+      font-size: 14px;
+      word-break: break-word;
+      color: #949494;
+      font-family: var(--fontgilroy);
+    }
+
+    margin: 50px 0;
+  }
+}

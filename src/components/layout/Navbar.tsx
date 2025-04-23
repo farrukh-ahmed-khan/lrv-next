@@ -45,11 +45,11 @@ const Header = () => {
         },
         {
           title: "LRV Board Meetings",
-          link: "https://frank-ojo-wp.devdesignbuild.com/foundation-grants/",
+          link: "/lrv-board-meeting",
         },
         {
           title: "LRVHOA By laws",
-          link: "https://frank-ojo-wp.devdesignbuild.com/grants/",
+          link: "/lrvlaw",
         },
       ],
       hasSubmenu: true,
