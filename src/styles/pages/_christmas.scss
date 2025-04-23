@@ -1,0 +1,45 @@
+:root {
+  --primary-color: #2d4736;
+  --white: #fff;
+  --fontgilroy: "Gilroy-Regular";
+  --fontkarantine: "Karantina";
+}
+
+.christmas-wrapper {
+  .content {
+    h4 {
+      font-size: 50px;
+      font-weight: 500;
+      text-transform: uppercase;
+      color: var(--primary-color);
+      font-family: var(--fontkarantine);
+      line-height: 60px;
+    }
+    p {
+      color: #7a7a7a;
+      font-size: 16px;
+      line-height: 24px;
+      font-family: var(--fontgilroy);
+      margin: 10px 0;
+      font-weight: 400;
+    }
+    h5 {
+      font-size: 50px;
+      font-weight: 500;
+      text-transform: uppercase;
+      color: #7a7a7a;
+      font-family: var(--fontkarantine);
+      line-height: 60px;
+    }
+  }
+  .gallery-sec {
+    .gallery {
+      .gallery-grid {
+        img {
+            width: 100%;
+            height: 300px;
+        }
+      }
+    }
+  }
+}

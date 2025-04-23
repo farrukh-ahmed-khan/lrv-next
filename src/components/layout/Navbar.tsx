@@ -72,13 +72,10 @@ const Header = () => {
           title: "Nextdoor LRV Group",
           link: "/nextdoor-lrv-group",
         },
-        {
-          title: "Nextdoor LRV Group",
-          link: "https://frank-ojo-wp.devdesignbuild.com/grants/",
-        },
+        
         {
           title: "Christmas Party",
-          link: "https://frank-ojo-wp.devdesignbuild.com/grants/",
+          link: "/annual-lrv-christmas-party",
         },
         {
           title: "Halloween Party",
