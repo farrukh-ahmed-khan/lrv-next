@@ -111,7 +111,7 @@ const Header = () => {
         },
         {
           title: "LRV PHOTO GALLERY",
-          link: "https://frank-ojo-wp.devdesignbuild.com/grants/",
+          link: "/photoGallery",
         },
       ],
       hasSubmenu: true,
