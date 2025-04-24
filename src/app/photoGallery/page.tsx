@@ -86,8 +86,8 @@ const CarShow = () => {
                                 <Swiper
                                     onSwiper={setSeptThumbs}
                                     modules={[Thumbs]}
-                                    spaceBetween={10}
-                                    slidesPerView={4}
+                                    spaceBetween={5}
+                                    slidesPerView={10}
                                     className="thumb-slider"
                                     watchSlidesProgress
 
