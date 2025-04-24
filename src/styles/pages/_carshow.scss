@@ -1,0 +1,57 @@
+:root {
+  --primary-color: #2d4736;
+  --white: #fff;
+  --fontgilroy: "Gilroy-Regular";
+  --fontkarantine: "Karantina";
+}
+
+.carShow-wrapper {
+  .top-img-wrap {
+    text-align: center;
+  }
+  .content {
+    p {
+      color: #7a7a7a;
+      font-size: 16px;
+      line-height: 24px;
+      font-family: var(--fontgilroy);
+      margin: 10px 0;
+      font-weight: 400;
+      text-align: center;
+    }
+  }
+  .sliderr-wrap {
+    margin: 50px 0;
+    h2 {
+      font-size: 50px;
+      font-weight: 500;
+      text-transform: uppercase;
+      color: var(--primary-color);
+      font-family: var(--fontkarantine);
+      line-height: 60px;
+    }
+    .thumb-slider {
+      margin: 10px 0;
+      .swiper-slide {
+        cursor: pointer;
+        opacity: 0.6;
+        transition: all 0.3s ease;
+
+        img {
+          border-radius: 6px;
+          transition: transform 0.3s ease;
+        }
+
+        &.swiper-slide-thumb-active {
+          opacity: 1;
+          border: 3px solid #ff5e00;
+          border-radius: 8px;
+
+          img {
+            transform: scale(1.05);
+          }
+        }
+      }
+    }
+  }
+}

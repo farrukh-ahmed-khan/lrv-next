@@ -83,7 +83,7 @@ const Header = () => {
         },
         {
           title: "Car Show",
-          link: "https://frank-ojo-wp.devdesignbuild.com/grants/",
+          link: "/car-show",
         },
       ],
       hasSubmenu: true,
