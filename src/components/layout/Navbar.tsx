@@ -103,7 +103,7 @@ const Header = () => {
         },
         {
           title: "LRVHOA.NET SECURITY",
-          link: "https://frank-ojo-wp.devdesignbuild.com/grants/",
+          link: "/security",
         },
         {
           title: "New Neighbor Welcome Flyer",
