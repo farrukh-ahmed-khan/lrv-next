@@ -99,7 +99,7 @@ const Header = () => {
         },
         {
           title: "LRV streets Portfolio",
-          link: "https://frank-ojo-wp.devdesignbuild.com/foundation-grants/",
+          link: "/streetportfolio",
         },
         {
           title: "LRVHOA.NET SECURITY",
