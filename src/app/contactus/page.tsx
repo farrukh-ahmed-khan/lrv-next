@@ -1,13 +1,10 @@
 "use client";
-import { useState } from 'react';
 
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Navbar";
 import ProtectedPage from "@/components/ProtectedPage";
 import InnerBanner from "@/components/ui/InnerBanner";
-import topImage from "@/assets/images/carshow/carshow-top.png";
 
-import Image from "next/image";
 import Link from 'next/link';
 
 
