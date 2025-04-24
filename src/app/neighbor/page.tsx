@@ -13,8 +13,7 @@ const Securiy = () => {
             <div className="Dues-wrapper">
                 <Header />
                 <>
-                    <InnerBanner title="New Neighbors!
-" />
+                    <InnerBanner title="New Neighbors!" />
                 </>
                 <section className="dues-content">
                     <div className="container">
@@ -23,8 +22,6 @@ const Securiy = () => {
                                 <div className="heading text-center">
                                     <h4>
                                         Welcome New Neighbors!
-
-
                                     </h4>
                                 </div>
                             </div>
@@ -32,7 +29,6 @@ const Securiy = () => {
                                 <div className="content">
                                     <p className="text-center">
                                         We’re delighted you are here in Los Ranchos Verdes! Click the link or “Hi there!” image below for a special Welcome-To-LRV message!
-
                                     </p>
 
                                     <div className="pay-btn-wrap mb-3 text-center">
