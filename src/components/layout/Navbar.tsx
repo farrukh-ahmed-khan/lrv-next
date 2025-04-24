@@ -107,7 +107,7 @@ const Header = () => {
         },
         {
           title: "New Neighbor Welcome Flyer",
-          link: "https://frank-ojo-wp.devdesignbuild.com/grants/",
+          link: "/neighbor",
         },
         {
           title: "LRV PHOTO GALLERY",
