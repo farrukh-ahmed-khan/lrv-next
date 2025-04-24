@@ -70,13 +70,12 @@ const CarShow = () => {
                     <div className="row">
                         <div className="col-lg-12">
                             <div className='sliderr-wrap'>
-                                <h2 style={{ textAlign: 'center' }}>Sept. 2022</h2>
                                 <Swiper
                                     modules={[Navigation, Thumbs]}
                                     navigation
                                     thumbs={{ swiper: septThumbs }}
                                     className="main-slider"
-                                    style={{ width: "100%", height: 300 }}
+                                    style={{ width: "100%", height: 500 }}
                                 >
                                     {septImages.map((src, index) => (
                                         <SwiperSlide key={index}>
@@ -87,7 +86,7 @@ const CarShow = () => {
                                 <Swiper
                                     onSwiper={setSeptThumbs}
                                     modules={[Thumbs]}
-                                    spaceBetween={5}
+                                    spaceBetween={10}
                                     slidesPerView={4}
                                     className="thumb-slider"
                                     watchSlidesProgress
