@@ -53,10 +53,16 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavClosed }) => {
     if (role == "board member") {
         const nav = [
             {
-                title: "Users",
+                title: "Home Owners",
                 icon: <Person />,
-                link: "/dashboard/boardmember/users",
+                link: "/dashboard/boardmember/homeAdmins",
             },
+            {
+                title: "Home Members",
+                icon: <Person />,
+                link: "/dashboard/boardmember/homeMembers",
+            },
+           
             {
                 title: "Newsletter",
                 icon: <LocalAtmIcon />,

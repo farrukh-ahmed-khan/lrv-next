@@ -37,7 +37,7 @@ const UsersApproval = () => {
             const data = await getUsers(token);
 
             const fetchedData = data.users
-                .filter((user: User) => user.role === "home owner")
+                .filter((user: User) => user.role === "home member")
                 .map((data: User, index: number) => ({
                     id: data._id,
                     firstname: data.firstname,
@@ -66,14 +66,15 @@ const UsersApproval = () => {
         }
 
         try {
-            const res = await updateUserStatus(token, status, record.id);
-            console.log(res)
+            await updateUserStatus(token, status, record.id);
+
+
             toast.success("Status updated successfully!");
 
 
         } catch (error: any) {
-            console.log(error.message)
-            toast.error(error.message);
+            toast.error("Error updating status"
+            );
         } finally {
             setLoadingStates((prev) => ({ ...prev, [record.id]: null }));
             fetchUserData();
