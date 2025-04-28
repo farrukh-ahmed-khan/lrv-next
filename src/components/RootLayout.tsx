@@ -7,6 +7,8 @@ import AnimateOnScroll from "@/components/AnimateOnScroll";
 import Loader from "@/components/ui/Loader";
 import "aos/dist/aos.css";
 import { Toaster } from "react-hot-toast";
+import { Providers } from "@/app/providers";
+import DueBanner from "./ui/DueBanner";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
@@ -40,7 +42,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
             <AnimateOnScroll />
             {/* <Navbar /> */}
-            <main>{children}</main>
+            <Providers>
+              <DueBanner />
+              <main>{children}</main>
+            </Providers>
             {/* <section className="care-wrap">
               <Footer />
             </section> */}

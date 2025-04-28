@@ -4,8 +4,6 @@ import User from "@/lib/models/User";
 import { verifyToken } from "@/lib/jwt";
 import Dues from "@/lib/models/Dues";
 
-
-
 export async function PUT(req: Request) {
   try {
     await client;
@@ -64,18 +62,23 @@ export async function PUT(req: Request) {
     const updates: any = { status };
     if (status === "approved") {
       updates.approvedAt = new Date();
-    
+
       const existingDue = await Dues.findOne({
         userId: userToUpdate._id,
+        streetAddress: userToUpdate.streetAddress,
         dueDate: { $gt: new Date() }, 
       });
-    
-      if (!existingDue) {
+
+      if (
+        !existingDue ||
+        existingDue.streetAddress !== userToUpdate.streetAddress
+      ) {
         const dueDate = new Date();
         dueDate.setFullYear(dueDate.getFullYear() + 1);
-    
+
         await Dues.create({
           userId: userToUpdate._id,
+          streetAddress: userToUpdate.streetAddress,
           amount: 300,
           dueDate,
           paymentMethod: null,
@@ -83,7 +86,6 @@ export async function PUT(req: Request) {
         });
       }
     }
-    
 
     const updatedUser = await User.findByIdAndUpdate(id, updates, {
       new: true,

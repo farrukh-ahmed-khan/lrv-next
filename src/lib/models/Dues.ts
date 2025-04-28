@@ -3,6 +3,7 @@ import { Schema, model, models } from "mongoose";
 const duesSchema = new Schema(
   {
     userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    streetAddress: { type: String, required: true },
     amount: { type: Number, required: true },
     dueDate: { type: Date, required: true },
     paid: { type: Boolean, default: false },

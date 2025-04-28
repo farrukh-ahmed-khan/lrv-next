@@ -154,10 +154,10 @@ const UsersApproval = () => {
                     <div className="row store-wrap">
                         <div className="col-lg-6 col-md-2">
                             <div>
-                                <h6>Orders List</h6>
+                                <h6>Users List</h6>
                             </div>
                         </div>
-                        <div className="col-lg-6 col-md-10">
+                        {/* <div className="col-lg-6 col-md-10">
                             <div className="d-flex justify-content-end search-wrap">
                                 <Link href="/place-order">
                                     {" "}
@@ -165,7 +165,7 @@ const UsersApproval = () => {
                                     Place An Orders
                                 </Link>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
 
                     <div className="mt-3">
