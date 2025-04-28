@@ -10,7 +10,7 @@ export const registerUser = async (userData: {
   phoneNumber?: string;
 }) => {
   try {
-    const response = await API.post("/register", userData);
+    const response = await API.post("/auth/register", userData);
     return response.data;
   } catch (error: any) {
     throw new Error(error.response?.data?.message || "Registration failed");
@@ -23,7 +23,7 @@ export const loginUser = async (credentials: {
   password: string;
 }) => {
   try {
-    const response = await API.post("/login", credentials);
+    const response = await API.post("/auth/login", credentials);
     return response.data;
   } catch (error: any) {
     throw new Error(error.response?.data?.message || "Login failed");
@@ -32,7 +32,7 @@ export const loginUser = async (credentials: {
 
 export const getUsers = async (token: string) => {
   try {
-    const response = await API.get("/getUsers", {
+    const response = await API.get("/user/getUsers", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -45,7 +45,7 @@ export const getUsers = async (token: string) => {
 
 export const getMembers = async (token: string) => {
   try {
-    const response = await API.get("/getMembers", {
+    const response = await API.get("/user/getMembers", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -58,7 +58,7 @@ export const getMembers = async (token: string) => {
 
 export const getUser = async (token: string) => {
   try {
-    const response = await API.get("/userInfo", {
+    const response = await API.get("/user/userInfo", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -84,7 +84,7 @@ export const addMember = async (
   token: string
 ) => {
   try {
-    const response = await API.post("/add-member", userData, {
+    const response = await API.post("/user/add-member", userData, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -119,7 +119,7 @@ export const updateUserStatus = async (
 
 export const getAllUsers = async (token: string) => {
   try {
-    const response = await API.get("/getAllUsers", {
+    const response = await API.get("/user/getAllUsers", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -132,7 +132,7 @@ export const getAllUsers = async (token: string) => {
 
 export const forgetPassword = async (userData: { email: string }) => {
   try {
-    const response = await API.post("/forget", userData);
+    const response = await API.post("/auth/forget", userData);
     return response.data;
   } catch (error: any) {
     throw new Error(error.response?.data?.message || "Registration failed");
@@ -147,7 +147,7 @@ export const resetPassword = async ({
   password: string;
 }) => {
   try {
-    const response = await API.post("/reset-password", { token, password });
+    const response = await API.post("/auth/reset-password", { token, password });
     return response.data;
   } catch (error: any) {
     throw new Error(error.response?.data?.message || "Password reset failed");

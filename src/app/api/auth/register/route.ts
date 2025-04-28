@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
-import User from "../../../lib/models/User";
-import { client } from "../../../lib/mongodb";
+import User from "../../../../lib/models/User";
+import { client } from "../../../../lib/mongodb";
 
 export async function POST(req: Request) {
   try {
@@ -82,6 +82,7 @@ export async function POST(req: Request) {
           role: "home member",
           password: hashedPassword,
           ownerId: homeOwner._id,
+          approvedAt: null,
         });
 
         await newUser.save();
@@ -117,6 +118,7 @@ export async function POST(req: Request) {
       email,
       role,
       password: hashedPassword,
+      approvedAt: null,
     });
 
     await newUser.save();
