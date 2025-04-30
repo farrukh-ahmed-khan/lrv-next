@@ -1,5 +1,6 @@
 "use client"; // Mark this as a client component
 import Head from "next/head";
+import Script from "next/script";
 import { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "@/styles/main.scss";
@@ -32,8 +33,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <Head>
         {/* <link rel="icon" href="/favicon.ico" sizes="any" /> */}
         <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png" />
+
       </Head>
       <body>
+        <Script
+          src={`https://www.paypal.com/sdk/js?client-id=AQHjp2mQT79SVVlf6_4xHIKRFY23PYVuDVDm1cm0_dQEBPp9Kl57m-Pz_V_Xoor3v-QaVatYcDBFwjd6&components=buttons`}
+          strategy="beforeInteractive"
+        />
         {loading ? (
           <Loader />
         ) : (

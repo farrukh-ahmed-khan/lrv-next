@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import jwt from "jsonwebtoken";
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -13,11 +13,12 @@ const SECRET = JWT_SECRET as string;
 export interface TokenPayload {
   id: string;
   email: string;
-  role: 'home owner' | 'home member' | 'board member' | 'admin';
+  streetAddress: string;
+  role: "home owner" | "home member" | "board member" | "admin";
 }
 
 export function generateToken(payload: TokenPayload): string {
-  // return jwt.sign(payload, SECRET, 
+  // return jwt.sign(payload, SECRET,
   //   { expiresIn: TOKEN_EXPIRES_IN }
   // );
   return jwt.sign(payload, SECRET);

@@ -20,10 +20,8 @@ export default function DueBanner() {
 
     return (
         <div style={{ backgroundColor: "red", color: "white", padding: "10px", textAlign: "center", position: "fixed", zIndex: "99", width: "100%" }}>
-            {
-                console.log(due)
-            }
-            <strong>Important:</strong> You have an outstanding due of ${due.amount} until {new Date(due.dueDate).toLocaleDateString()}!
+           
+            <strong>Important:</strong> You have an outstanding due until {new Date(due.dueDate).toLocaleDateString()}!
         </div>
     );
 }

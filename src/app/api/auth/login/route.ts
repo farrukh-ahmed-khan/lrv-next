@@ -45,6 +45,7 @@ export async function POST(req: Request) {
     const token = generateToken({
       id: user.id.toString(),
       email: user.email,
+      streetAddress: user.streetAddress,
       role: user.role,
     });
 

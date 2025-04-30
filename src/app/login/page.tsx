@@ -113,8 +113,6 @@ const Login = () => {
                                 <div className="tab-content">
                                     <div className="tab-pane active" role="tabpanel">
                                         <form onSubmit={handleSubmit}>
-
-
                                             <div className="form-group row">
                                                 <label
                                                     htmlFor="email"
