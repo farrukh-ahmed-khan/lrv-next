@@ -1,57 +1,82 @@
-"use client"
+"use client";
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import PayPalOneTimeButton from "@/components/ui/PayPalOneTimeButton";
 import PayPalSubscriptionButton from "@/components/ui/PayPalSubscriptionButton";
-import axios from "axios";
-import { useEffect, useState } from "react";
+import ProtectedPage from '@/components/ProtectedPage';
+import Header from '@/components/layout/Navbar';
+import InnerBanner from '@/components/ui/InnerBanner';
+import Footer from '@/components/layout/Footer';
 
 
 type Due = {
     _id: string;
     amount: number;
     paid: boolean;
+    createdAt: string;
 };
-export default function PayPage() {
 
-    const [dues, setDues] = useState<Due[]>([]);
+export default function PayPage() {
+    const searchParams = useSearchParams();
+    const dueId = searchParams.get("dueId");
+
+    const [due, setDue] = useState<Due | null>(null);
 
     useEffect(() => {
-        const fetchDues = async () => {
+        const fetchDue = async () => {
             try {
-                const res = await axios.get("/api/dues/get", {
+                const token = sessionStorage.getItem("token");
+                const res = await axios.get(`/api/dues/${dueId}`, {
                     headers: {
-                        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+                        Authorization: `Bearer ${token}`,
                     },
                 });
-                setDues(res.data.due);
-            } catch (error: any) {
-                console.error("Failed to fetch dues", error.res);
+                setDue(res.data);
+            } catch (err) {
+                console.error("Error fetching due:", err);
             }
         };
 
-        fetchDues();
-    }, []);
+        if (dueId) fetchDue();
+    }, [dueId]);
 
+    if (!due) return <p>Loading...</p>;
 
     return (
-        <div>
-            <h1 className="pt-5">Pay Your Dues</h1>
+        <ProtectedPage allowedRoles={["home owner", "home member", "board member", "admin"]}>
+            <div className="Pay-Page-wrapper">
+                <Header />
+                <>
+                    <InnerBanner title="Pay Your Dues" />
+                </>
+                <section className='pay-wrap'>
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-lg-6">
+                                <div className="details-wrapper">
+                                    <div className="detail-wrap">
+                                        <h3>Due Details</h3>
+                                        <p><strong>Due ID:</strong> {due._id}</p>
+                                        <p><strong>Amount:</strong> ${due.amount.toFixed(2)}</p>
+                                        <p><strong>Status:</strong> {due.paid ? "Paid" : "Unpaid"}</p>
+                                        <p><strong>Created At:</strong> {new Date(due.createdAt).toLocaleDateString()}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-lg-6">
+                                <h2>One-Time Payment</h2>
+                                <PayPalOneTimeButton amount={due.amount} dueId={due._id} />
 
-            <h2>One-Time Payment</h2>
+                                <h2>Auto-Pay Subscription</h2>
+                                <PayPalSubscriptionButton planId="P-PLAN_ID_FROM_PAYPAL" />
+                            </div>
+                        </div>
+                    </div>
 
-            {dues.map((due) => (
-
-                <div key={due._id} className="due-card" >
-                    <p>Amount: ${due.amount}</p>
-                    <p>Status: {due.paid ? "Paid" : "Unpaid"}</p>
-                    {!due.paid && (
-                        <PayPalOneTimeButton amount={due.amount} dueId={due._id} />
-                    )}
-                </div>
-            ))}
-
-
-            <h2>Auto-Pay Subscription</h2>
-            <PayPalSubscriptionButton planId="P-PLAN_ID_FROM_PAYPAL" />
-        </div>
+                </section>
+                <Footer />
+            </div>
+        </ProtectedPage>
     );
 }
