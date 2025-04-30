@@ -1,4 +1,3 @@
-// app/api/cron/route.ts
 import { NextResponse } from "next/server";
 import { client } from "@/lib/mongodb";
 import User from "@/lib/models/User";
@@ -19,7 +18,7 @@ export async function GET() {
 
       if (!existingDue) {
         const dueDate = new Date();
-        dueDate.setMinutes(dueDate.getMinutes() + 30);
+        dueDate.setFullYear(dueDate.getFullYear() + 1);
 
         await Dues.create({
           userId: user._id,

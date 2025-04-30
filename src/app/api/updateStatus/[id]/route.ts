@@ -74,8 +74,8 @@ export async function PUT(req: Request) {
         existingDue.streetAddress !== userToUpdate.streetAddress
       ) {
         const dueDate = new Date();
-        // dueDate.setFullYear(dueDate.getFullYear() + 1);
-        dueDate.setMinutes(dueDate.getMinutes() + 5);
+        dueDate.setFullYear(dueDate.getFullYear() + 1);
+        // dueDate.setMinutes(dueDate.getMinutes() + 5);
 
         await Dues.create({
           userId: userToUpdate._id,

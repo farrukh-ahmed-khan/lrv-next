@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { client } from "@/lib/mongodb";
 import User from "@/lib/models/User";
 import { generateToken } from "@/lib/jwt";
+import Dues from "@/lib/models/Dues";
 
 export async function POST(req: Request) {
   try {
@@ -40,6 +41,25 @@ export async function POST(req: Request) {
         { message: "Invalid email or password." },
         { status: 401 }
       );
+    }
+
+    const existingDue = await Dues.findOne({
+      userId: user._id,
+      dueDate: { $gt: new Date() },
+    });
+
+    if (!existingDue) {
+      const dueDate = new Date();
+      dueDate.setFullYear(dueDate.getFullYear() + 1);
+
+      await Dues.create({
+        userId: user._id,
+        streetAddress: user.streetAddress,
+        amount: 300,
+        dueDate,
+        paymentMethod: null,
+        autoPay: false,
+      });
     }
 
     const token = generateToken({
