@@ -2,6 +2,13 @@
 import { useEffect } from "react";
 import axios from "axios";
 
+declare global {
+  interface Window {
+    paypal: any;
+  }
+}
+
+
 export default function PayPalOneTimeButton({
   amount,
   dueId,
