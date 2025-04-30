@@ -6,9 +6,34 @@ import ProtectedPage from "@/components/ProtectedPage";
 import btnImg from "@/assets/images/btn_subscribe.gif"
 import bottomimg from "@/assets/images/bottom-dues.jpg"
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-
+type Due = {
+    _id: string;
+    amount: number;
+    paid: boolean;
+    createdAt: string;
+};
 const Dues = () => {
+    const [dues, setDues] = useState<Due[]>([]);
+
+    useEffect(() => {
+        const fetchDues = async () => {
+            try {
+                const res = await axios.get("/api/dues/get", {
+                    headers: {
+                        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+                    },
+                });
+                setDues(res.data.due);
+            } catch (error: any) {
+                console.error("Failed to fetch dues", error.res);
+            }
+        };
+
+        fetchDues();
+    }, []);
     return (
         <ProtectedPage allowedRoles={["home owner", "home member", "board member", "admin"]}>
             <div className="Dues-wrapper">
@@ -115,6 +140,47 @@ const Dues = () => {
                                 <div className="bottom-img-wrap">
                                     <Image src={bottomimg} alt="bottomimg" />
                                 </div>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-lg-12">
+                                <div className="heading">
+                                    <h4>
+                                        Your Dues
+                                    </h4>
+                                </div>
+                            </div>
+                            <div className="col-lg-4">
+                                {/* {dues.map((due) => (
+
+                                    <div key={due._id} className="due-card" >
+                                        <p>Amount: ${due.amount}</p>
+                                        <p>Status: {due.paid ? "Paid" : "Unpaid"}</p>
+                                        <div className="pay-btn-wrap">
+                                            <button className="pay-now-btn">Pay Now</button>
+                                        </div>
+                                    </div>
+                                ))} */}
+                                {dues.map((due) => {
+                                    const year = new Date(due.createdAt).getFullYear();
+                                    return (
+                                        <div key={due._id} className="due-card">
+                                            <p className="due-year">Year: {year}</p>
+                                            <div className="due-info">
+                                                <p className="due-amount">${due.amount}</p>
+                                                <span className={`status-badge ${due.paid ? 'paid' : 'unpaid'}`}>
+                                                    {due.paid ? 'Paid' : 'Unpaid'}
+                                                </span>
+                                            </div>
+
+                                            <div className="pay-btn-wrap">
+                                                {!due.paid && <button className="pay-now-btn">Pay Now</button>}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+
+
                             </div>
                         </div>
                     </div>
