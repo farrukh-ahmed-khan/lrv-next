@@ -1,8 +1,0 @@
-{
-    "crons": [
-      {
-        "path": "/api/dues/create",
-        "schedule": "*/5 * * * *" 
-      }
-    ]
-  }
