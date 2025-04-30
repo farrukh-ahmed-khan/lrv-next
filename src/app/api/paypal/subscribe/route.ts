@@ -17,6 +17,7 @@ export async function POST(req: Request) {
         body: JSON.stringify({
           plan_id,
           application_context: {
+            shipping_preference: "NO_SHIPPING",
             brand_name: "Dues Management",
             user_action: "SUBSCRIBE_NOW",
             return_url: "https://yourdomain.com/success",

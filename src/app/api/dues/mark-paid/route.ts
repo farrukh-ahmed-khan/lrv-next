@@ -15,7 +15,7 @@ export async function PUT(req: Request) {
     const token = authHeader.split(" ")[1];
     const decoded = verifyToken(token);
 
-    if (!decoded || !["admin", "board member"].includes(decoded.role)) {
+    if (!decoded || !["home owner", "home member", "board member", "admin"].includes(decoded.role)) {
       return NextResponse.json(
         {
           message: "Forbidden: Only admin or board member can update due",
@@ -26,7 +26,7 @@ export async function PUT(req: Request) {
 
     const { transactionId, dueId, autoPay } = await req.json();
 
-    if (!transactionId || !dueId || !autoPay) {
+    if (!transactionId || !dueId) {
       return NextResponse.json(
         { message: "Missing required fields." },
         { status: 400 }

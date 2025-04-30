@@ -14,7 +14,6 @@ export default function PayPalOneTimeButton({
     const container = document.getElementById(containerId);
     if (!window.paypal || !container) return;
 
-    // ✅ Clean up previous render
     container.innerHTML = "";
 
     const button = window.paypal
