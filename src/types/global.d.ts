@@ -11,3 +11,8 @@ declare module "aos" {
   export function init(options?: AosOptions): void;
 }
 
+declare global {
+  interface Window {
+    paypal: any;
+  }
+}
