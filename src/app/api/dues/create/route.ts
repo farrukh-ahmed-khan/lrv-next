@@ -18,8 +18,9 @@ export async function GET() {
 
       if (!existingDue) {
         const dueDate = new Date();
-        dueDate.setFullYear(dueDate.getFullYear() + 1);
-
+        // dueDate.setFullYear(dueDate.getFullYear() + 1);
+        dueDate.setHours(dueDate.getHours() + 6);
+        
         await Dues.create({
           userId: user._id,
           streetAddress: user.streetAddress,

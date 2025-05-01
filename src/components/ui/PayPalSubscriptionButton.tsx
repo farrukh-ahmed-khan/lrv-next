@@ -2,13 +2,12 @@
 import { useEffect } from "react";
 import axios from "axios";
 
-export default function PayPalSubscriptionButton({ planId }: { planId: string }) {
+export default function PayPalSubscriptionButton({ planId, dueId, }: { planId: string; dueId: string; }) {
   useEffect(() => {
     const containerId = "paypal-subscribe";
     const container = document.getElementById(containerId);
     if (!window.paypal || !container) return;
 
-    // ✅ Clear existing PayPal buttons before re-rendering
     container.innerHTML = "";
 
     const button = window.paypal.Buttons({
@@ -24,15 +23,17 @@ export default function PayPalSubscriptionButton({ planId }: { planId: string })
         console.log("Subscription approved", data);
 
         try {
-          await axios.post(
+          await axios.put(
             "/api/dues/mark-paid",
             {
               transactionId: data.subscriptionID,
+              dueId,
               autoPay: true,
+              subscriptionId: data.subscriptionID,
             },
             {
               headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
+                Authorization: `Bearer ${sessionStorage.getItem("token")}`,
               },
             }
           );

@@ -10,6 +10,7 @@ const duesSchema = new Schema(
     paymentMethod: { type: String, enum: ["Credit Card", "PayPal", "Check"] },
     autoPay: { type: Boolean, default: false },
     transactionId: { type: String },
+    subscriptionId: { type: String },
   },
   { timestamps: true }
 );
