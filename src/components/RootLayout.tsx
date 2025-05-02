@@ -36,8 +36,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
       </Head>
       <body>
+      {/* &intent=subscription */}
         <Script
-          src="https://www.paypal.com/sdk/js?client-id=AQ9bqBZ_lXaFs7pwoLAwK_UqbavGVomOhAZtrQAY1YrMILVEbJn-MnD2L1y7Y3SHsoxjjg-PP2GHfIp4&components=buttons&vault=true&intent=subscription"
+          src="https://www.paypal.com/sdk/js?client-id=AQ9bqBZ_lXaFs7pwoLAwK_UqbavGVomOhAZtrQAY1YrMILVEbJn-MnD2L1y7Y3SHsoxjjg-PP2GHfIp4&components=buttons&vault=true"
           strategy="beforeInteractive"
         />
         {loading ? (
