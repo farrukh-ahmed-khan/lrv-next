@@ -15,12 +15,11 @@ import {
 } from "recharts";
 import { NameType, ValueType } from "recharts/types/component/DefaultTooltipContent";
 
-import table1 from "@/assets/images/table-1.svg";
-import table2 from "@/assets/images/table-2.svg";
-import table3 from "@/assets/images/table-3.svg";
+
 import Order1 from "@/assets/images/order-1.svg";
 import Order2 from "@/assets/images/order-2.svg";
 import Order3 from "@/assets/images/order-3.svg";
+import Image from "next/image";
 
 
 interface TableData {
@@ -107,12 +106,7 @@ const DashStats: React.FC = () => {
     },
   ];
 
-  const data: TableData[] = [
-    { key: "1", icon: table1, store: "Abstergo Ltd", status: "Active" },
-    { key: "2", icon: table2, store: "Bifco Enterprises Ltd.", status: "Active" },
-    { key: "3", icon: table3, store: "Acme Co.", status: "NA" },
-  ];
-
+ 
   const LineData: LineChartData[] = [
     { uv: 2000 }, { uv: 3000 }, { uv: 2000 }, { uv: 2780 },
     { uv: 1890 }, { uv: 4000 }, { uv: 2390 }, { uv: 3490 },
@@ -132,7 +126,7 @@ const DashStats: React.FC = () => {
   return (
     <div className="dashboard-stats">
       <div className="row">
-        <div className="col-md-8">
+        <div className="col-md-12">
           <div className="chart-container mb-4">
             <div className="tick mt-3">
               <h3>Monthly Revenue</h3>
@@ -144,7 +138,7 @@ const DashStats: React.FC = () => {
                     type="monotone"
                     dataKey="uv"
                     stroke="#2d4736"
-                    fill="#e6edea" 
+                    fill="#e6edea"
                   />
                   <Tooltip content={<CustomTooltip />} />
                 </AreaChart>
@@ -153,19 +147,7 @@ const DashStats: React.FC = () => {
           </div>
         </div>
 
-        <div className="col-md-4">
-          <div className="card total-card mb-4">
-            <div className="card-body">
-              <h6>Theft By Tags</h6>
-              <div className="total-stores">
-                <Table columns={columns} dataSource={data} pagination={false} />
-                <div className="span">
-                  View all <ArrowRightAltOutlinedIcon />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+       
       </div>
 
       <div className="row">
@@ -199,7 +181,7 @@ const DashStats: React.FC = () => {
             </div>
             <p className="mt-3">Recent</p>
             <div className="order-table">
-              <img src={Order1} alt="Order1" />
+              <Image src={Order1} alt="" />
               <div>
                 <h5>New Orders</h5>
                 <p>Today, 16:36</p>
@@ -207,7 +189,7 @@ const DashStats: React.FC = () => {
               <span>70</span>
             </div>
             <div className="order-table mt-4">
-              <img src={Order2} alt="Order2" />
+              <Image src={Order2} alt=""  />
               <div>
                 <h5>Pending Orders</h5>
                 <p>23 Jun, 13:06</p>
@@ -215,7 +197,7 @@ const DashStats: React.FC = () => {
               <span>20</span>
             </div>
             <div className="order-table mt-4">
-              <img src={Order3} alt="Order3" />
+              <Image src={Order3} alt=""  />
               <div>
                 <h5>Completed Orders</h5>
                 <p>21 Jun, 19:04</p>
