@@ -1,13 +1,13 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { client } from "@/lib/mongodb";
 import Dues from "@/lib/models/Dues";
 import { verifyToken } from "@/lib/jwt";
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+export async function GET(request: NextRequest) {
   try {
     await client;
 
-    const authHeader = req.headers.get("authorization");
+    const authHeader = request.headers.get("authorization");
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -20,9 +20,12 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
       return NextResponse.json({ message: "Invalid token" }, { status: 401 });
     }
 
+    const url = new URL(request.url);
+    const id = url.pathname.split("/")[3]; 
+
     const due = await Dues.findOne({
-      _id: params.id,
-      userId: decoded.id, 
+      _id: id,
+      userId: decoded.id,
     });
 
     if (!due) {
