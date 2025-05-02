@@ -22,7 +22,7 @@ import Order1 from "@/assets/images/order-1.svg";
 import Order2 from "@/assets/images/order-2.svg";
 import Order3 from "@/assets/images/order-3.svg";
 
-// Types
+
 interface TableData {
   key: string;
   icon: string;
@@ -66,7 +66,7 @@ const DashStats: React.FC = () => {
           style={{
             backgroundColor: "#fff",
             padding: "10px",
-            border: "1px solid #ff323b",
+            border: "1px solid #2d4736",
             borderRadius: "10px",
           }}
         >
@@ -143,8 +143,8 @@ const DashStats: React.FC = () => {
                   <Area
                     type="monotone"
                     dataKey="uv"
-                    stroke="#ff323b"
-                    fill="#ffe8e9"
+                    stroke="#2d4736"
+                    fill="#e6edea" 
                   />
                   <Tooltip content={<CustomTooltip />} />
                 </AreaChart>
@@ -183,7 +183,7 @@ const DashStats: React.FC = () => {
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={ticketData}>
                   <CartesianGrid strokeDasharray="1 1" />
-                  <Bar dataKey="value" fill="#ff323b" radius={[100, 100, 100, 100]} />
+                  <Bar dataKey="value" fill="#e6edea" radius={[100, 100, 100, 100]} />
                 </BarChart>
               </ResponsiveContainer>
             </Box>
@@ -235,7 +235,7 @@ const DashStats: React.FC = () => {
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={ticketData}>
                   <CartesianGrid strokeDasharray="1 1" />
-                  <Bar dataKey="value" fill="#ed1b24" radius={[10, 10, 0, 0]} />
+                  <Bar dataKey="value" fill="#e6edea" radius={[10, 10, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </Box>
