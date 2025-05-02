@@ -48,7 +48,7 @@ export default function PayPage() {
             <div className="Pay-Page-wrapper">
                 <Header />
                 <>
-                    <InnerBanner title="Pay Your Dues" />
+                    <InnerBanner title="Subscribe" />
                 </>
                 <section className='pay-wrap'>
                     <div className="container">
@@ -65,11 +65,11 @@ export default function PayPage() {
                                 </div>
                             </div>
                             <div className="col-lg-6">
-                                <h2>One-Time Payment</h2>
-                                <PayPalOneTimeButton amount={due.amount} dueId={due._id} />
+                                {/* <h2>One-Time Payment</h2>
+                                <PayPalOneTimeButton amount={due.amount} dueId={due._id} /> */}
 
-                                {/* <h2>Auto-Pay Subscription</h2>
-                                <PayPalSubscriptionButton planId="P-1UC67166DB986312YNAJ4N4Q" dueId={due._id}/> */}
+                                <h2>Auto-Pay Subscription</h2>
+                                <PayPalSubscriptionButton planId="P-1UC67166DB986312YNAJ4N4Q" dueId={due._id}/>
                             </div>
                         </div>
                     </div>

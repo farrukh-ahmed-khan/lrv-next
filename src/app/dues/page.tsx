@@ -167,13 +167,28 @@ const Dues = () => {
                                                     </span>
                                                 </div>
 
-                                                <div className="pay-btn-wrap">
+                                                <div className="pay-btn-wrap" style={{
+                                                    justifyContent: "space-between",
+                                                }}>
                                                     {!due.paid && (
                                                         <button
                                                             className="pay-now-btn"
                                                             onClick={() => router.push(`/pay?dueId=${due._id}`)}
                                                         >
                                                             Pay Now
+                                                        </button>
+                                                    )}
+                                                    {!due.paid && (
+                                                        <button
+                                                            className="pay-now-btn"
+                                                            style={{
+                                                                backgroundColor: "#FFC439",
+                                                                color: "#000",
+
+                                                            }}
+                                                            onClick={() => router.push(`/subscribe?dueId=${due._id}`)}
+                                                        >
+                                                            Subscribe
                                                         </button>
                                                     )}
                                                     {/* {!due.paid && <button className="pay-now-btn">Pay Now</button>} */}
