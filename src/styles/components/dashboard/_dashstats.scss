@@ -1,0 +1,368 @@
+$font-montserrat: "Montserrat", sans-serif;
+$main-red: #ed1b24;
+$gray-text: gray;
+$light-gray: #a3aed0;
+$green: #05cd99;
+
+.total-card,
+.total-entries,
+.total-orders,
+.total-entries-by-stores,
+.chart-container,
+.ticketData,
+.TotalOffense,
+.NoOfOrders,
+.subscriptionBox,
+.tickets {
+  border: 0 solid transparent !important;
+  box-shadow: 0 2px 5px 1px rgba(64, 60, 67, 0.16);
+  border-radius: 24px !important;
+  padding: 10px;
+
+  &.NoOfOrders {
+    padding: 26px;
+
+    .balance {
+      font-family: $font-montserrat;
+      //   background: url("../../assets/Images/Balance.png") center / cover no-repeat;
+      padding: 20px;
+      border-radius: 20px;
+      height: 100px;
+      color: #fff;
+
+      h4 {
+        font-size: 14px;
+        font-weight: 400;
+      }
+
+      h3 {
+        font-size: 40px;
+        font-weight: 600;
+      }
+    }
+  }
+
+  &.TotalOffense {
+    font-family: $font-montserrat;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 20px 20px;
+
+    span {
+      color: $green;
+      background-color: #e6faf5;
+      width: 80px;
+      text-align: center;
+      border-radius: 12px;
+      font-weight: bold;
+    }
+
+    p {
+      color: $light-gray;
+      font-size: 16px;
+    }
+
+    h3 {
+      font-size: 40px;
+      font-weight: bold;
+      margin-bottom: 16px;
+    }
+  }
+}
+
+.tick h3,
+.total-entries h3,
+.total-orders h3,
+.total-entries-by-stores h3,
+.card.total-card h6 {
+  font-size: 24px;
+  font-family: $font-montserrat;
+  font-weight: 700;
+}
+
+.total-entries h2 {
+  font-size: 48px;
+  font-family: $font-montserrat;
+  font-weight: 700;
+  color: $main-red;
+}
+
+.card.total-card small {
+  font-size: 13px;
+  font-weight: 400;
+  font-family: $font-montserrat;
+  color: $gray-text;
+}
+
+.total-entries div div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.orders-wrap {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 14px;
+  border: 1px solid #8080804a;
+  border-radius: 10px;
+
+  h6 {
+    font-size: 18px;
+    font-family: $font-montserrat;
+    font-weight: 600;
+    color: #000;
+    margin-bottom: 0;
+  }
+
+  p {
+    margin-bottom: 0;
+    font-size: 13px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    color: $gray-text;
+    font-family: $font-montserrat;
+  }
+
+  h5 {
+    margin-bottom: 0;
+    text-align: center;
+    font-size: 35px;
+    font-family: $font-montserrat;
+    font-weight: 700;
+    color: $main-red;
+  }
+}
+
+.css-1qdzy9k-MuiBarElement-root {
+  stroke: none;
+  fill: $main-red !important;
+}
+
+.total-stores {
+  thead.ant-table-thead tr {
+    display: none;
+  }
+
+  tbody.ant-table-tbody {
+    td {
+      font-size: 16px !important;
+      color: #000;
+      font-weight: 600;
+      padding: 13px 7px;
+      border: 0;
+
+      &:last-child {
+        text-align: center;
+
+        span {
+          font-size: 16px;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+}
+
+.by-store-wrap {
+  background: #f4f4f4;
+  border-radius: 13px;
+  padding: 10px 16px;
+  transition: 0.3s;
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  &:hover {
+    background: $main-red;
+    transform: scale(1.02);
+
+    h5,
+    .wrapp h6,
+    .wrapp small {
+      color: #fff;
+    }
+  }
+}
+
+.wrapp {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 17px;
+
+  h6 {
+    color: #000;
+    font-size: 20px;
+    font-family: $font-montserrat;
+    font-weight: 600;
+    margin-bottom: 0;
+  }
+
+  small {
+    color: #00000073;
+    font-size: 14px;
+    font-family: $font-montserrat;
+    font-weight: 400;
+    margin-bottom: 0;
+  }
+}
+
+.store-number h5 {
+  color: #000;
+  font-size: 34px;
+  font-family: $font-montserrat;
+  font-weight: 600;
+  margin-bottom: 0;
+  text-align: left;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+
+.view-all small {
+  font-size: 17px;
+  color: $main-red;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s;
+
+  &:hover {
+    color: #000;
+    margin-right: 10px;
+  }
+}
+
+.ticketData {
+  font-family: $font-montserrat;
+
+  h5 {
+    color: $light-gray;
+    font-size: 14px;
+  }
+
+  h3 {
+    font-size: 40px;
+    font-weight: bold;
+  }
+
+  h6 {
+    color: $green;
+  }
+}
+
+.order-table {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: $font-montserrat;
+
+  img {
+    width: 15%;
+  }
+
+  div {
+    width: 70%;
+
+    h5 {
+      font-size: 22px;
+      font-weight: bold;
+      margin: 0;
+    }
+
+    p {
+      font-weight: 500;
+      color: $light-gray;
+    }
+  }
+
+  span {
+    width: 11%;
+    font-size: 22px;
+    font-weight: bold;
+  }
+}
+
+.subscriptionBox,
+.tickets {
+  font-family: $font-montserrat;
+  background-color: #fff;
+
+  h6 {
+    font-size: 16px;
+    color: $light-gray;
+  }
+
+  h3 {
+    font-size: 40px;
+    font-weight: bold;
+  }
+}
+
+.tickets {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 26px 50px;
+
+  h4 {
+    color: $light-gray;
+    font-size: 16px;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  h5 {
+    color: #000;
+    font-weight: bold;
+    font-size: 40px;
+    margin-right: 40px;
+    width: 20%;
+  }
+
+  img {
+    width: 80%;
+  }
+
+  div {
+    width: 100%;
+  }
+}
+.main-stats {
+  background-color: #fff;
+  border-radius: 26px;
+  border: 0px solid transparent !important;
+  border-radius: 24px !important;
+  padding: 20px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 2px 5px 1px rgba(64, 60, 67, 0.16);
+  img {
+    width: 70px;
+    height: 70px;
+  }
+}
+.main-stats p,
+.main-stats h2 {
+  margin: 0px !important;
+}
+.main-stats p {
+  font-weight: 600 !important;
+  color: #a3aed0 !important;
+}
+.main-stats h2 {
+  margin-top: 3px !important;
+}

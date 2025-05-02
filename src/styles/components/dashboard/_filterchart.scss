@@ -1,0 +1,65 @@
+.analytics-chart {
+    padding: 30px;
+    margin-top: 30px;
+    border-radius: 16px;
+    background: #fff;
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      h2 {
+        color: #111;
+        font-family: Poppins;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 30px;
+        margin: 0px;
+      }
+      .time-options {
+        border-radius: 12px;
+        background: #f8f8f8;
+        padding: 10.407px 8px;
+        width: fit-content;
+        button {
+          border-radius: 12.037px;
+          color: #111;
+          font-family: Poppins;
+          font-size: 15.648px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: normal;
+          letter-spacing: -0.156px;
+          border: none;
+          padding: 5px 10px;
+          margin: 0 5px;
+          &.active {
+            background-color: #4fb948;
+            color: #fff;
+          }
+        }
+      }
+      .filter-options {
+        select {
+          color: #111;
+          font-family: Poppins;
+          font-size: 16.852px;
+          font-style: normal;
+          font-weight: 500;
+          line-height: normal;
+          letter-spacing: -0.169px;
+          padding: 10px 27px;
+          border-radius: 12px;
+          border: 1.204px solid #ececec;
+          box-shadow: 0px 24.074px 60.185px 0px rgba(0, 0, 0, 0.09);
+          border: none;
+        }
+      }
+      .chart-tab-wrap{
+          display: flex;
+          gap: 10px;
+          align-items: center;
+      }
+    }
+  }
+  

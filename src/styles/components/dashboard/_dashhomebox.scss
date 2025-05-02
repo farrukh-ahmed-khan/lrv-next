@@ -1,0 +1,110 @@
+.dashhome-box {
+    margin-top: 20px;
+    padding: 30px;
+    border-radius: 16px;
+    background: #c0c0c0;
+  
+    .dashhome-box-top {
+      display: flex;
+      // justify-content: center;
+      align-items: center;
+      gap: 10px;
+  
+      .icon-wrap {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        img {
+          width: 100%;
+          height: auto;
+        }
+      }
+  
+      .content-wrap {
+        h2 {
+          font-family: "Circular Std";
+          font-size: 48px;
+          font-style: normal;
+          font-weight: 700;
+          line-height: normal;
+          color: #000;
+          margin: 0px;
+        }
+      }
+      .details-wrap {
+        margin-top: 30px;
+        height: 70px;
+        h4 {
+          color: #000;
+          font-family: "Circular Std";
+          font-size: 18px;
+          font-style: normal;
+          font-weight: 600;
+          line-height: normal;
+          margin: 0px;
+        }
+  
+        a {
+          color: #111;
+          font-family: Poppins;
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: normal;
+          text-decoration: none;
+        }
+      }
+    }
+  
+    .veiw-link-wrap {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      cursor: pointer;
+      padding-top: 10px;
+      a {
+        color: #060620;
+        font-feature-settings: "liga" off, "clig" off;
+        font-family: "Plus Jakarta Sans";
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+        text-decoration: none;
+      }
+      &::before {
+        content: "";
+        position: absolute;
+        top: -5px;
+        left: -30px;
+        width: 110%;
+        height: 2px;
+        background-color: #7c88a5;
+      }
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: #060620;
+        transform: scaleX(0);
+        transition: transform 0.3s ease-in-out;
+      }
+      &:hover::after {
+        transform: scaleX(1);
+      }
+    }
+  }
+  
+  @media (max-width: 786px) {
+    .dashhome-box {
+      margin-top: 20px;
+      padding: 10px 18px;
+      background: #fff;
+      border-radius: 4px;
+      border-left: 5px solid rgb(69 94 136 / 64%);
+    }
+  }
+  
