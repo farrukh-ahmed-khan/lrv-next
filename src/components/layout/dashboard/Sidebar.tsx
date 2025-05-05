@@ -8,6 +8,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import LocalAtmIcon from "@mui/icons-material/LocalAtm";
 
 import {
+    AddCard,
     MeetingRoom,
     Person,
     VerifiedUserRounded,
@@ -82,6 +83,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavClosed }) => {
                 title: "Lrv Law",
                 icon: <VerifiedUserRounded />,
                 link: "/dashboard/boardmember/lrvhoa-law",
+            },
+            {
+                title: "Add Events",
+                icon: <AddCard />,
+                link: "/dashboard/boardmember/addEvent",
             },
         ];
         return (
