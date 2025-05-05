@@ -112,21 +112,11 @@ const AddEvent = () => {
             title: "Actions",
             key: "actions",
             render: (_, record) => (
-                // <Button
-                //     onClick={() => {
-                //         setCurrentEventId(record._id);
-                //         setDescription(record.description || "");
-                //         setDescModalOpen(true);
-                //     }}
-                //     style={{ marginRight: 8 }}
-                // >
-                //     {record.description ? "Edit Description" : "Add Description"}
-                // </Button>
                 <Button
                     onClick={() => {
-                        setCurrentEventId(record._id); // Set current event ID
-                        setDescription(record.description || "");  // Set current description here
-                        setDescModalOpen(true); // Open description modal
+                        setCurrentEventId(record._id); 
+                        setDescription(record.description || ""); 
+                        setDescModalOpen(true); 
                     }}
                     style={{ marginRight: 8 }}
                 >
@@ -208,14 +198,6 @@ const AddEvent = () => {
                                             <Editor
                                                 ref={quillRef}
                                                 readOnly={readOnly}
-                                                // defaultValue={new Delta()
-                                                //     .insert('Hello')
-                                                //     .insert('\n', { header: 1 })
-                                                //     .insert('Some ')
-                                                //     .insert('initial', { bold: true })
-                                                //     .insert(' ')
-                                                //     .insert('content', { underline: true })
-                                                //     .insert('\n')}
                                                 defaultValue={description}
                                                 onSelectionChange={setRange}
                                                 onTextChange={setLastChange}

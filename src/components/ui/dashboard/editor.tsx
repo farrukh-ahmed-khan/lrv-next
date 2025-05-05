@@ -63,10 +63,7 @@ const Editor = forwardRef<Quill | null, EditorProps>(
             } else if (ref && typeof ref === 'object') {
                 (ref as React.MutableRefObject<Quill | null>).current = quill;
             }
-            // if (defaultValue) {
-            //     const delta = quill.clipboard.convert(defaultValue); // 🔥 Convert HTML to Delta
-            //     quill.setContents(delta, 'silent');
-            // }
+            
 
 
             if (defaultValueRef.current) {
