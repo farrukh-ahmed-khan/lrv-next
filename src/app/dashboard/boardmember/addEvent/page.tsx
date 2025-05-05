@@ -1,8 +1,11 @@
 "use client"
-import React, { useEffect, useState } from "react";
-import SlateEditor from "@/components/ui/dashboard/TiptapEditor";
+import React, { useEffect, useRef, useState } from "react";
 
+// import SlateEditor from "@/components/ui/dashboard/TiptapEditor";
+import "quill/dist/quill.core.css";
+import Quill from 'quill';
 
+const Delta = Quill.import('delta');
 import { Table, Button, Modal, Form, Input } from "antd";
 import toast from "react-hot-toast";
 import { getEvents, createEvent, addEventDescription } from "@/lib/EventsApi/api"; // you'll define these
@@ -10,7 +13,9 @@ import type { ColumnsType } from "antd/es/table";
 import ProtectedPage from "@/components/ProtectedPage";
 import Navbar from "@/components/layout/dashboard/Navbar";
 import Sidebar from "@/components/layout/dashboard/Sidebar";
-import axios from "axios";
+import Editor from "@/components/ui/dashboard/editor";
+
+
 
 const AddEvent = () => {
     const [isNavClosed, setIsNavClosed] = useState(false);
@@ -36,6 +41,16 @@ const AddEvent = () => {
     const [description, setDescription] = useState('');
     const [currentEventId, setCurrentEventId] = useState<string | null>(null);
     const [descModalOpen, setDescModalOpen] = useState(false);
+
+    const [range, setRange] = useState();
+    const [lastChange, setLastChange] = useState();
+    const [readOnly, setReadOnly] = useState(false);
+
+
+
+    const quillRef = useRef<Quill | null>(null);
+
+
 
     const [form] = Form.useForm();
     const token = sessionStorage.getItem("token");
@@ -82,26 +97,45 @@ const AddEvent = () => {
 
     const columns: ColumnsType<EventType> = [
         { title: "Event Name", dataIndex: "eventname", key: "eventname" },
-        { title: "Description", dataIndex: "description", key: "description" },
+        {
+            title: "Description",
+            dataIndex: "description",
+            key: "description",
+            render: (text: string | undefined) =>
+                text ? (
+                    <div dangerouslySetInnerHTML={{ __html: text.length > 100 ? text.slice(0, 10) + "..." : text }} />
+                ) : (
+                    <em>No description</em>
+                ),
+        },
         {
             title: "Actions",
             key: "actions",
             render: (_, record) => (
-                <>
-                    <Button
-                        onClick={() => {
-                            setCurrentEventId(record._id);
-                            setDescription(record.description || "");
-                            setDescModalOpen(true);
-                        }}
-                        style={{ marginRight: 8 }}
-                    >
-                        Add Description
-                    </Button>
-                </>
-            )
-        }
+                // <Button
+                //     onClick={() => {
+                //         setCurrentEventId(record._id);
+                //         setDescription(record.description || "");
+                //         setDescModalOpen(true);
+                //     }}
+                //     style={{ marginRight: 8 }}
+                // >
+                //     {record.description ? "Edit Description" : "Add Description"}
+                // </Button>
+                <Button
+                    onClick={() => {
+                        setCurrentEventId(record._id); // Set current event ID
+                        setDescription(record.description || "");  // Set current description here
+                        setDescModalOpen(true); // Open description modal
+                    }}
+                    style={{ marginRight: 8 }}
+                >
+                    {record.description ? "Edit Description" : "Add Description"}
+                </Button>
+            ),
+        },
     ];
+
 
     useEffect(() => {
         fetchEventData();
@@ -125,12 +159,14 @@ const AddEvent = () => {
                                             <Button onClick={() => setIsModalOpen(true)}>Add Event</Button>
                                         </div>
 
-                                        <Table
-                                            className="mt-3"
-                                            columns={columns}
-                                            dataSource={eventData}
-                                            rowKey="_id"
-                                        />
+                                        <div className="event-table-wrap">
+                                            <Table
+                                                className="mt-3"
+                                                columns={columns}
+                                                dataSource={eventData}
+                                                rowKey="_id"
+                                            />
+                                        </div>
 
                                         <Modal
                                             title="Add Event"
@@ -155,9 +191,11 @@ const AddEvent = () => {
                                             open={descModalOpen}
                                             onCancel={() => setDescModalOpen(false)}
                                             onOk={async () => {
-                                                if (!currentEventId || !token) return;
+                                                if (!currentEventId || !token || !quillRef.current) return;
+                                                const quill = quillRef.current;
+                                                const htmlDescription = quill.root.innerHTML;
                                                 try {
-                                                    await addEventDescription(currentEventId, description, token);
+                                                    await addEventDescription(currentEventId, htmlDescription, token);
                                                     toast.success("Description added!");
                                                     setDescModalOpen(false);
                                                     fetchEventData();
@@ -167,7 +205,22 @@ const AddEvent = () => {
                                                 }
                                             }}
                                         >
-                                            <SlateEditor />
+                                            <Editor
+                                                ref={quillRef}
+                                                readOnly={readOnly}
+                                                // defaultValue={new Delta()
+                                                //     .insert('Hello')
+                                                //     .insert('\n', { header: 1 })
+                                                //     .insert('Some ')
+                                                //     .insert('initial', { bold: true })
+                                                //     .insert(' ')
+                                                //     .insert('content', { underline: true })
+                                                //     .insert('\n')}
+                                                defaultValue={description}
+                                                onSelectionChange={setRange}
+                                                onTextChange={setLastChange}
+                                            />
+
 
                                         </Modal>
 

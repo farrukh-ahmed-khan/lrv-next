@@ -10,6 +10,7 @@ import "aos/dist/aos.css";
 import { Toaster } from "react-hot-toast";
 import { Providers } from "@/app/providers";
 import DueBanner from "./ui/DueBanner";
+import Link from "next/link";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
@@ -36,7 +37,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
       </Head>
       <body>
-      {/* &intent=subscription */}
+        {/* &intent=subscription */}
         <Script
           src="https://www.paypal.com/sdk/js?client-id=AQ9bqBZ_lXaFs7pwoLAwK_UqbavGVomOhAZtrQAY1YrMILVEbJn-MnD2L1y7Y3SHsoxjjg-PP2GHfIp4&components=buttons&vault=true"
           strategy="beforeInteractive"

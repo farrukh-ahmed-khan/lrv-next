@@ -23,7 +23,7 @@ export const addEventDescription = async (
     token: string
   ) => {
     const response = await API.post(
-      "/api/events/AddDescription",
+      "/events/AddDescription",
       { eventId, description },
       {
         headers: {

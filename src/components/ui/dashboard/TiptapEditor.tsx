@@ -29,9 +29,12 @@ type CustomElement = {
     | "heading-one"
     | "heading-two"
     | "list-item"
-    | "numbered-list";
+    | "numbered-list"
+    | "image";  
     children: CustomText[];
+    url?: string;  
 };
+
 
 type CustomText = {
     text: string;
@@ -83,6 +86,7 @@ const RichTextExample: React.FC = () => {
                 <BlockButton format="block-quote" icon="format_quote" />
                 <BlockButton format="numbered-list" icon="format_list_numbered" />
                 <BlockButton format="bulleted-list" icon="format_list_bulleted" />
+                <ImageButton />
             </Toolbar>
             <Editable
                 renderElement={renderElement}
@@ -153,17 +157,17 @@ const isBlockActive = (editor: Editor, format: CustomElement["type"]) => {
 // };
 
 const isMarkActive = (editor: Editor, format: keyof CustomText) => {
-    const marks = Editor.marks(editor) as CustomText | null; 
-  
+    const marks = Editor.marks(editor) as CustomText | null;  // Explicit type for marks
+
     if (marks && typeof marks[format] === 'boolean') {
-      return marks[format] === true;
+        return marks[format] === true;
     }
-  
+
     return false;
-  };
-  
-  
-  
+};
+
+
+
 
 const Element: React.FC<RenderElementProps> = ({ attributes, children, element }) => {
     switch (element.type) {
@@ -179,6 +183,8 @@ const Element: React.FC<RenderElementProps> = ({ attributes, children, element }
             return <li {...attributes}>{children}</li>;
         case "numbered-list":
             return <ol {...attributes}>{children}</ol>;
+        case "image":
+            return <img {...attributes} src={element.url} alt="Uploaded Image" />;
         default:
             return <p {...attributes}>{children}</p>;
     }
@@ -239,37 +245,53 @@ const MarkButton: React.FC<ButtonProps> = ({ format, icon }) => {
     );
 };
 
+
+
+const ImageButton: React.FC = () => {
+    const editor = useSlate();
+    const [fileInputKey, setFileInputKey] = useState(0);
+
+    const insertImage = (url: string) => {
+        const image: CustomElement = {
+            type: "image", 
+            children: [{ text: "" }],  
+            url, 
+        };
+        Transforms.insertNodes(editor, image); 
+    };
+
+    const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                const url = reader.result as string;
+                insertImage(url); 
+            };
+            reader.readAsDataURL(file);  
+        }
+    };
+
+    return (
+        <div>
+            <Button onMouseDown={(e) => e.preventDefault()}>
+                <Icon>image</Icon>
+                <input
+                    key={fileInputKey} 
+                    type="file"
+                    accept="image/*" 
+                    style={{ display: "none" }}
+                    onChange={handleImageUpload}
+                />
+            </Button>
+        </div>
+    );
+};
+
+
+
 const initialValue: Descendant[] = [
-    {
-        type: "paragraph",
-        children: [
-            { text: "This is editable " },
-            { text: "rich", bold: true },
-            { text: " text, " },
-            { text: "much", italic: true },
-            { text: " better than a " },
-            { text: "<textarea>", code: true },
-            { text: "!" },
-        ],
-    },
-    {
-        type: "paragraph",
-        children: [
-            {
-                text:
-                    "Since it's rich text, you can do things like turn a selection of text ",
-            },
-            { text: "bold", bold: true },
-            {
-                text:
-                    ", or add a semantically rendered block quote in the middle of the page, like this:",
-            },
-        ],
-    },
-    {
-        type: "block-quote",
-        children: [{ text: "A wise quote." }],
-    },
+   
     {
         type: "paragraph",
         children: [{ text: "Try it out for yourself!" }],
