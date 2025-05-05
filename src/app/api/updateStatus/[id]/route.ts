@@ -63,10 +63,34 @@ export async function PUT(req: Request) {
     if (status === "approved") {
       updates.approvedAt = new Date();
 
+      // const existingDue = await Dues.findOne({
+      //   userId: userToUpdate._id,
+      //   streetAddress: userToUpdate.streetAddress,
+      //   dueDate: { $gt: new Date() },
+      // });
+
+      // if (
+      //   !existingDue ||
+      //   existingDue.streetAddress !== userToUpdate.streetAddress
+      // ) {
+      //   const dueDate = new Date();
+      //   // dueDate.setFullYear(dueDate.getFullYear() + 1);
+      //   dueDate.setHours(dueDate.getHours() + 6);
+
+      //   await Dues.create({
+      //     userId: userToUpdate._id,
+      //     streetAddress: userToUpdate.streetAddress,
+      //     amount: 300,
+      //     dueDate,
+      //     paymentMethod: null,
+      //     autoPay: false,
+      //   });
+      // }
+
       const existingDue = await Dues.findOne({
         userId: userToUpdate._id,
         streetAddress: userToUpdate.streetAddress,
-        dueDate: { $gt: new Date() }, 
+        dueDate: { $gt: new Date() },
       });
 
       if (
@@ -74,8 +98,13 @@ export async function PUT(req: Request) {
         existingDue.streetAddress !== userToUpdate.streetAddress
       ) {
         const dueDate = new Date();
-        // dueDate.setFullYear(dueDate.getFullYear() + 1);
         dueDate.setHours(dueDate.getHours() + 6);
+
+        const latestPaidDue = await Dues.findOne({
+          userId: userToUpdate._id,
+          paid: true,
+          subscriptionId: { $exists: true, $ne: null },
+        }).sort({ createdAt: -1 });
 
         await Dues.create({
           userId: userToUpdate._id,
@@ -84,6 +113,7 @@ export async function PUT(req: Request) {
           dueDate,
           paymentMethod: null,
           autoPay: false,
+          subscriptionId: latestPaidDue?.subscriptionId || null, // 👈 copy it if exists
         });
       }
     }

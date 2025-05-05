@@ -43,15 +43,41 @@ export async function POST(req: Request) {
       );
     }
 
+    // const existingDue = await Dues.findOne({
+    //   userId: user._id,
+    //   dueDate: { $gt: new Date() },
+    // });
+
+    // if (!existingDue) {
+    //   const dueDate = new Date();
+    //   // dueDate.setFullYear(dueDate.getFullYear() + 1);
+    //   dueDate.setHours(dueDate.getHours() + 6);
+
+    //   await Dues.create({
+    //     userId: user._id,
+    //     streetAddress: user.streetAddress,
+    //     amount: 300,
+    //     dueDate,
+    //     paymentMethod: null,
+    //     autoPay: false,
+    //   });
+    // }
+
     const existingDue = await Dues.findOne({
       userId: user._id,
+      streetAddress: user.streetAddress,
       dueDate: { $gt: new Date() },
     });
 
-    if (!existingDue) {
+    if (!existingDue || existingDue.streetAddress !== user.streetAddress) {
       const dueDate = new Date();
-      // dueDate.setFullYear(dueDate.getFullYear() + 1);
       dueDate.setHours(dueDate.getHours() + 6);
+
+      const latestPaidDue = await Dues.findOne({
+        userId: user._id,
+        paid: true,
+        subscriptionId: { $exists: true, $ne: null },
+      }).sort({ createdAt: -1 });
 
       await Dues.create({
         userId: user._id,
@@ -60,6 +86,7 @@ export async function POST(req: Request) {
         dueDate,
         paymentMethod: null,
         autoPay: false,
+        subscriptionId: latestPaidDue?.subscriptionId || null, 
       });
     }
 
