@@ -10,7 +10,10 @@ export async function POST(req: Request) {
 
     const body = await req.json();
 
-    if (body.event_type === "BILLING.SUBSCRIPTION.PAYMENT.SUCCEEDED") {
+    if (
+      body.event_type === "BILLING.SUBSCRIPTION.PAYMENT.SUCCEEDED" ||
+      body.event_type === "PAYMENT.SALE.COMPLETED"
+    ) {
       const subscriptionId = body.resource.subscription_id;
       const transactionId = body.resource.id;
       const amount = body.resource.amount.value;

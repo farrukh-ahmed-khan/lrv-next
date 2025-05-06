@@ -202,8 +202,6 @@ const AddEvent = () => {
                                                 onSelectionChange={setRange}
                                                 onTextChange={setLastChange}
                                             />
-
-
                                         </Modal>
 
                                     </div>
