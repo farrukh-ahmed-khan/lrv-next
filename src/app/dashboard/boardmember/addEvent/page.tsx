@@ -18,6 +18,7 @@ import ProtectedPage from "@/components/ProtectedPage";
 import Navbar from "@/components/layout/dashboard/Navbar";
 import Sidebar from "@/components/layout/dashboard/Sidebar";
 import Editor from "@/components/ui/dashboard/editor";
+import axios from "axios";
 
 
 
@@ -39,14 +40,20 @@ const AddEvent = () => {
     const toggleNav = () => {
         setIsNavClosed(!isNavClosed);
     };
-
-    const [eventData, setEventData] = useState([]);
+    interface EventType {
+        _id: string;
+        eventname: string;
+        description?: string;
+        images?: string[];
+    }
+    const [eventData, setEventData] = useState<EventType[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [description, setDescription] = useState('');
     const [currentEventId, setCurrentEventId] = useState<string | null>(null);
     const [descModalOpen, setDescModalOpen] = useState(false);
     const [libraryModalOpen, setLibraryModalOpen] = useState(false);
     const [currentLibraryEventId, setCurrentLibraryEventId] = useState<string | null>(null);
+    const [fileList, setFileList] = useState<any[]>([]);
 
     const [range, setRange] = useState();
     const [lastChange, setLastChange] = useState();
@@ -61,11 +68,7 @@ const AddEvent = () => {
     const [form] = Form.useForm();
     const token = sessionStorage.getItem("token");
 
-    interface EventType {
-        _id: string;
-        eventname: string;
-        description?: string;
-    }
+
 
     const fetchEventData = async () => {
         if (!token) return;
@@ -132,6 +135,34 @@ const AddEvent = () => {
         }
     };
 
+
+    const deleteImage = async (eventId: string, imageUrl: string) => {
+        if (!token) {
+            toast.error("No token found.");
+            return;
+        }
+        try {
+            const response = await axios.delete('/api/events/deleteImages', {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+                data: {
+                    eventId,
+                    imageUrl,
+                },
+            });
+
+            if (response.status === 200) {
+                console.log('Image deleted successfully:', response.data);
+            } else {
+                console.error('Error deleting image:', response.data.message);
+            }
+        } catch (error) {
+            console.error('Error deleting image:', error);
+        }
+    };
+
+
     const columns: ColumnsType<EventType> = [
         { title: "Event Name", dataIndex: "eventname", key: "eventname" },
         {
@@ -167,7 +198,7 @@ const AddEvent = () => {
                     >
                         {record.description ? "Edit Description" : "Add Description"}
                     </Button>
-                    <Button
+                    {/* <Button
                         onClick={() => {
                             setCurrentLibraryEventId(record._id);
                             setLibraryModalOpen(true);
@@ -175,7 +206,31 @@ const AddEvent = () => {
                         style={{ marginRight: 8 }}
                     >
                         Add Library
+                    </Button> */}
+
+                    <Button
+                        onClick={() => {
+                            setCurrentLibraryEventId(record._id);
+                            setLibraryModalOpen(true);
+
+                            const event = eventData.find(event => event._id === record._id);
+                            if (event?.images?.length) {
+                                const mappedImages = event.images.map((imgUrl, index) => ({
+                                    uid: String(-index),
+                                    name: `image-${index}`,
+                                    status: 'done',
+                                    url: imgUrl,
+                                }));
+                                setFileList(mappedImages);
+                            } else {
+                                setFileList([]);
+                            }
+                        }}
+                        style={{ marginRight: 8 }}
+                    >
+                        Add Library
                     </Button>
+
                     <Button
                         danger
                         onClick={() => handleDeleteEvent(record._id)}
@@ -265,14 +320,7 @@ const AddEvent = () => {
                                                 onTextChange={setLastChange}
                                             />
                                         </Modal>
-
-                                        <Modal
-                                            title="Upload Event Images"
-                                            open={libraryModalOpen}
-                                            onCancel={() => setLibraryModalOpen(false)}
-                                            footer={null}
-                                        >
-                                            <Upload
+                                        {/* <Upload
                                                 listType="picture-card"
                                                 showUploadList={true}
                                                 multiple
@@ -285,8 +333,68 @@ const AddEvent = () => {
                                                     <PlusOutlined />
                                                     <div style={{ marginTop: 8 }}>Upload</div>
                                                 </div>
+                                            </Upload> */}
+                                        {/* <Modal
+                                            title="Upload Event Images"
+                                            open={libraryModalOpen}
+                                            onCancel={() => setLibraryModalOpen(false)}
+                                            footer={null}
+                                        >
+                                            
+
+                                            <Upload
+                                                listType="picture-card"
+                                                showUploadList={true}
+                                                multiple
+                                                fileList={fileList}
+                                                onChange={({ fileList: newFileList }) => setFileList(newFileList)}
+                                                beforeUpload={(file) => {
+                                                    handleUpload(file);
+                                                    return false; // Prevent automatic upload
+                                                }}
+                                            >
+                                                <div>
+                                                    <PlusOutlined />
+                                                    <div style={{ marginTop: 8 }}>Upload</div>
+                                                </div>
+                                            </Upload>
+
+                                        </Modal> */}
+
+                                        <Modal
+                                            title="Upload Event Images"
+                                            open={libraryModalOpen}
+                                            onCancel={() => {
+                                                setLibraryModalOpen(false);
+                                                setFileList([]);
+                                            }}
+                                            footer={null}
+                                        >
+                                            <Upload
+                                                listType="picture-card"
+                                                fileList={fileList}
+                                                customRequest={({ file, onSuccess, onError }) => {
+                                                    handleUpload(file as File)
+                                                        .then(() => onSuccess && onSuccess("ok"))
+                                                        .catch(onError);
+                                                }}
+                                                onRemove={async (file) => {
+                                                    if (!currentLibraryEventId || !file.url) return;
+                                                    await deleteImage(currentLibraryEventId, file.url);
+                                                    setFileList((prev) => prev.filter((f) => f.uid !== file.uid));
+                                                }}
+                                                showUploadList={{ showRemoveIcon: true }}
+                                                beforeUpload={() => false} // prevent automatic upload
+                                            >
+                                                {fileList.length >= 8 ? null : (
+                                                    <div>
+                                                        <PlusOutlined />
+                                                        <div style={{ marginTop: 8 }}>Upload</div>
+                                                    </div>
+                                                )}
                                             </Upload>
                                         </Modal>
+
 
 
                                     </div>

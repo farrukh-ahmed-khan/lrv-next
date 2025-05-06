@@ -62,3 +62,5 @@ export const uploadImageToEvent = async (
   );
   return response.data;
 };
+
+
