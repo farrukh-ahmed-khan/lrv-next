@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import reg from "../../assets/images/reg-left.png";
 
 
+
+
 import { toast } from "react-hot-toast";
 import InnerBanner from "@/components/ui/InnerBanner";
 import Header from "@/components/layout/Navbar";
@@ -44,7 +46,7 @@ const Login = () => {
 
             sessionStorage.setItem("user", JSON.stringify(data.user));
             sessionStorage.setItem("token", (data.token));
-
+            window.location.reload()
 
             if (data.user.role === "admin") {
                 router.push("/admin/dashboard")
