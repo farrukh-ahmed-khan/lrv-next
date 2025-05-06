@@ -7,8 +7,12 @@ import Quill from 'quill';
 
 const Delta = Quill.import('delta');
 import { Table, Button, Modal, Form, Input } from "antd";
+import { Upload } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
+
+
 import toast from "react-hot-toast";
-import { getEvents, createEvent, addEventDescription } from "@/lib/EventsApi/api"; // you'll define these
+import { getEvents, createEvent, addEventDescription, deleteEvent, uploadImageToEvent } from "@/lib/EventsApi/api"; // you'll define these
 import type { ColumnsType } from "antd/es/table";
 import ProtectedPage from "@/components/ProtectedPage";
 import Navbar from "@/components/layout/dashboard/Navbar";
@@ -41,6 +45,8 @@ const AddEvent = () => {
     const [description, setDescription] = useState('');
     const [currentEventId, setCurrentEventId] = useState<string | null>(null);
     const [descModalOpen, setDescModalOpen] = useState(false);
+    const [libraryModalOpen, setLibraryModalOpen] = useState(false);
+    const [currentLibraryEventId, setCurrentLibraryEventId] = useState<string | null>(null);
 
     const [range, setRange] = useState();
     const [lastChange, setLastChange] = useState();
@@ -91,9 +97,40 @@ const AddEvent = () => {
         }
     };
 
+    const handleDeleteEvent = async (eventId: string) => {
+        if (!token) {
+            toast.error("No token found.");
+            return;
+        }
+
+        try {
+            await deleteEvent(eventId, token);
+            toast.success("Event deleted successfully!");
+            fetchEventData();
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to delete event.");
+        }
+    };
 
 
+    const handleUpload = async (file: File) => {
+        if (!currentLibraryEventId || !token) return;
 
+        const formData = new FormData();
+        formData.append("eventId", currentLibraryEventId);
+        formData.append("image", file);
+
+        try {
+            await uploadImageToEvent(currentLibraryEventId, formData, token);
+            toast.success("Image uploaded successfully!");
+            setLibraryModalOpen(false);
+            fetchEventData();
+        } catch (error) {
+            console.error(error);
+            toast.error("Image upload failed.");
+        }
+    };
 
     const columns: ColumnsType<EventType> = [
         { title: "Event Name", dataIndex: "eventname", key: "eventname" },
@@ -112,16 +149,41 @@ const AddEvent = () => {
             title: "Actions",
             key: "actions",
             render: (_, record) => (
-                <Button
-                    onClick={() => {
-                        setCurrentEventId(record._id); 
-                        setDescription(record.description || ""); 
-                        setDescModalOpen(true); 
-                    }}
-                    style={{ marginRight: 8 }}
-                >
-                    {record.description ? "Edit Description" : "Add Description"}
-                </Button>
+                <>
+                    <Button
+                        onClick={() => {
+                            setCurrentEventId(record._id);
+                            setDescription(record.description || "");
+                            setDescModalOpen(true);
+                            setTimeout(() => {
+                                if (quillRef.current) {
+                                    const quill = quillRef.current;
+                                    const delta = quill.clipboard.convert({ html: record.description || "" });
+                                    quill.setContents(delta, 'silent');
+                                }
+                            }, 0);
+                        }}
+                        style={{ marginRight: 8 }}
+                    >
+                        {record.description ? "Edit Description" : "Add Description"}
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            setCurrentLibraryEventId(record._id);
+                            setLibraryModalOpen(true);
+                        }}
+                        style={{ marginRight: 8 }}
+                    >
+                        Add Library
+                    </Button>
+                    <Button
+                        danger
+                        onClick={() => handleDeleteEvent(record._id)}
+                    >
+                        Delete
+                    </Button>
+                </>
+
             ),
         },
     ];
@@ -203,6 +265,29 @@ const AddEvent = () => {
                                                 onTextChange={setLastChange}
                                             />
                                         </Modal>
+
+                                        <Modal
+                                            title="Upload Event Images"
+                                            open={libraryModalOpen}
+                                            onCancel={() => setLibraryModalOpen(false)}
+                                            footer={null}
+                                        >
+                                            <Upload
+                                                listType="picture-card"
+                                                showUploadList={true}
+                                                multiple
+                                                beforeUpload={(file) => {
+                                                    handleUpload(file); // loop in handleUpload if needed
+                                                    return false;
+                                                }}
+                                            >
+                                                <div>
+                                                    <PlusOutlined />
+                                                    <div style={{ marginTop: 8 }}>Upload</div>
+                                                </div>
+                                            </Upload>
+                                        </Modal>
+
 
                                     </div>
                                 </>
