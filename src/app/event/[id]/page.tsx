@@ -137,7 +137,7 @@ const CarShow = () => {
                                         navigation
                                         thumbs={{ swiper: marchThumbs }}
                                         className="main-slider"
-                                        style={{ width: "100%", height: 300 }}
+                                        style={{ width: "100%", height: 500 }}
                                     >
                                         {eventData?.images.map((src, index) => (
                                             <SwiperSlide key={index}>
@@ -149,13 +149,13 @@ const CarShow = () => {
                                         onSwiper={setMarchThumbs}
                                         modules={[Thumbs]}
                                         spaceBetween={5}
-                                        slidesPerView={4}
+                                        slidesPerView={10}
                                         className="thumb-slider"
                                         watchSlidesProgress
                                     >
                                         {eventData?.images.map((src, index) => (
                                             <SwiperSlide key={index}>
-                                                <img src={src} alt={`March thumb ${index}`} height={40} style={{ objectFit: 'cover', width: "100%", }} />
+                                                <img src={src} alt={`March thumb ${index}`} height={40} style={{ objectFit: 'contain', width: "100%", }} />
                                             </SwiperSlide>
                                         ))}
                                     </Swiper>
