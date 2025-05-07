@@ -1,6 +1,8 @@
 "use client";
 import { useEffect } from "react";
 import axios from "axios";
+import { useRouter } from 'next/navigation';
+import toast from "react-hot-toast";
 
 declare global {
   interface Window {
@@ -16,6 +18,10 @@ export default function PayPalOneTimeButton({
   amount: number;
   dueId: string;
 }) {
+
+
+  const router = useRouter()
+
   useEffect(() => {
     const containerId = `paypal-button-${dueId}`;
     const container = document.getElementById(containerId);
@@ -48,13 +54,16 @@ export default function PayPalOneTimeButton({
               },
               {
                 headers: {
-                  Authorization: `Bearer ${sessionStorage.getItem("token")}` },
+                  Authorization: `Bearer ${sessionStorage.getItem("token")}`
+                },
               }
             );
 
-            alert("Payment successful!");
-          } catch (error) {
-            console.error("Payment failed", error);
+            toast.success("Payment Success");
+            router.push(`/`)
+            window.location.reload()
+          } catch (error: any) {
+            toast.error("Payment failed", error);
             alert("Payment failed");
           }
         },
