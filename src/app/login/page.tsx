@@ -55,7 +55,7 @@ const Login = () => {
             } else if (data.user.role === "home member") {
                 router.push("/dashboard/homemember")
             } else if (data.user.role === "board member") {
-                router.push("/dashboard/boardmember/homeAdmins")
+                router.push("/dashboard/boardmember/")
             } else {
                 router.push('/');
             }
@@ -83,7 +83,7 @@ const Login = () => {
                     router.push('/dashboard/homemember');
                     break;
                 case 'board member':
-                    router.push('/dashboard/boardmember/homeAdmins');
+                    router.push('/dashboard/boardmember/');
                     break;
                 default:
                     router.push('/');
