@@ -71,9 +71,8 @@ const AddEvent = () => {
 
 
     const fetchEventData = async () => {
-        if (!token) return;
         try {
-            const data = await getEvents(token);
+            const data = await getEvents();
             console.log(data)
             setEventData(data || []);
 

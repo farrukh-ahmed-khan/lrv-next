@@ -1,9 +1,9 @@
 import API from "../axios";
 
 
-export const getEvents = async (token: string) => {
+export const getEvents = async () => {
     const res = await API.get("/events/getAll", {
-        headers: { Authorization: `Bearer ${token}` }
+        // headers: { Authorization: `Bearer ${token}` }
     });
     return res.data;
 };

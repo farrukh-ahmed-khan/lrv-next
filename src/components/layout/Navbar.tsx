@@ -4,8 +4,18 @@ import logo from "@/assets/images/logo.png"
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { getEvents } from "@/lib/EventsApi/api";
+import toast from "react-hot-toast";
+
+interface EventType {
+  _id: string;
+  eventname: string;
+  description?: string;
+  images?: string[];
+}
 
 const Header = () => {
+  const [eventData, setEventData] = useState<EventType[]>([]);
   const local_token = sessionStorage.getItem("token");
   const router = useRouter();
   const navbardata = [
@@ -60,31 +70,37 @@ const Header = () => {
       title: "Community",
       link: "/community",
       submenu: [
-        {
-          title: "Neighborhood Watch",
-          link: "/neighborhood-watch",
-        },
-        {
-          title: "City of Rulling Hills Estate",
-          link: "/city-of-rolling-hills-estates",
-        },
-        {
-          title: "Nextdoor LRV Group",
-          link: "/nextdoor-lrv-group",
-        },
-        
-        {
-          title: "Christmas Party",
-          link: "/annual-lrv-christmas-party",
-        },
-        {
-          title: "Halloween Party",
-          link: "/halloween",
-        },
-        {
-          title: "Car Show",
-          link: "/car-show",
-        },
+        // {
+        //   title: "Neighborhood Watch",
+        //   link: "/neighborhood-watch",
+        // },
+        // {
+        //   title: "City of Rulling Hills Estate",
+        //   link: "/city-of-rolling-hills-estates",
+        // },
+        // {
+        //   title: "Nextdoor LRV Group",
+        //   link: "/nextdoor-lrv-group",
+        // },
+
+        // {
+        //   title: "Christmas Party",
+        //   link: "/annual-lrv-christmas-party",
+        // },
+        // {
+        //   title: "Halloween Party",
+        //   link: "/halloween",
+        // },
+        // {
+        //   title: "Car Show",
+        //   link: "/car-show",
+        // },
+
+        ...eventData.map((event) => ({
+          title: event.eventname,
+          link: `/event/${event._id}`,  
+        })),
+
       ],
       hasSubmenu: true,
     },
@@ -119,19 +135,18 @@ const Header = () => {
   ];
 
 
-  //   const toggleDrawer = (open) => () => {
-  //     setDrawerOpen(open);
-  //   };
 
   const [menuOpen, setMenuOpen] = useState(false);
+
+  
+  const token = sessionStorage.getItem("token");
+
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
     document.body.classList.toggle("ovr-hiddn");
   };
-  //   const toggleCollapse = () => {
-  //     setCollapsed(!collapsed);
-  //   };
+
 
   const handleLogout = () => {
     sessionStorage.removeItem("token");
@@ -140,11 +155,29 @@ const Header = () => {
     window.location.reload()
   };
 
+
+  const fetchEventData = async () => {
+    try {
+      const data = await getEvents();
+      console.log(data)
+      setEventData(data || []);
+
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to fetch events.");
+    }
+  };
+
+
   useEffect(() => {
     return () => {
       document.body.classList.remove("ovr-hiddn");
       document.body.classList.remove("overflw");
     };
+  }, []);
+
+  useEffect(() => {
+    fetchEventData();
   }, []);
 
   return (
@@ -221,13 +254,6 @@ const Header = () => {
                           <div></div>
                         </>
                       )}
-                      {/* <div>
-                        <i className="fa fa-user user-icon"></i>
-                        <Link to="/login">Login</Link>
-                      </div>
-                      <div>
-                        <Link to="/register">Register</Link>
-                      </div> */}
                     </div>
                   </div>
                 </div>
