@@ -60,6 +60,10 @@ const AddEvent = () => {
     const [readOnly, setReadOnly] = useState(false);
 
 
+    // loading states
+    const [addingEvent, setAddingEvent] = useState(false);
+    const [deletingEventId, setDeletingEventId] = useState<string | null>(null);
+    const [descModalLoading, setDescModalLoading] = useState(false);
 
     const quillRef = useRef<Quill | null>(null);
 
@@ -87,6 +91,7 @@ const AddEvent = () => {
             console.error("No token found.");
             return;
         }
+        setAddingEvent(true);
         try {
             await createEvent(values.eventname, token);
             toast.success("Event added!");
@@ -96,6 +101,8 @@ const AddEvent = () => {
         } catch (error) {
             console.error(error);
             toast.error("Failed to add event.");
+        } finally {
+            setAddingEvent(false);
         }
     };
 
@@ -104,6 +111,7 @@ const AddEvent = () => {
             toast.error("No token found.");
             return;
         }
+        setDeletingEventId(eventId);
 
         try {
             await deleteEvent(eventId, token);
@@ -112,13 +120,14 @@ const AddEvent = () => {
         } catch (error) {
             console.error(error);
             toast.error("Failed to delete event.");
+        } finally {
+            setDeletingEventId(null);
         }
     };
 
 
     const handleUpload = async (file: File) => {
         if (!currentLibraryEventId || !token) return;
-
         const formData = new FormData();
         formData.append("eventId", currentLibraryEventId);
         formData.append("image", file);
@@ -233,6 +242,8 @@ const AddEvent = () => {
                     <Button
                         danger
                         onClick={() => handleDeleteEvent(record._id)}
+                        loading={deletingEventId === record._id}
+                        disabled={deletingEventId === record._id}
                     >
                         Delete
                     </Button>
@@ -288,7 +299,7 @@ const AddEvent = () => {
                                                 >
                                                     <Input />
                                                 </Form.Item>
-                                                <Button type="primary" htmlType="submit">Submit</Button>
+                                                <Button type="primary" htmlType="submit" loading={addingEvent}>Submit</Button>
                                             </Form>
                                         </Modal>
 
@@ -296,10 +307,13 @@ const AddEvent = () => {
                                             title="Add Description"
                                             open={descModalOpen}
                                             onCancel={() => setDescModalOpen(false)}
+                                            confirmLoading={descModalLoading}
                                             onOk={async () => {
                                                 if (!currentEventId || !token || !quillRef.current) return;
+                                                setDescModalLoading(true);
                                                 const quill = quillRef.current;
                                                 const htmlDescription = quill.root.innerHTML;
+
                                                 try {
                                                     await addEventDescription(currentEventId, htmlDescription, token);
                                                     toast.success("Description added!");
@@ -308,6 +322,8 @@ const AddEvent = () => {
                                                 } catch (error) {
                                                     console.error(error);
                                                     toast.error("Failed to add description.");
+                                                } finally {
+                                                    setDescModalLoading(false); 
                                                 }
                                             }}
                                         >
@@ -319,46 +335,6 @@ const AddEvent = () => {
                                                 onTextChange={setLastChange}
                                             />
                                         </Modal>
-                                        {/* <Upload
-                                                listType="picture-card"
-                                                showUploadList={true}
-                                                multiple
-                                                beforeUpload={(file) => {
-                                                    handleUpload(file); // loop in handleUpload if needed
-                                                    return false;
-                                                }}
-                                            >
-                                                <div>
-                                                    <PlusOutlined />
-                                                    <div style={{ marginTop: 8 }}>Upload</div>
-                                                </div>
-                                            </Upload> */}
-                                        {/* <Modal
-                                            title="Upload Event Images"
-                                            open={libraryModalOpen}
-                                            onCancel={() => setLibraryModalOpen(false)}
-                                            footer={null}
-                                        >
-                                            
-
-                                            <Upload
-                                                listType="picture-card"
-                                                showUploadList={true}
-                                                multiple
-                                                fileList={fileList}
-                                                onChange={({ fileList: newFileList }) => setFileList(newFileList)}
-                                                beforeUpload={(file) => {
-                                                    handleUpload(file);
-                                                    return false; // Prevent automatic upload
-                                                }}
-                                            >
-                                                <div>
-                                                    <PlusOutlined />
-                                                    <div style={{ marginTop: 8 }}>Upload</div>
-                                                </div>
-                                            </Upload>
-
-                                        </Modal> */}
 
                                         <Modal
                                             title="Upload Event Images"
@@ -383,14 +359,19 @@ const AddEvent = () => {
                                                     setFileList((prev) => prev.filter((f) => f.uid !== file.uid));
                                                 }}
                                                 showUploadList={{ showRemoveIcon: true }}
-                                                beforeUpload={() => false} // prevent automatic upload
+                                                multiple
+                                                // beforeUpload={() => false}
+                                                beforeUpload={(file) => {
+                                                    handleUpload(file);
+                                                    return false; 
+                                                }} 
                                             >
-                                                {fileList.length >= 8 ? null : (
+                                                {/* {fileList.length >= 8 ? null : ( */}
                                                     <div>
                                                         <PlusOutlined />
                                                         <div style={{ marginTop: 8 }}>Upload</div>
                                                     </div>
-                                                )}
+                                                {/* )} */}
                                             </Upload>
                                         </Modal>
 

@@ -28,6 +28,7 @@ import elevenImg from "@/assets/images/carshow/11.jpg";
 import twelveImg from "@/assets/images/carshow/12.jpg";
 import { getEvents } from '@/lib/EventsApi/api';
 import toast from 'react-hot-toast';
+import { FaArrowLeft, FaArrowRight, FaTimes } from 'react-icons/fa';
 
 
 interface EventType {
@@ -50,10 +51,11 @@ const CarShow = () => {
     const [septThumbs, setSeptThumbs] = useState<SwiperClass | null>(null);
 
 
+
     const fetchEventData = async () => {
         try {
-            const allEvents = await getEvents(); 
-            const matchedEvent = allEvents?.find((e: any) => e._id === eventId); 
+            const allEvents = await getEvents();
+            const matchedEvent = allEvents?.find((e: any) => e._id === eventId);
             if (matchedEvent) {
                 setEventData(matchedEvent);
             } else {
@@ -70,47 +72,64 @@ const CarShow = () => {
         fetchEventData();
     }, []);
 
-    console.log(eventData?.description)
-  
+
+
+
+    const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+    const [currentIndex, setCurrentIndex] = useState<number | null>(null);
+
+
+
+    const closeImage = () => {
+        setSelectedImage(null);
+        setCurrentIndex(null);
+    };
+
+    const openImage = (index: number) => {
+        const images = eventData?.images ?? [];
+        setSelectedImage(images[index]);
+        setCurrentIndex(index);
+    };
+
+    const prevImage = () => {
+        if (currentIndex !== null && currentIndex > 0) {
+            const images = eventData?.images ?? [];
+            setCurrentIndex(currentIndex - 1);
+            setSelectedImage(images[currentIndex - 1]);
+        }
+    };
+
+    const nextImage = () => {
+        const images = eventData?.images ?? [];
+        if (currentIndex !== null && currentIndex < images.length - 1) {
+            setCurrentIndex(currentIndex + 1);
+            setSelectedImage(images[currentIndex + 1]);
+        }
+    };
+
+
+
+
     return (
         <ProtectedPage allowedRoles={["home owner", "home member", "board member", "admin"]}>
             <div className="carShow-wrapper">
                 <Header />
-                <InnerBanner title="Car Show" />
+                {eventData?.eventname && (
+                    <InnerBanner title={eventData?.eventname} />
+                )}
                 <div className="container my-5">
-                    <div className="row">
-                        <div className="top-img-wrap">
-                            <Image src={topImage} alt="topImage" />
-                        </div>
-                    </div>
+                    
                     <div className="row">
                         <div className="content">
                             {eventData?.description && (
                                 <div dangerouslySetInnerHTML={{ __html: eventData.description }} />
                             )}
-
-                            {/* <p>
-                                Open to all members of the LRV Homeowners Association, you are cordially invited to exhibit in or
-                                observe the Annual LRV Car Show, currently running twice a year, March and September. Check the
-                                LRV Events Calendar for specific dates.
-                            </p> */}
-                            {/* <p>
-                                This neighborhood event isn’t “just a Car Show”, at its heart, it’s really a
-                                Social Event for the LRV neighborhood and nearby neighbors!
-                                Come out, meet and greet your LRV neighbors, enjoy the cars,
-                                and soak in some complimentary coffee and donut holes!
-                            </p>
-                            <p>
-                                There’s no cost to show off your special ride, nor to stop by to see and learn about all the ‘car stories’.
-                            </p>
-                            <p>
-                                We welcome your attendance or participation!
-                            </p> */}
                         </div>
                     </div>
-                    <div className="row">
+                    {eventData?.eventname == "Car Show" && eventData?.images && (
                         <div className="row">
-                            <div className="col-lg-6">
+                            <div className="col-lg-12">
                                 <div className='sliderr-wrap'>
                                     <h2 style={{ textAlign: 'center' }}>March 2023</h2>
                                     <Swiper
@@ -120,7 +139,7 @@ const CarShow = () => {
                                         className="main-slider"
                                         style={{ width: "100%", height: 300 }}
                                     >
-                                        {marchImages.map((src, index) => (
+                                        {eventData?.images.map((src, index) => (
                                             <SwiperSlide key={index}>
                                                 <Image src={src} alt={`March ${index}`} fill style={{ objectFit: 'cover' }} />
                                             </SwiperSlide>
@@ -134,50 +153,72 @@ const CarShow = () => {
                                         className="thumb-slider"
                                         watchSlidesProgress
                                     >
-                                        {marchImages.map((src, index) => (
+                                        {eventData?.images.map((src, index) => (
                                             <SwiperSlide key={index}>
-                                                <Image src={src} alt={`March thumb ${index}`} height={40} style={{ objectFit: 'cover', width: "100%", }} />
-                                            </SwiperSlide>
-                                        ))}
-                                    </Swiper>
-                                </div>
-                            </div>
-
-                            <div className="col-lg-6">
-                                <div className='sliderr-wrap'>
-                                    <h2 style={{ textAlign: 'center' }}>Sept. 2022</h2>
-                                    <Swiper
-                                        modules={[Navigation, Thumbs]}
-                                        navigation
-                                        thumbs={{ swiper: septThumbs }}
-                                        className="main-slider"
-                                        style={{ width: "100%", height: 300 }}
-                                    >
-                                        {septImages.map((src, index) => (
-                                            <SwiperSlide key={index}>
-                                                <Image src={src} alt={`Sept ${index}`} fill style={{ objectFit: 'cover' }} />
-                                            </SwiperSlide>
-                                        ))}
-                                    </Swiper>
-                                    <Swiper
-                                        onSwiper={setSeptThumbs}
-                                        modules={[Thumbs]}
-                                        spaceBetween={5}
-                                        slidesPerView={4}
-                                        className="thumb-slider"
-                                        watchSlidesProgress
-
-                                    >
-                                        {septImages.map((src, index) => (
-                                            <SwiperSlide key={index}>
-                                                <Image src={src} alt={`Sept thumb ${index}`} height={40} style={{ objectFit: 'cover', width: "100%", }} />
+                                                <img src={src} alt={`March thumb ${index}`} height={40} style={{ objectFit: 'cover', width: "100%", }} />
                                             </SwiperSlide>
                                         ))}
                                     </Swiper>
                                 </div>
                             </div>
                         </div>
-                    </div>
+
+                    )}
+
+                    {eventData?.eventname != "Car Show" && eventData?.images && (
+                        <section className="gallery-sec" style={{ padding: "0px" }}>
+                            <div className="gallery">
+                                <div className="gallery-grid">
+                                    <div className="container">
+
+                                        <div className="row">
+                                            {eventData?.images.map((img, index) => (
+                                                <div className="col-lg-3" key={index}>
+                                                    <img
+                                                        key={index}
+                                                        src={img}
+                                                        alt={`Gallery ${index}`}
+                                                        onClick={() => openImage(index)}
+                                                        style={{ height: "200px" }}
+                                                    />
+                                                </div>
+                                            ))}
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {selectedImage && (
+                                    <div className="lightbox">
+                                        <span className="close-btn" onClick={closeImage}>
+                                            <FaTimes />
+                                        </span>
+                                        <img
+                                            src={selectedImage}
+                                            alt="Large Preview"
+                                            className="lightbox-image"
+                                        />
+                                        <button
+                                            className="prev-btn"
+                                            onClick={prevImage}
+                                            disabled={currentIndex === 0}
+                                        >
+                                            <FaArrowLeft />
+                                        </button>
+                                        <button
+                                            className="next-btn"
+                                            onClick={nextImage}
+                                            disabled={currentIndex === eventData?.images?.length - 1}
+                                        >
+                                            <FaArrowRight />
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        </section>
+
+                    )}
                 </div>
                 <Footer />
             </div>

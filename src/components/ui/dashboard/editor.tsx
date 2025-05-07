@@ -13,11 +13,7 @@ import Delta from 'quill-delta';
 
 
 
-// Optional: Image Resize (uncomment if needed)
-// import ImageResize from 'quill-image-resize-module';
-// Quill.register('modules/imageResize', ImageResize);
 
-// Optional: Add more formats or custom modules as needed
 
 type EditorProps = {
     readOnly?: boolean;
@@ -48,14 +44,36 @@ const Editor = forwardRef<Quill | null, EditorProps>(
 
             const quill = new Quill(editorContainer, {
                 theme: 'snow',
+                // modules: {
+                //     toolbar: [
+                //         [{ header: [1, 2, false] }],
+                //         ['bold', 'italic', 'underline'],
+                //         ['image', 'code-block'],
+                //     ],
+                // },
+
                 modules: {
-                    toolbar: [
-                        [{ header: [1, 2, false] }],
-                        ['bold', 'italic', 'underline'],
-                        ['image', 'code-block'],
-                    ],
-                    // imageResize: {} // if using image resize
-                },
+                    toolbar: {
+                        container: [
+                            [{ header: [1, 2, false] }],
+                            ['bold', 'italic', 'underline', 'link'],
+                            ['image', 'code-block'],
+                            // ['custom-button'], 
+                        ],
+                        // handlers: {
+                        //     'custom-button': function (this: Quill) {
+                        //         const url = prompt('Enter button URL:');
+                        //         if (url) {
+                        //             const range = this.getSelection();
+                        //             if (range) {
+                        //                 this.insertEmbed(range.index, 'buttonLink', url, 'user');
+                        //             }
+                        //         }
+                        //     },
+                        // },
+                    },
+                }
+
             });
 
             if (typeof ref === 'function') {
@@ -63,7 +81,7 @@ const Editor = forwardRef<Quill | null, EditorProps>(
             } else if (ref && typeof ref === 'object') {
                 (ref as React.MutableRefObject<Quill | null>).current = quill;
             }
-            
+
 
 
             if (defaultValueRef.current) {
