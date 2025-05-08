@@ -16,7 +16,7 @@ export async function POST(req: Request) {
     }
 
     const token = crypto.randomBytes(32).toString("hex");
-    const expiry = new Date(Date.now() + 3600000); 
+    const expiry = new Date(Date.now() + 3600000);
 
     user.resetToken = token;
     user.resetTokenExpiry = expiry;
@@ -24,11 +24,20 @@ export async function POST(req: Request) {
 
     const resetLink = `${process.env.NEXT_PUBLIC_BASE_URL}/ResetPassword?token=${token}`;
 
-    await sendEmail(
-      user.email,
-      "Reset Your Password",
-      `Reset here: ${resetLink}`
-    );
+    // await sendEmail(
+    //   user.email,
+    //   "Reset Your Password",
+    //   `Reset here: ${resetLink}`
+    // );
+
+    const emailHTML = `
+  <p>You requested a password reset.</p>
+  <p>Click the link below to reset your password:</p>
+  <a href="${resetLink}" target="_blank" style="color: #007bff;">Reset Your Password</a>
+  <p>If you did not request this, please ignore this email.</p>
+`;
+
+    await sendEmail(user.email, "Reset Your Password", emailHTML);
 
     return NextResponse.json({ message: "Reset email sent!" });
   } catch (error: any) {
