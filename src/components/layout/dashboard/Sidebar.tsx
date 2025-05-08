@@ -9,6 +9,7 @@ import LocalAtmIcon from "@mui/icons-material/LocalAtm";
 
 import {
     AddCard,
+    Email,
     MeetingRoom,
     Person,
     VerifiedUserRounded,
@@ -88,6 +89,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavClosed }) => {
                 title: "Add Events",
                 icon: <AddCard />,
                 link: "/dashboard/boardmember/addEvent",
+            },
+            {
+                title: "Send Email",
+                icon: <Email />,
+                link: "/dashboard/boardmember/sendMail",
             },
         ];
         return (

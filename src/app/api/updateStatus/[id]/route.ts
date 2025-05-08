@@ -63,29 +63,7 @@ export async function PUT(req: Request) {
     if (status === "approved") {
       updates.approvedAt = new Date();
 
-      // const existingDue = await Dues.findOne({
-      //   userId: userToUpdate._id,
-      //   streetAddress: userToUpdate.streetAddress,
-      //   dueDate: { $gt: new Date() },
-      // });
-
-      // if (
-      //   !existingDue ||
-      //   existingDue.streetAddress !== userToUpdate.streetAddress
-      // ) {
-      //   const dueDate = new Date();
-      //   // dueDate.setFullYear(dueDate.getFullYear() + 1);
-      //   dueDate.setHours(dueDate.getHours() + 6);
-
-      //   await Dues.create({
-      //     userId: userToUpdate._id,
-      //     streetAddress: userToUpdate.streetAddress,
-      //     amount: 300,
-      //     dueDate,
-      //     paymentMethod: null,
-      //     autoPay: false,
-      //   });
-      // }
+      
 
       const existingDue = await Dues.findOne({
         userId: userToUpdate._id,
@@ -122,11 +100,7 @@ export async function PUT(req: Request) {
       new: true,
     }).select("-password");
 
-    // const updatedUser = await User.findByIdAndUpdate(
-    //   id,
-    //   { status },
-    //   { new: true }
-    // ).select("-password");
+  
 
     return NextResponse.json(
       { message: "User status updated", user: updatedUser },
