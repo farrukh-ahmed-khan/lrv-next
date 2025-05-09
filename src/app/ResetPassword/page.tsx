@@ -4,6 +4,7 @@ import Header from "@/components/layout/Navbar";
 import InnerBanner from "@/components/ui/InnerBanner";
 import { resetPassword } from "@/lib/UsersApi/api";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
@@ -11,6 +12,7 @@ const ResetPassword = () => {
     const [loading, setLoading] = useState(false);
     const [password, setPassword] = useState("");
     const token = new URLSearchParams(window.location.search).get("token");
+    const router = useRouter();
 
     const handleReset = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -22,7 +24,7 @@ const ResetPassword = () => {
         try {
             const data = await resetPassword({ token, password });
             toast.success(data.message);
-        } catch (error: unknown) {
+        } catch (error: unknown) { 
             if (error instanceof Error) {
                 toast.error(error.message);
             } else {
@@ -31,6 +33,7 @@ const ResetPassword = () => {
         }
         finally {
             setLoading(false);
+            router.push("/login")
         }
     };
 

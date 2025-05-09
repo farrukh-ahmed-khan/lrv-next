@@ -13,6 +13,17 @@ import { addMember, getMembers } from "@/lib/UsersApi/api";
 
 const { Option } = Select;
 
+interface User {
+    _id: string;
+    firstname: string;
+    lastname: string;
+    email: string;
+    phoneNumber: string;
+    streetAddress: string;
+    status: string;
+    role: string;
+}
+
 const HouseMembers = () => {
     const [form] = Form.useForm();
     const [modalVisible, setModalVisible] = useState(false);
@@ -23,17 +34,25 @@ const HouseMembers = () => {
     const token = sessionStorage.getItem("token")
 
     const [userData, setUserData] = useState<any>([]);
+    const [editingMember, setEditingMember] = useState<any>(null);
+    const [isEditing, setIsEditing] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    interface User {
-        _id: string;
-        firstname: string;
-        lastname: string;
-        email: string;
-        phoneNumber: string;
-        streetAddress: string;
-        status: string;
-        role: string;
-    }
+
+
+    const handleEdit = (member: any) => {
+        setEditingMember(member);
+        setIsEditing(true);
+        setModalVisible(true);
+        form.setFieldsValue({
+            firstname: member.firstname,
+            lastname: member.lastname,
+            email: member.email,
+            phoneNumber: member.phonenumber,
+        });
+    };
+
+
 
     const fetchUserData = async () => {
         if (!token) {
@@ -61,47 +80,52 @@ const HouseMembers = () => {
         }
     };
 
-    const handleAddMember = async (values: any) => {
 
+
+    const handleAddMember = async (values: any) => {
         if (!token) {
             console.error("No token found.");
             return;
         }
+
+        setIsSubmitting(true);
 
         try {
             const payload = {
                 ...values,
                 role: "home member",
                 ownerId: user.id,
-                streetAddress: user.streetAddress
+                streetAddress: user.streetAddress,
             };
 
-            addMember(payload, token)
+            if (isEditing && editingMember) {
+                await axios.put(
+                    `/api/user/updateMember/${editingMember.id}`,
+                    payload,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+                toast.success("Member updated successfully!");
+            } else {
+                await addMember(payload, token);
+                toast.success("Member added successfully!");
+            }
 
-
-            // await axios.post(
-            //     "http://localhost:3000/api/add-member",
-            //     payload,
-            //     {
-            //         headers: {
-            //             "Content-Type": "application/json",
-            //             Authorization: `Bearer ${token}`,
-            //         },
-            //     }
-            // );
-            fetchUserData()
-            toast.success("Member added successfully!");
+            fetchUserData();
             setModalVisible(false);
             form.resetFields();
-
+            setIsEditing(false);
+            setEditingMember(null);
         } catch (error: any) {
             console.error(error);
-            toast.error(
-                error?.response?.data?.message || "Something went wrong!"
-            );
+            toast.error(error?.response?.data?.message || "Something went wrong!");
+        } finally {
+            setIsSubmitting(false); // End loading
         }
     };
-
 
 
 
@@ -137,6 +161,16 @@ const HouseMembers = () => {
             dataIndex: "phonenumber",
             key: "phonenumber",
         },
+        {
+            title: "Actions",
+            key: "actions",
+            render: (_: any, record: any) => (
+                <Space size="middle">
+                    <Button type="link" onClick={() => handleEdit(record)}>Edit</Button>
+                </Space>
+            ),
+        }
+
     ];
 
 
@@ -206,10 +240,17 @@ const HouseMembers = () => {
                                 </div>
 
 
+
+
                                 <Modal
-                                    title="Add Member"
-                                    visible={modalVisible}
-                                    onCancel={() => setModalVisible(false)}
+                                    title={isEditing ? "Edit Member" : "Add Member"}
+                                    open={modalVisible}
+                                    onCancel={() => {
+                                        setModalVisible(false);
+                                        form.resetFields();
+                                        setIsEditing(false);
+                                        setEditingMember(null);
+                                    }}
                                     footer={null}
                                 >
                                     <Form
@@ -252,12 +293,13 @@ const HouseMembers = () => {
 
 
                                         <Form.Item>
-                                            <Button type="primary" htmlType="submit" block>
-                                                Add Member
+                                            <Button type="primary" htmlType="submit" block loading={isSubmitting}>
+                                                {isEditing ? "Edit Member" : "Add Member"}
                                             </Button>
                                         </Form.Item>
                                     </Form>
                                 </Modal>
+
                             </div>
                         </div>
                     </div>

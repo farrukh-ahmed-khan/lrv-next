@@ -177,7 +177,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavClosed }) => {
             {
                 title: "Dashboard",
                 icon: <HomeOutlinedIcon />,
-                link: "/single-store/dashboard",
+                link: "/dashboard/homemember/",
             },
 
         ];
