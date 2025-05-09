@@ -75,71 +75,71 @@
     flex-wrap: wrap;
     gap: 20px;
   }
+}
 
-  .due-card {
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    width: 100%;
+.due-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .due-info {
     display: flex;
-    flex-direction: column;
     justify-content: space-between;
+    align-items: center;
 
-    .due-info {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      .due-amount {
-        font-size: 20px;
-        font-weight: 600;
-        color: #333;
-      }
-
-      .status-badge {
-        padding: 5px 12px;
-        border-radius: 20px;
-        font-size: 13px;
-        font-weight: 500;
-        text-transform: capitalize;
-
-        &.paid {
-          background-color: #e0f9ea;
-          color: #34a853;
-        }
-
-        &.unpaid {
-          background-color: #fdecea;
-          color: #d93025;
-        }
-      }
+    .due-amount {
+      font-size: 20px;
+      font-weight: 600;
+      color: #333;
     }
-    .due-year {
-      margin-top: 8px;
-      font-size: 14px;
-      color: #666;
+
+    .status-badge {
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 13px;
       font-weight: 500;
+      text-transform: capitalize;
+
+      &.paid {
+        background-color: #e0f9ea;
+        color: #34a853;
+      }
+
+      &.unpaid {
+        background-color: #fdecea;
+        color: #d93025;
+      }
     }
+  }
+  .due-year {
+    margin-top: 8px;
+    font-size: 14px;
+    color: #666;
+    font-weight: 500;
+  }
 
-    .pay-btn-wrap {
-      margin-top: 15px;
-      display: flex;
-      justify-content: flex-end;
+  .pay-btn-wrap {
+    margin-top: 15px;
+    display: flex;
+    justify-content: flex-end;
 
-      .pay-now-btn {
-        background-color: #007bff;
-        color: white;
-        border: none;
-        padding: 10px 16px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: 500;
-        transition: background 0.3s ease;
+    .pay-now-btn {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background 0.3s ease;
 
-        &:hover {
-          background-color: #0056b3;
-        }
+      &:hover {
+        background-color: #0056b3;
       }
     }
   }

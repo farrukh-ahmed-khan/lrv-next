@@ -12,6 +12,7 @@ import {
     Email,
     MeetingRoom,
     Person,
+    Receipt,
     VerifiedUserRounded,
 } from "@mui/icons-material";
 import Link from "next/link";
@@ -65,11 +66,16 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavClosed }) => {
                 link: "/dashboard/boardmember/homeAdmins",
             },
             {
+                title: "Your Dues",
+                icon: <Receipt />,
+                link: "/dashboard/boardmember/ownerDues",
+            },
+            {
                 title: "Home Members",
                 icon: <Person />,
                 link: "/dashboard/boardmember/homeMembers",
             },
-           
+
             {
                 title: "Newsletter",
                 icon: <LocalAtmIcon />,
@@ -148,6 +154,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavClosed }) => {
                 icon: <Person />,
                 link: "/dashboard/homeowner/myProfile",
             },
+            {
+                title: "Your Dues",
+                icon: <Receipt />,
+                link: "/dashboard/homeowner/ownerDues",
+            },
         ];
         return (
             <div className={`sidebar ${isNavClosed ? "nav-closed" : ""}`}>
@@ -194,7 +205,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavClosed }) => {
                 icon: <Person />,
                 link: "/dashboard/homemember/myProfile",
             },
-
+            {
+                title: "Your Dues",
+                icon: <Receipt />,
+                link: "/dashboard/homemember/ownerDues",
+            },
         ];
         return (
             <div className={`sidebar ${isNavClosed ? "nav-closed" : ""}`}>
