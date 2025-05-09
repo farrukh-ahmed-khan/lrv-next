@@ -71,7 +71,7 @@ export async function POST(req: Request) {
 
     if (!existingDue || existingDue.streetAddress !== user.streetAddress) {
       const dueDate = new Date();
-      dueDate.setHours(dueDate.getHours() + 6);
+      dueDate.setFullYear(dueDate.getFullYear() + 1);
 
       const latestPaidDue = await Dues.findOne({
         userId: user._id,

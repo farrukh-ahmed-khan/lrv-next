@@ -42,7 +42,7 @@ export async function GET() {
         existingDue.streetAddress !== user.streetAddress
       ) {
         const dueDate = new Date();
-        dueDate.setHours(dueDate.getHours() + 6);
+        dueDate.setFullYear(dueDate.getFullYear() + 1);
       
         // Get the most recent paid due to extract subscriptionId (if any)
         const latestPaidDue = await Dues.findOne({
