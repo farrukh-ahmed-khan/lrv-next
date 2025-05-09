@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { client } from "@/lib/mongodb";
 import { verifyToken } from "@/lib/jwt";
 import Dues from "@/lib/models/Dues";
+import User from "@/lib/models/User"; // Import User model
 
 export async function GET(req: Request) {
   try {
@@ -20,20 +21,37 @@ export async function GET(req: Request) {
       return NextResponse.json({ message: "Invalid token" }, { status: 401 });
     }
 
-    const due = await Dues.find({
-      userId: decoded.id,
-      streetAddress: decoded.streetAddress,
-    });
+    const currentUser = await User.findById(decoded.id);
 
-    if (!due) {
-      return NextResponse.json({ message: "due not found" }, { status: 404 });
+    if (!currentUser) {
+      return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
+
+    let targetUserId = currentUser._id;
+
+    if (currentUser.role === "home member") {
+      const homeOwner = await User.findOne({
+        streetAddress: currentUser.streetAddress,
+        role: "home owner",
+        status: "approved", 
+      });
+
+      if (!homeOwner) {
+        return NextResponse.json({ due: [] }, { status: 200 });
+      }
+
+      targetUserId = homeOwner._id;
+    }
+
+    const due = await Dues.find({
+      userId: targetUserId,
+    }).sort({ dueDate: 1 });
 
     return NextResponse.json({ due }, { status: 200 });
   } catch (error: any) {
-    console.error("Error fetching user from token:", error);
+    console.error("Error fetching dues:", error);
     return NextResponse.json(
-      { message: "Failed to retrieve user", error: error.message },
+      { message: "Failed to retrieve dues", error: error.message },
       { status: 500 }
     );
   }

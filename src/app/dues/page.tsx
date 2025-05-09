@@ -173,6 +173,9 @@ const Dues = () => {
                                                 }}>
                                                     {!due.paid && !due.subscriptionId && (
                                                         <>
+                                                        {
+                                                            console.log(due)
+                                                        }
                                                             <button
                                                                 className="pay-now-btn"
                                                                 onClick={() => router.push(`/pay?dueId=${due._id}`)}

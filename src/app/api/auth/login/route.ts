@@ -45,13 +45,19 @@ export async function POST(req: Request) {
 
     // const existingDue = await Dues.findOne({
     //   userId: user._id,
+    //   streetAddress: user.streetAddress,
     //   dueDate: { $gt: new Date() },
     // });
 
-    // if (!existingDue) {
+    // if (!existingDue || existingDue.streetAddress !== user.streetAddress) {
     //   const dueDate = new Date();
-    //   // dueDate.setFullYear(dueDate.getFullYear() + 1);
-    //   dueDate.setHours(dueDate.getHours() + 6);
+    //   dueDate.setFullYear(dueDate.getFullYear() + 1);
+
+    //   const latestPaidDue = await Dues.findOne({
+    //     userId: user._id,
+    //     paid: true,
+    //     subscriptionId: { $exists: true, $ne: null },
+    //   }).sort({ createdAt: -1 });
 
     //   await Dues.create({
     //     userId: user._id,
@@ -60,33 +66,51 @@ export async function POST(req: Request) {
     //     dueDate,
     //     paymentMethod: null,
     //     autoPay: false,
+    //     subscriptionId: latestPaidDue?.subscriptionId || null,
     //   });
     // }
 
+    let dueUserId = user._id;
+    let dueStreetAddress = user.streetAddress;
+
+    if (user.role === "home member" && user.ownerId) {
+      const owner = await User.findById(user.ownerId);
+      if (!owner) {
+        return NextResponse.json(
+          { message: "Home owner not found for this member." },
+          { status: 404 }
+        );
+      }
+      dueUserId = owner._id;
+      dueStreetAddress = owner.streetAddress;
+    }
+
     const existingDue = await Dues.findOne({
-      userId: user._id,
-      streetAddress: user.streetAddress,
+      userId: dueUserId,
       dueDate: { $gt: new Date() },
     });
 
-    if (!existingDue || existingDue.streetAddress !== user.streetAddress) {
+    if (
+      user.role === "home owner" &&
+      (!existingDue || existingDue.streetAddress !== dueStreetAddress)
+    ) {
       const dueDate = new Date();
       dueDate.setFullYear(dueDate.getFullYear() + 1);
 
       const latestPaidDue = await Dues.findOne({
-        userId: user._id,
+        userId: dueUserId,
         paid: true,
         subscriptionId: { $exists: true, $ne: null },
       }).sort({ createdAt: -1 });
 
       await Dues.create({
-        userId: user._id,
-        streetAddress: user.streetAddress,
+        userId: dueUserId,
+        streetAddress: dueStreetAddress,
         amount: 300,
         dueDate,
         paymentMethod: null,
         autoPay: false,
-        subscriptionId: latestPaidDue?.subscriptionId || null, 
+        subscriptionId: latestPaidDue?.subscriptionId || null,
       });
     }
 
@@ -97,21 +121,52 @@ export async function POST(req: Request) {
       role: user.role,
     });
 
+    // return NextResponse.json(
+    //   {
+    //     message: "Login successful.",
+    //     token,
+    //     user: {
+    //       id: user._id,
+    //       firstname: user.firstname,
+    //       lastname: user.lastname,
+    //       streetAddress: user.streetAddress,
+    //       email: user.email,
+    //       role: user.role,
+    //     },
+    //   },
+    //   { status: 200 }
+    // );
+
+    const userPayload: any = {
+      id: user._id,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      streetAddress: user.streetAddress,
+      email: user.email,
+      role: user.role,
+    };
+
+    if (user.role === "home member") {
+      const homeOwner = await User.findOne({
+        streetAddress: user.streetAddress,
+        role: "home owner",
+        status: "approved", 
+      });
+    
+      if (homeOwner) {
+        userPayload.ownerId = homeOwner._id;
+      }
+    }
+    
     return NextResponse.json(
       {
         message: "Login successful.",
         token,
-        user: {
-          id: user._id,
-          firstname: user.firstname,
-          lastname: user.lastname,
-          streetAddress: user.streetAddress,
-          email: user.email,
-          role: user.role,
-        },
+        user: userPayload,
       },
       { status: 200 }
     );
+
   } catch (error: any) {
     console.error("Login error:", error);
     return NextResponse.json(

@@ -23,15 +23,22 @@ export default function PayPage() {
 
     const [due, setDue] = useState<Due | null>(null);
 
+    const user = JSON.parse(sessionStorage.getItem("user") || "{}");
+    const token = sessionStorage.getItem("token");
+
+    const resolvedId = user.role === "home member" ? user.ownerId : user.id;
+
     useEffect(() => {
         const fetchDue = async () => {
             try {
-                const token = sessionStorage.getItem("token");
-                const res = await axios.get(`/api/dues/${dueId}`, {
+                const res = await axios.post(`/api/dues/${dueId}`, {
+                    userId: resolvedId, // send owner id if user is home member
+                }, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 });
+
                 setDue(res.data);
             } catch (err) {
                 console.error("Error fetching due:", err);
@@ -69,7 +76,7 @@ export default function PayPage() {
                                 <PayPalOneTimeButton amount={due.amount} dueId={due._id} /> */}
 
                                 <h2>Auto-Pay Subscription</h2>
-                                <PayPalSubscriptionButton planId="P-1UC67166DB986312YNAJ4N4Q" dueId={due._id}/>
+                                <PayPalSubscriptionButton planId="P-1UC67166DB986312YNAJ4N4Q" dueId={due._id} />
                             </div>
                         </div>
                     </div>

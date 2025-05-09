@@ -3,7 +3,7 @@ import { client } from "@/lib/mongodb";
 import Dues from "@/lib/models/Dues";
 import { verifyToken } from "@/lib/jwt";
 
-export async function GET(request: NextRequest) {
+export async function POST(request: NextRequest) {
   try {
     await client;
 
@@ -21,11 +21,18 @@ export async function GET(request: NextRequest) {
     }
 
     const url = new URL(request.url);
-    const id = url.pathname.split("/")[3]; 
+    const dueId = url.pathname.split("/")[3];
+
+    const body = await request.json();
+    const { userId } = body;
+
+    if (!userId) {
+      return NextResponse.json({ message: "Missing userId in body" }, { status: 400 });
+    }
 
     const due = await Dues.findOne({
-      _id: id,
-      userId: decoded.id,
+      _id: dueId,
+      userId: userId, // use userId from body
     });
 
     if (!due) {

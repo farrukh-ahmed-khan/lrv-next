@@ -22,16 +22,22 @@ export default function PayPage() {
     const dueId = searchParams.get("dueId");
 
     const [due, setDue] = useState<Due | null>(null);
+    const user = JSON.parse(sessionStorage.getItem("user") || "{}");
+    const token = sessionStorage.getItem("token");
+
+    const resolvedId = user.role === "home member" ? user.ownerId : user.id;
 
     useEffect(() => {
         const fetchDue = async () => {
             try {
-                const token = sessionStorage.getItem("token");
-                const res = await axios.get(`/api/dues/${dueId}`, {
+                const res = await axios.post(`/api/dues/${dueId}`, {
+                    userId: resolvedId, // send owner id if user is home member
+                }, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 });
+
                 setDue(res.data);
             } catch (err) {
                 console.error("Error fetching due:", err);

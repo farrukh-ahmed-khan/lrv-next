@@ -63,35 +63,77 @@ export async function PUT(req: Request) {
     if (status === "approved") {
       updates.approvedAt = new Date();
 
-      
+      // const existingDue = await Dues.findOne({
+      //   userId: userToUpdate._id,
+      //   streetAddress: userToUpdate.streetAddress,
+      //   dueDate: { $gt: new Date() },
+      // });
+
+      // if (
+      //   !existingDue ||
+      //   existingDue.streetAddress !== userToUpdate.streetAddress
+      // ) {
+      //   const dueDate = new Date();
+      //   dueDate.setFullYear(dueDate.getFullYear() + 1);
+
+      //   const latestPaidDue = await Dues.findOne({
+      //     userId: userToUpdate._id,
+      //     paid: true,
+      //     subscriptionId: { $exists: true, $ne: null },
+      //   }).sort({ createdAt: -1 });
+
+      //   await Dues.create({
+      //     userId: userToUpdate._id,
+      //     streetAddress: userToUpdate.streetAddress,
+      //     amount: 300,
+      //     dueDate,
+      //     paymentMethod: null,
+      //     autoPay: false,
+      //     subscriptionId: latestPaidDue?.subscriptionId || null, // 👈 copy it if exists
+      //   });
+      // }
+
+      let dueUserId = userToUpdate._id;
+      let dueStreetAddress = userToUpdate.streetAddress;
+
+      if (userToUpdate.role === "home member" && userToUpdate.ownerId) {
+        const owner = await User.findById(userToUpdate.ownerId);
+        if (!owner) {
+          return NextResponse.json(
+            { message: "Home owner not found for this member." },
+            { status: 404 }
+          );
+        }
+        dueUserId = owner._id;
+        dueStreetAddress = owner.streetAddress;
+      }
 
       const existingDue = await Dues.findOne({
-        userId: userToUpdate._id,
-        streetAddress: userToUpdate.streetAddress,
+        userId: dueUserId,
         dueDate: { $gt: new Date() },
       });
 
       if (
-        !existingDue ||
-        existingDue.streetAddress !== userToUpdate.streetAddress
+        userToUpdate.role === "home owner" &&
+        (!existingDue || existingDue.streetAddress !== dueStreetAddress)
       ) {
         const dueDate = new Date();
         dueDate.setFullYear(dueDate.getFullYear() + 1);
 
         const latestPaidDue = await Dues.findOne({
-          userId: userToUpdate._id,
+          userId: dueUserId,
           paid: true,
           subscriptionId: { $exists: true, $ne: null },
         }).sort({ createdAt: -1 });
 
         await Dues.create({
-          userId: userToUpdate._id,
-          streetAddress: userToUpdate.streetAddress,
+          userId: dueUserId,
+          streetAddress: dueStreetAddress,
           amount: 300,
           dueDate,
           paymentMethod: null,
           autoPay: false,
-          subscriptionId: latestPaidDue?.subscriptionId || null, // 👈 copy it if exists
+          subscriptionId: latestPaidDue?.subscriptionId || null,
         });
       }
     }
@@ -99,8 +141,6 @@ export async function PUT(req: Request) {
     const updatedUser = await User.findByIdAndUpdate(id, updates, {
       new: true,
     }).select("-password");
-
-  
 
     return NextResponse.json(
       { message: "User status updated", user: updatedUser },
