@@ -100,7 +100,7 @@ const HouseMembers = () => {
 
             if (isEditing && editingMember) {
                 await axios.put(
-                    `/api/user/updateMember`,
+                    `/api/user/updateUser`,
                     {
                         ...payload,
                         id: editingMember.id,
