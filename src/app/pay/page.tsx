@@ -53,24 +53,46 @@ export default function PayPage() {
                 <section className='pay-wrap'>
                     <div className="container">
                         <div className="row">
-                            <div className="col-lg-6">
-                                <div className="details-wrapper">
-                                    <div className="detail-wrap">
-                                        <h3>Due Details</h3>
-                                        <p><strong>Due ID:</strong> {due._id}</p>
-                                        <p><strong>Amount:</strong> ${due.amount.toFixed(2)}</p>
-                                        <p><strong>Status:</strong> {due.paid ? "Paid" : "Unpaid"}</p>
-                                        <p><strong>Created At:</strong> {new Date(due.createdAt).toLocaleDateString()}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-6">
-                                <h2>One-Time Payment</h2>
-                                <PayPalOneTimeButton amount={due.amount} dueId={due._id} />
+                            {
+                                due.paid ? (
+                                    <>
+                                        <div className="col-lg-12">
+                                            <div className="details-wrapper">
+                                                <div className="detail-wrap text-center">
+                                                    <h3>Due Details</h3>
+                                                    <p><strong>Due ID:</strong> {due._id}</p>
+                                                    <p><strong>Amount:</strong> ${due.amount.toFixed(2)}</p>
+                                                    <p><strong>Status:</strong> {due.paid ? "Paid" : "Unpaid"}</p>
+                                                    <p><strong>Created At:</strong> {new Date(due.createdAt).toLocaleDateString()}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className="col-lg-6">
+                                            <div className="details-wrapper">
+                                                <div className="detail-wrap">
+                                                    <h3>Due Details</h3>
+                                                    <p><strong>Due ID:</strong> {due._id}</p>
+                                                    <p><strong>Amount:</strong> ${due.amount.toFixed(2)}</p>
+                                                    <p><strong>Status:</strong> {due.paid ? "Paid" : "Unpaid"}</p>
+                                                    <p><strong>Created At:</strong> {new Date(due.createdAt).toLocaleDateString()}</p>
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                {/* <h2>Auto-Pay Subscription</h2>
-                                <PayPalSubscriptionButton planId="P-1UC67166DB986312YNAJ4N4Q" dueId={due._id}/> */}
-                            </div>
+                                        <div className="col-lg-6">
+                                            <h2>One-Time Payment</h2>
+                                            <PayPalOneTimeButton amount={due.amount} dueId={due._id} />
+
+                                            {/* <h2>Auto-Pay Subscription</h2>
+                                    <PayPalSubscriptionButton planId="P-1UC67166DB986312YNAJ4N4Q" dueId={due._id}/> */}
+                                        </div>
+                                    </>
+                                )
+                            }
+
                         </div>
                     </div>
 

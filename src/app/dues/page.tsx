@@ -179,13 +179,13 @@ const Dues = () => {
                                                             >
                                                                 Pay Now
                                                             </button>
-                                                            <button
+                                                            {/* <button
                                                                 className="pay-now-btn"
                                                                 style={{ backgroundColor: "#FFC439", color: "#000" }}
                                                                 onClick={() => router.push(`/subscribe?dueId=${due._id}`)}
                                                             >
                                                                 Subscribe
-                                                            </button>
+                                                            </button> */}
 
                                                         </>
                                                     )}
