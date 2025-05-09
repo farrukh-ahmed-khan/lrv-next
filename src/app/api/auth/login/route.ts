@@ -144,20 +144,21 @@ export async function POST(req: Request) {
       streetAddress: user.streetAddress,
       email: user.email,
       role: user.role,
+      phoneNumber: user.phoneNumber,
     };
 
     if (user.role === "home member") {
       const homeOwner = await User.findOne({
         streetAddress: user.streetAddress,
         role: "home owner",
-        status: "approved", 
+        status: "approved",
       });
-    
+
       if (homeOwner) {
         userPayload.ownerId = homeOwner._id;
       }
     }
-    
+
     return NextResponse.json(
       {
         message: "Login successful.",
@@ -166,7 +167,6 @@ export async function POST(req: Request) {
       },
       { status: 200 }
     );
-
   } catch (error: any) {
     console.error("Login error:", error);
     return NextResponse.json(

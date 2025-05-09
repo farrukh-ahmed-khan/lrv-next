@@ -95,6 +95,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavClosed }) => {
                 icon: <Email />,
                 link: "/dashboard/boardmember/sendMail",
             },
+            {
+                title: "My Profile",
+                icon: <Person />,
+                link: "/dashboard/boardmember/myProfile",
+            },
         ];
         return (
             <div className={`sidebar ${isNavClosed ? "nav-closed" : ""}`}>
@@ -137,7 +142,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavClosed }) => {
                 title: "Dashboard",
                 icon: <HomeOutlinedIcon />,
                 link: "/dashboard/homeowner/members",
-            }
+            },
+            {
+                title: "My Profile",
+                icon: <Person />,
+                link: "/dashboard/homeowner/myProfile",
+            },
         ];
         return (
             <div className={`sidebar ${isNavClosed ? "nav-closed" : ""}`}>
@@ -178,6 +188,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavClosed }) => {
                 title: "Dashboard",
                 icon: <HomeOutlinedIcon />,
                 link: "/dashboard/homemember/",
+            },
+            {
+                title: "My Profile",
+                icon: <Person />,
+                link: "/dashboard/homemember/myProfile",
             },
 
         ];
