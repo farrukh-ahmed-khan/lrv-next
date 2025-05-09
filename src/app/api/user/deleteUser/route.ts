@@ -1,10 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { client } from "@/lib/mongodb";
 import User from "@/lib/models/User";
 import { verifyToken } from "@/lib/jwt";
-import mongoose from "mongoose";
 
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: Request) {
   try {
     await client;
 
@@ -19,31 +18,21 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
       return NextResponse.json({ message: "Invalid token" }, { status: 401 });
     }
 
-    const id = params.id;
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return NextResponse.json({ message: "Invalid member ID" }, { status: 400 });
-    }
-
     const body = await req.json();
+    const id = body.id;
 
-    const updatedUser = await User.findOneAndUpdate(
-      { _id: id, ownerId: decoded.id },
-      {
-        firstname: body.firstname,
-        lastname: body.lastname,
-        email: body.email,
-        phoneNumber: body.phoneNumber,
-      },
-      { new: true }
-    );
+    const deletedUser = await User.findOneAndDelete({
+      _id: id,
+      ownerId: decoded.id,
+    });
 
-    if (!updatedUser) {
+    if (!deletedUser) {
       return NextResponse.json({ message: "Member not found or not authorized" }, { status: 404 });
     }
 
-    return NextResponse.json(updatedUser, { status: 200 });
+    return NextResponse.json({ message: "Member deleted successfully" }, { status: 200 });
   } catch (error: any) {
-    console.error("Error updating member:", error);
+    console.error("Error deleting member:", error);
     return NextResponse.json(
       { message: "Server error", error: error.message },
       { status: 500 }

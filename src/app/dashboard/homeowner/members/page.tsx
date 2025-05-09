@@ -100,8 +100,11 @@ const HouseMembers = () => {
 
             if (isEditing && editingMember) {
                 await axios.put(
-                    `/api/user/updateMember/${editingMember.id}`,
-                    payload,
+                    `/api/user/updateMember`,
+                    {
+                        ...payload,
+                        id: editingMember.id,
+                    },
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -123,7 +126,25 @@ const HouseMembers = () => {
             console.error(error);
             toast.error(error?.response?.data?.message || "Something went wrong!");
         } finally {
-            setIsSubmitting(false); // End loading
+            setIsSubmitting(false);
+        }
+    };
+
+    const handleDelete = async (memberId: string) => {
+        if (!token) return;
+        console.log(memberId)
+        try {
+            await axios.delete("/api/user/deleteUser", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                data: { id: memberId },
+            });
+            toast.success("Member deleted successfully");
+            fetchUserData();
+        } catch (error: any) {
+            console.error(error);
+            toast.error(error?.response?.data?.message || "Failed to delete member");
         }
     };
 
@@ -166,10 +187,13 @@ const HouseMembers = () => {
             key: "actions",
             render: (_: any, record: any) => (
                 <Space size="middle">
+
                     <Button type="link" onClick={() => handleEdit(record)}>Edit</Button>
+                    <Button type="link" danger onClick={() => handleDelete(record.id)}>Delete</Button>
                 </Space>
             ),
         }
+
 
     ];
 
