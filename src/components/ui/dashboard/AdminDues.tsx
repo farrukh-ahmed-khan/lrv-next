@@ -188,7 +188,7 @@ const AdminDues = () => {
                             ))}
                         </ul>
                     ) : (
-                        <p>No dues found for this user.</p>
+                        <p>No dues found for this user</p>
                     )}
                 </Modal>
             </div>
