@@ -22,7 +22,7 @@ export async function POST(req: Request) {
     user.resetTokenExpiry = expiry;
     await user.save();
 
-    const resetLink = `https://lrv-next-kcfx.vercel.app/ResetPassword?token=${token}`;
+    const resetLink = `${process.env.NEXT_PUBLIC_BASE_URL}/ResetPassword?token=${token}`;
 
     // await sendEmail(
     //   user.email,
