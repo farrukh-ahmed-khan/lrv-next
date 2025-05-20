@@ -154,7 +154,7 @@ const Signup = () => {
                                                 Owner
                                             </button>
                                         </li>
-                                        <li className="nav-item" role="presentation">
+                                        {/* <li className="nav-item" role="presentation">
                                             <button
                                                 className={`${activeTab === "Member" ? "active" : ""
                                                     }`}
@@ -164,7 +164,7 @@ const Signup = () => {
                                             >
                                                 Member
                                             </button>
-                                        </li>
+                                        </li> */}
                                     </ul>
                                 </div>
                                 <div className="tab-content">
@@ -372,7 +372,7 @@ const Signup = () => {
                                             </div>
                                         </div>
                                     )}
-                                    {activeTab === "Member" && (
+                                    {/* {activeTab === "Member" && (
                                         <div className="tab-pane active" role="tabpanel">
                                             <form onSubmit={handleSubmit2}>
                                                 <div className="form-group row">
@@ -554,7 +554,7 @@ const Signup = () => {
                                                 <Link href="/login">Sign in now</Link>
                                             </div>
                                         </div>
-                                    )}
+                                    )} */}
                                 </div>
                             </div>
                         </div>
