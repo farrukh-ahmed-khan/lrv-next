@@ -45,7 +45,7 @@ const page = () => {
             <div className="meeting-wrapper">
                 <Header />
                 <>
-                    <InnerBanner title="LRV Homeowner Annual Dues" />
+                    <InnerBanner title="Board Meetings" />
                 </>
                 <section className="meeting-content-wrap">
                     <div className="container">
