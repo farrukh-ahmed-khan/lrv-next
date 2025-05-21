@@ -7,8 +7,9 @@ const nomineeSchema = new Schema(
     role: { type: String, required: true },
     email: { type: String, required: true },
     streetAddress: { type: String, required: true },
-    addedBy: { type: Schema.Types.ObjectId, ref: "User", required: true }, 
-    year: { type: Number, required: true }, 
+    phoneNumber: { type: String, required: true, unique: true },
+    addedBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    year: { type: Number, required: true },
   },
   { timestamps: true }
 );

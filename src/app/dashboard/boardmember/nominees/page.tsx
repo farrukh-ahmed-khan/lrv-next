@@ -7,7 +7,7 @@ import ProtectedPage from "@/components/ProtectedPage";
 import Navbar from "@/components/layout/dashboard/Navbar";
 import Sidebar from "@/components/layout/dashboard/Sidebar";
 import axios from "axios";
-import { addnominee, getAll } from "@/lib/VotingApi/api";
+import { addnominee, getAllNominee } from "@/lib/VotingApi/api";
 import { getUsers } from "@/lib/UsersApi/api";
 
 
@@ -74,8 +74,8 @@ const page = () => {
         }
 
         try {
-            const data = await getAll(token);
-            const fetchedData = data.users.map((data: User, index: number) => ({
+            const data = await getAllNominee(token);
+            const fetchedData = data.nominees.map((data: User, index: number) => ({
                 id: data._id,
                 firstname: data.firstname,
                 lastname: data.lastname,
@@ -109,6 +109,7 @@ const page = () => {
                 lastname: selectedUser.lastname,
                 role: selectedUser.role,
                 email: selectedUser.email,
+                phoneNumber: selectedUser.phonenumber,
                 streetAddress: selectedUser.streetAddress,
             };
 
@@ -156,11 +157,6 @@ const page = () => {
             title: "Role",
             dataIndex: "role",
             key: "role",
-        },
-        {
-            title: "Status",
-            dataIndex: "status",
-            key: "status",
         },
         {
             title: "Email",

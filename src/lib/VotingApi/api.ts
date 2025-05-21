@@ -13,6 +13,19 @@ export const getAll = async (token: string) => {
   }
 };
 
+export const getAllNominee = async (token: string) => {
+  try {
+    const response = await API.get("/voting/getnominee", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || "Failed to fetch users");
+  }
+};
+
 export const addnominee = async (
   userData: {
     firstname: string;
@@ -20,6 +33,7 @@ export const addnominee = async (
     role: string;
     email: string;
     streetAddress?: string;
+    phoneNumber: string;
   },
   token: string
 ) => {

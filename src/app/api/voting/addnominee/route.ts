@@ -22,7 +22,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: "Forbidden" }, { status: 403 });
   }
 
-  const { firstname, lastname, role, email, streetAddress } = await req.json();
+  const { firstname, lastname, role, email, streetAddress, phoneNumber } = await req.json();
   const year = new Date().getFullYear();
 
   const nominee = await Nominee.create({
@@ -31,6 +31,7 @@ export async function POST(req: Request) {
     role,
     email,
     streetAddress,
+    phoneNumber,
     year,
     addedBy: decoded.id,
   });
