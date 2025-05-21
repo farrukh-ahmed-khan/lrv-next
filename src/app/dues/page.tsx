@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
 
 import axios from "axios";
+import { Button, Space, Table } from "antd";
 
 type Due = {
     _id: string;
@@ -30,7 +31,16 @@ const Dues = () => {
                         Authorization: `Bearer ${sessionStorage.getItem("token")}`,
                     },
                 });
-                setDues(res.data.due);
+                const fetchedData = res.data.due.map((data: Due, index: number) => ({
+                    id: data._id,
+                    amount: data.amount,
+                    lastname: data.amount,
+                    paid: data.paid ? 'Paid' : 'Unpaid',
+                    createdAt: new Date(data.createdAt).getFullYear(),
+                    subscriptionId: data.subscriptionId,
+                }));
+                // setDues(res.data.due);
+                setDues(fetchedData);
             } catch (error: any) {
                 console.error("Failed to fetch dues", error.res);
             }
@@ -38,6 +48,41 @@ const Dues = () => {
 
         fetchDues();
     }, []);
+
+
+    const columns = [
+        {
+            title: "Year",
+            dataIndex: "createdAt",
+            key: "createdAt",
+        },
+        {
+            title: "Amount",
+            dataIndex: "amount",
+            key: "amount",
+        },
+        {
+            title: "Status",
+            dataIndex: "paid",
+            key: "paid",
+        },
+
+        {
+            title: "Actions",
+            key: "actions",
+            render: (_: any, record: any) => (
+                <Space size="middle">
+                    {!record.paid && !record.subscriptionId && (
+                        <Button type="link"
+                            onClick={() => router.push(`/pay?dueId=${record._id}`)}>
+                            Pay
+                        </Button>
+                    )}
+                </Space>
+            ),
+        }
+    ];
+
     return (
         <ProtectedPage allowedRoles={["home owner", "home member", "board member", "admin"]}>
             <div className="Dues-wrapper">
@@ -155,49 +200,17 @@ const Dues = () => {
                                 </div>
                             </div>
                             <div className="row">
-                                {dues.map((due) => {
-                                    const year = new Date(due.createdAt).getFullYear();
-                                    return (
-                                        <div className="col-lg-3">
-                                            <div key={due._id} className="due-card">
-                                                <p className="due-year">Year: {year}</p>
-                                                <div className="due-info">
-                                                    <p className="due-amount">${due.amount}</p>
-                                                    <span className={`status-badge ${due.paid ? 'paid' : 'unpaid'}`}>
-                                                        {due.paid ? 'Paid' : 'Unpaid'}
-                                                    </span>
-                                                </div>
-
-                                                <div className="pay-btn-wrap" style={{
-                                                    justifyContent: "space-between",
-                                                }}>
-                                                    {!due.paid && !due.subscriptionId && (
-                                                        <>
-                                                        {
-                                                            console.log(due)
-                                                        }
-                                                            <button
-                                                                className="pay-now-btn"
-                                                                onClick={() => router.push(`/pay?dueId=${due._id}`)}
-                                                            >
-                                                                Pay Now
-                                                            </button>
-                                                            {/* <button
-                                                                className="pay-now-btn"
-                                                                style={{ backgroundColor: "#FFC439", color: "#000" }}
-                                                                onClick={() => router.push(`/subscribe?dueId=${due._id}`)}
-                                                            >
-                                                                Subscribe
-                                                            </button> */}
-
-                                                        </>
-                                                    )}
-                                                    {/* {!due.paid && <button className="pay-now-btn">Pay Now</button>} */}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    );
-                                })}
+                                <div className="mt-3">
+                                    <div className="store-table-wrap active-table">
+                                        <Table
+                                            className="responsive-table"
+                                            columns={columns}
+                                            dataSource={dues}
+                                            rowKey="_id"
+                                        />
+                                    </div>
+                                </div>
+                           
                             </div>
 
 
