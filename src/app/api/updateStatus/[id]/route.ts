@@ -29,7 +29,7 @@ export async function PUT(req: Request) {
     const body = await req.json();
     const { status } = body;
 
-    if (!["pending", "approved", "rejected"].includes(status)) {
+    if (!["pending", "approved", "rejected", "movedout"].includes(status)) {
       return NextResponse.json(
         { message: "Invalid status value" },
         { status: 400 }
