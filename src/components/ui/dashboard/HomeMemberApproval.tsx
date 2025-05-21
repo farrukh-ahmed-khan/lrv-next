@@ -135,7 +135,7 @@ const UsersApproval = () => {
                                     <Option value="pending">Pending</Option>
                                     <Option value="rejected">Rejected</Option>
                                     <Option value="approved">Approved</Option>
-                                    <Option value="movedout">movedout</Option>
+                                    <Option value="movedout">Moved Out</Option>
                                 </Select>
                             </Space>
                         )}
