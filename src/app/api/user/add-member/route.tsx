@@ -6,10 +6,6 @@ import { verifyToken } from "@/lib/jwt";
 import crypto from "crypto";
 import sendEmail from "@/lib/email/sendEmail";
 
-
-
-
-
 export async function POST(req: Request) {
     try {
         await client;
