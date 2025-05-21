@@ -313,38 +313,43 @@ const Profile = () => {
                             </Form>
                         </Card>
                     </div>
-                    <div className="row">
-                        <div className="col-md-12">
-                            <div className="row store-wrap">
-                                <div className="col-lg-6 col-md-2">
-                                    <h6>Members List</h6>
-                                </div>
-                                <div className="col-lg-6 col-md-10">
-                                    <div className="d-flex justify-content-end search-wrap">
-                                        <Button
-                                            type="primary"
-                                            icon={<AddOutlinedIcon />}
-                                            onClick={() => setModalVisible(true)}
-                                        >
-                                            Add Members
-                                        </Button>
+                    {
+                        user.role === "home member" ? (
+                            <div className="row">
+                                <div className="col-md-12">
+                                    <div className="row store-wrap">
+                                        <div className="col-lg-6 col-md-2">
+                                            <h6>Members List</h6>
+                                        </div>
+                                        <div className="col-lg-6 col-md-10">
+                                            <div className="d-flex justify-content-end search-wrap">
+                                                <Button
+                                                    type="primary"
+                                                    icon={<AddOutlinedIcon />}
+                                                    onClick={() => setModalVisible(true)}
+                                                >
+                                                    Add Members
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="mt-3">
+                                        <div className="store-table-wrap active-table">
+                                            <Table
+                                                className="responsive-table"
+                                                columns={columns}
+                                                dataSource={userData}
+                                                rowKey="_id"
+                                            />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-
-                            <div className="mt-3">
-                                <div className="store-table-wrap active-table">
-                                    <Table
-                                        className="responsive-table"
-                                        columns={columns}
-                                        dataSource={userData}
-                                        rowKey="_id"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+                        ) : (
+                            <></>
+                        )
+                    }
                 </div>
                 <Footer />
                 <Modal
