@@ -18,6 +18,7 @@ interface EventType {
 const Header = () => {
   const [eventData, setEventData] = useState<EventType[]>([]);
   const local_token = sessionStorage.getItem("token");
+  const user = JSON.parse(sessionStorage.getItem("user") || "{}");
   const router = useRouter();
   const navbardata = [
     {
@@ -99,7 +100,7 @@ const Header = () => {
 
         ...eventData.map((event) => ({
           title: event.eventname,
-          link: `/event/${event._id}`,  
+          link: `/event/${event._id}`,
         })),
 
       ],
@@ -274,15 +275,31 @@ const Header = () => {
                 </div>
               ) : (<div className={`menu`}>
                 <ul className="menu">
-                  <li className="btn-li">
-                    <Link href="/profile"><Person /></Link>
-                  </li>
-                  <li className="btn-li">
-                    <Link href="/login">Dashboard</Link>
-                  </li>
-                  <li className="btn-li" onClick={() => handleLogout()}>
-                    <Link href="">Sign Out</Link>
-                  </li>
+                  {
+                    user.role === "home owner" || user.role === "home member" ? (
+                      <>
+                        <li className="btn-li">
+                          <Link href="/profile"><Person /></Link>
+                        </li>
+                        <li className="btn-li" onClick={() => handleLogout()}>
+                          <Link href="">Sign Out</Link>
+                        </li>
+                      </>
+                    ) : (
+                      <>
+                        <li className="btn-li">
+                          <Link href="/profile"><Person /></Link>
+                        </li>
+                        <li className="btn-li">
+                          <Link href="/login">Dashboard</Link>
+                        </li>
+                        <li className="btn-li" onClick={() => handleLogout()}>
+                          <Link href="">Sign Out</Link>
+                        </li>
+                      </>
+                    )
+                  }
+
                 </ul>
               </div>)}
 
