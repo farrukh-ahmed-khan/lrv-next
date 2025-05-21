@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Space, Table, Modal, Form, Input, Button, Select } from "antd";
+import { Space, Table, Modal, Form, Input, Button, Select, Card } from "antd";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -24,6 +24,7 @@ interface User {
 }
 const Profile = () => {
     const [form] = Form.useForm();
+    const [profileForm] = Form.useForm();
     const [modalVisible, setModalVisible] = useState(false);
 
     const [isNavClosed, setIsNavClosed] = useState(false);
@@ -32,9 +33,13 @@ const Profile = () => {
     const token = sessionStorage.getItem("token")
 
     const [userData, setUserData] = useState<any>([]);
+    const [presentData, setPresentData] = useState<any>([]);
     const [editingMember, setEditingMember] = useState<any>(null);
     const [isEditing, setIsEditing] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+
+    const [isSubmitting2, setIsSubmitting2] = useState(false);
 
 
     const handleEdit = (member: any) => {
@@ -166,6 +171,30 @@ const Profile = () => {
         }
     };
 
+    const handleSubmit = async (values: any) => {
+        setIsSubmitting2(true);
+        try {
+            const res = await axios.put(
+                "/api/user/update",
+                { ...values, id: user.id },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            toast.success("Profile updated successfully!");
+            const updatedUser = { ...user, ...values };
+            sessionStorage.setItem("user", JSON.stringify(updatedUser));
+        } catch (error: any) {
+            console.error(error);
+            toast.error(error?.response?.data?.message || "Something went wrong!");
+        } finally {
+            setIsSubmitting2(false);
+        }
+    };
+
 
     const columns = [
         {
@@ -215,27 +244,25 @@ const Profile = () => {
     ];
 
 
+
+
     useEffect(() => {
-        const handleResize = () => {
-            if (window.innerWidth <= responsiveBreakpoint) {
-                setIsNavClosed(true);
-            } else {
-                setIsNavClosed(false);
-            }
-        };
-        handleResize();
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-
-
+        if (user) {
+            setPresentData(user);
+            profileForm.setFieldsValue({
+                firstname: user.firstname,
+                lastname: user.lastname,
+                email: user.email,
+                phoneNumber: user.phoneNumber,
+                streetAddress: user.streetAddress,
+            });
+        }
     }, []);
 
     useEffect(() => {
         fetchUserData();
     }, [])
-    const toggleNav = () => {
-        setIsNavClosed(!isNavClosed);
-    };
+
 
 
     return (
@@ -244,6 +271,52 @@ const Profile = () => {
                 <Header />
                 <InnerBanner title="My Profile" />
                 <div className="container my-5">
+                    <div className="row mt-5">
+                        <Card title="Update Profile" style={{ maxWidth: 600, margin: "0 auto" }}>
+                            <Form layout="vertical" form={profileForm} onFinish={handleSubmit}>
+                                <Form.Item
+                                    label="First Name"
+                                    name="firstname"
+                                    rules={[{ required: true, message: "Please enter first name" }]}
+                                >
+                                    <Input />
+                                </Form.Item>
+
+                                <Form.Item
+                                    label="Last Name"
+                                    name="lastname"
+                                    rules={[{ required: true, message: "Please enter last name" }]}
+                                >
+                                    <Input />
+                                </Form.Item>
+
+                                <Form.Item
+                                    label="Email"
+                                    name="email"
+                                    rules={[
+                                        { required: true, type: "email", message: "Enter a valid email" },
+                                    ]}
+                                >
+                                    <Input />
+                                </Form.Item>
+
+                                <Form.Item
+                                    label="Phone Number"
+                                    name="phoneNumber"
+                                    rules={[{ required: true, message: "Please enter phone number" }]}
+                                >
+                                    <Input />
+                                </Form.Item>
+
+
+                                <Form.Item>
+                                    <Button type="primary" htmlType="submit" block loading={isSubmitting2}>
+                                        Update Profile
+                                    </Button>
+                                </Form.Item>
+                            </Form>
+                        </Card>
+                    </div>
                     <div className="row">
                         <div className="col-md-12">
                             <div className="row store-wrap">
@@ -329,7 +402,7 @@ const Profile = () => {
 
 
                         <Form.Item>
-                            <Button type="primary" htmlType="submit" block loading={isSubmitting}>
+                            <Button type="primary" htmlType="submit" block loading={isSubmitting2}>
                                 {isEditing ? "Edit Member" : "Add Member"}
                             </Button>
                         </Form.Item>
