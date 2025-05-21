@@ -22,12 +22,15 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: "Forbidden" }, { status: 403 });
   }
 
-  const { name, description } = await req.json();
+  const { firstname, lastname, role, email, streetAddress } = await req.json();
   const year = new Date().getFullYear();
 
   const nominee = await Nominee.create({
-    name,
-    description,
+    firstname,
+    lastname,
+    role,
+    email,
+    streetAddress,
     year,
     addedBy: decoded.id,
   });

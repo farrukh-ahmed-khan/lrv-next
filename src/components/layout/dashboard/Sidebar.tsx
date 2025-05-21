@@ -111,6 +111,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavClosed }) => {
                 icon: <Person />,
                 link: "/dashboard/boardmember/myProfile",
             },
+            {
+                title: "Add Nominee",
+                icon: <Person />,
+                link: "/dashboard/boardmember/nominees",
+            },
         ];
         return (
             <div className={`sidebar ${isNavClosed ? "nav-closed" : ""}`}>
