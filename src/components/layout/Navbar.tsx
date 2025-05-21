@@ -138,8 +138,6 @@ const Header = () => {
 
   const [menuOpen, setMenuOpen] = useState(false);
 
-  
-  const token = sessionStorage.getItem("token");
 
 
   const toggleMenu = () => {
