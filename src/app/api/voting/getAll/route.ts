@@ -22,7 +22,7 @@ export async function GET(req: Request) {
     return NextResponse.json({ message: "Forbidden" }, { status: 403 });
   }
 
-  const year = new Date().getFullYear(); // optional: get from query
+  const year = new Date().getFullYear(); 
 
   const votes = await Vote.find({ year })
     .populate("voter", "firstname lastname role")

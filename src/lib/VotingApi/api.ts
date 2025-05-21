@@ -24,7 +24,7 @@ export const addnominee = async (
   token: string
 ) => {
   try {
-    const response = await API.post("/user/add-member", userData, {
+    const response = await API.post("/voting/addnominee", userData, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -38,7 +38,7 @@ export const addnominee = async (
 
 export const voteCandidate = async (nomineeId: number, token: string) => {
   try {
-    const response = await API.post("/user/add-member", nomineeId, {
+    const response = await API.post("/voting/voteCandidate", nomineeId, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,

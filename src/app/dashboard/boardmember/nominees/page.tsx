@@ -83,7 +83,6 @@ const page = () => {
                 phonenumber: data.phoneNumber,
                 streetAddress: data.streetAddress,
                 role: data.role,
-                status: data.status,
             }));
             setUserData(fetchedData)
         } catch (error: any) {
