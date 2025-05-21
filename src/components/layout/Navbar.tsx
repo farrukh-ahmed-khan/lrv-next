@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { getEvents } from "@/lib/EventsApi/api";
 import toast from "react-hot-toast";
+import { Person } from "@mui/icons-material";
 
 interface EventType {
   _id: string;
@@ -234,6 +235,7 @@ const Header = () => {
                         </div>
                       ) : (
                         <>
+
                           <div
                             className="wishlist-wrap"
                             style={{ textAlign: "left", marginLeft: "10px" }}
@@ -272,6 +274,9 @@ const Header = () => {
                 </div>
               ) : (<div className={`menu`}>
                 <ul className="menu">
+                  <li className="btn-li">
+                    <Link href="/profile"><Person /></Link>
+                  </li>
                   <li className="btn-li">
                     <Link href="/login">Dashboard</Link>
                   </li>
