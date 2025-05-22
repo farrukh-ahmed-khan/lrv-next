@@ -134,6 +134,11 @@ const Header = () => {
       ],
       hasSubmenu: true,
     },
+    {
+      id: 6,
+      title: "Vote Candidate",
+      link: "/vote-candidate",
+    },
   ];
 
 
