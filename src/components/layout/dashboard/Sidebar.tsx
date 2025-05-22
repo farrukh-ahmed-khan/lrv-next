@@ -67,6 +67,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavClosed }) => {
                 link: "/dashboard/boardmember/homeAdmins",
             },
             {
+                title: "Home Members",
+                icon: <Person />,
+                link: "/dashboard/boardmember/homeMembers",
+            },
+            {
                 title: "Your Dues",
                 icon: <Receipt />,
                 link: "/dashboard/boardmember/ownerDues",
@@ -76,12 +81,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavClosed }) => {
                 icon: <Receipt />,
                 link: "/dashboard/boardmember/allDues",
             },
-            {
-                title: "Home Members",
-                icon: <Person />,
-                link: "/dashboard/boardmember/homeMembers",
-            },
-
             {
                 title: "Newsletter",
                 icon: <LocalAtmIcon />,
