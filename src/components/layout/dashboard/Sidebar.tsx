@@ -13,6 +13,7 @@ import {
     MeetingRoom,
     Person,
     Receipt,
+    ResetTvSharp,
     VerifiedUserRounded,
 } from "@mui/icons-material";
 import Link from "next/link";
@@ -115,6 +116,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavClosed }) => {
                 title: "Add Nominee",
                 icon: <Person />,
                 link: "/dashboard/boardmember/nominees",
+            },
+             {
+                title: "Voting Result",
+                icon: <ResetTvSharp />,
+                link: "/dashboard/boardmember/votingResult",
             },
         ];
         return (
