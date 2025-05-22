@@ -7,7 +7,7 @@ import ProtectedPage from "@/components/ProtectedPage";
 import Navbar from "@/components/layout/dashboard/Navbar";
 import Sidebar from "@/components/layout/dashboard/Sidebar";
 import axios from "axios";
-import { addnominee, getAllNominee } from "@/lib/VotingApi/api";
+import { addnominee, deleteNominee, getAllNominee } from "@/lib/VotingApi/api";
 import { getUsers } from "@/lib/UsersApi/api";
 
 
@@ -87,7 +87,6 @@ const page = () => {
             setUserData(fetchedData)
         } catch (error: any) {
             console.error(error);
-            // toast.error("Error orders data:", error);
         }
     };
 
@@ -118,27 +117,23 @@ const page = () => {
             fetchNomineeData();
             form.resetFields();
         } catch (error: any) {
-            console.error(error);
-            toast.error(error?.response?.data?.message || "Something went wrong!");
+            toast.error(error?.message || "Something went wrong!");
         }
     };
 
 
-    const handleDelete = async (memberId: string) => {
-        if (!token) return;
-        console.log(memberId)
+    const handleDelete = async (nomineeId: string) => {
+        if (!token) {
+            toast.error("No token found");
+            return;
+        }
+
         try {
-            await axios.delete("/api/user/deleteUser", {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-                data: { id: memberId },
-            });
-            toast.success("Member deleted successfully");
+            await deleteNominee(nomineeId, token);
+            toast.success("Nominee deleted successfully!");
             fetchNomineeData();
         } catch (error: any) {
-            console.error(error);
-            toast.error(error?.response?.data?.message || "Failed to delete member");
+            toast.error(error.message);
         }
     };
 

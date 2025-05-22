@@ -22,8 +22,17 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: "Forbidden" }, { status: 403 });
   }
 
-  const { firstname, lastname, role, email, streetAddress, phoneNumber } = await req.json();
+  const { firstname, lastname, role, email, streetAddress, phoneNumber } =
+    await req.json();
   const year = new Date().getFullYear();
+
+  const existingNominee = await Nominee.findOne({ email, year });
+  if (existingNominee) {
+    return NextResponse.json(
+      { message: "This user is already added as a nominee for this year." },
+      { status: 400 }
+    );
+  }
 
   const nominee = await Nominee.create({
     firstname,

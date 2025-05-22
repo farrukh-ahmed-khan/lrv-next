@@ -50,6 +50,23 @@ export const addnominee = async (
   }
 };
 
+export const deleteNominee = async (id: string, token: string) => {
+  try {
+    const res = await API.delete(`/voting/deletenominee`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        id,
+      },
+    });
+
+    return res.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || "Failed to delete nominee");
+  }
+};
+
 export const voteCandidate = async (nomineeId: number, token: string) => {
   try {
     const response = await API.post("/voting/voteCandidate", nomineeId, {
