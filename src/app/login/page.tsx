@@ -51,9 +51,9 @@ const Login = () => {
             if (data.user.role === "admin") {
                 router.push("/admin/dashboard")
             } else if (data.user.role === "home owner") {
-                router.push("/dashboard/homeowner/members")
+                router.push("/")
             } else if (data.user.role === "home member") {
-                router.push("/dashboard/homemember")
+                router.push("/")
             } else if (data.user.role === "board member") {
                 router.push("/dashboard/boardmember/")
             } else {
