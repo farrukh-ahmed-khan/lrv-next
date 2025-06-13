@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Card, Button, Row, Col, Spin, message } from "antd";
 import axios from "axios";
 import { getAllNominee } from "@/lib/VotingApi/api";
+import { FaUser } from "react-icons/fa";
 
 const NomineeVote = () => {
     const [nominees, setNominees] = useState([]);
@@ -55,21 +56,30 @@ const NomineeVote = () => {
             <div className="container">
                 <div>
                     {loading ? (
-                        <Spin />
+                        <div className="loader-wrap" style={{ display: "flex", justifyContent: "center", height: "50vh" }}>
+                            <Spin />
+                        </div>
                     ) : (
                         <div className="row">
                             {nominees.map((nominee: any) => (
                                 <div className="col-lg-4 my-4">
-                                    <Card title={`${nominee.firstname} ${nominee.lastname}`}>
+                                    <Card
+                                        title={
+                                            <span>
+                                                <FaUser style={{ marginRight: 8 }} />
+                                                {`${nominee.firstname} ${nominee.lastname}`}
+                                            </span>
+                                        }
+                                    >
                                         <p><b>Email:</b> {nominee.email}</p>
                                         <p><b>Role:</b> {nominee.role}</p>
                                         <p><b>Address:</b> {nominee.streetAddress}</p>
                                         <Button
-                                            type="primary"
+                                            type="dashed"
                                             disabled={voted}
                                             onClick={() => handleVote(nominee._id)}
                                         >
-                                            {voted ? "Already Voted" : "Vote"}
+                                            {voted ? "Already Voted" : "Vote for this candidate"}
                                         </Button>
                                     </Card>
                                 </div>
