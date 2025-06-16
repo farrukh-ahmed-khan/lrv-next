@@ -4,8 +4,6 @@ import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Navbar";
 import ProtectedPage from "@/components/ProtectedPage";
 import InnerBanner from "@/components/ui/InnerBanner";
-import firstImg from "@/assets/images/christmas/1.jpg"
-import secImg from "@/assets/images/christmas/2.jpg"
 import Image, { StaticImageData } from "next/image";
 import gallery1 from "@/assets/images/home/gallery1.png";
 import gallery2 from "@/assets/images/home/gallery2.png";
@@ -18,7 +16,6 @@ import gallery8 from "@/assets/images/home/gallery8.png";
 
 import { useState } from "react";
 import { FaArrowLeft, FaArrowRight, FaTimes } from "react-icons/fa";
-import Link from "next/link";
 const images: StaticImageData[] = [
     gallery1,
     gallery2,
