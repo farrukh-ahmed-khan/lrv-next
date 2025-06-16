@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react";
-import { Card, Button, Row, Col, Spin, message } from "antd";
+import { Card, Button, Spin, message } from "antd";
 import axios from "axios";
 import { getAllNominee } from "@/lib/VotingApi/api";
 import { FaUser } from "react-icons/fa";
@@ -22,7 +22,7 @@ const NomineeVote = () => {
         try {
             const data = await getAllNominee(token);
             setNominees(data.nominees || []);
-        } catch (err) {
+        } catch (err: any) {
             message.error("Failed to load nominees");
         } finally {
             setLoading(false);
@@ -61,8 +61,8 @@ const NomineeVote = () => {
                         </div>
                     ) : (
                         <div className="row">
-                            {nominees.map((nominee: any) => (
-                                <div className="col-lg-4 my-4">
+                            {nominees.map((nominee: any, index) => (
+                                <div className="col-lg-4 my-4" key={index}>
                                     <Card
                                         title={
                                             <span>
