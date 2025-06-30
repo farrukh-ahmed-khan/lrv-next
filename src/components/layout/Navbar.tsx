@@ -169,7 +169,7 @@ const Header = () => {
 
     } catch (error) {
       console.error(error);
-      toast.error("Failed to fetch events.");
+      // toast.error("Failed to fetch events.");
     }
   };
 
