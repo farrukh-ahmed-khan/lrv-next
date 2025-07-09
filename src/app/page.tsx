@@ -30,7 +30,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/autoplay";
 
-// import required modules
+
 import { Autoplay } from "swiper/modules";
 
 import Link from "next/link";
