@@ -10,7 +10,10 @@ import InnerBanner from "@/components/ui/InnerBanner";
 import Footer from "@/components/layout/Footer";
 import { getAllUsers } from "@/lib/UsersApi/api";
 import ProtectedPage from "@/components/ProtectedPage";
-
+import Link from "next/link";
+import Image from "next/image";
+import directoryimg from "@/assets/images/Directory-Image.png"
+import pdficon from "@/assets/images/pdf-icon.webp"
 
 
 
@@ -154,6 +157,45 @@ const PhoneDirectory = () => {
                                         dataSource={filterData}
                                     />
                                 </div>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-lg-12 d-flex justify-center">
+                                <div className="para-wrap"
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        width: "100%",
+                                        margin: "20px 0"
+                                    }}
+                                >
+                                    <p>
+                                        To download & print the most current
+                                        <br />
+                                        LRV PhoneDirectory,
+                                        <br />
+                                        click on the PDF icon below...
+                                        <br />
+                                    </p>
+                                    <div className="pdf-img-wrap d-flex justify-center">
+                                        <div className="img-wrap">
+                                            <Image src={pdficon} alt="directory img"></Image>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-lg-12"
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    width: "100%",
+                                }}
+                            >
+                                <Link href="https://www.lrvhoa.net/_files/ugd/eccc55_7c1edbea0ebf432d8530372b8d169a92.pdf">
+                                    <Image src={directoryimg} alt="directory img"></Image>
+                                </Link>
                             </div>
                         </div>
                     </div>
