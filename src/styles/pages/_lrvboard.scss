@@ -9,6 +9,9 @@
   .meeting-content-wrap {
     padding: 50px 0;
     .meeting-content {
+      h4 {
+        font-family: var(--fontgilroy);
+      }
       p {
         color: #7a7a7a;
         font-size: 16px;

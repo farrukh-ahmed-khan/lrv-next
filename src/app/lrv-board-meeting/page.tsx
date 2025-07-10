@@ -55,6 +55,9 @@ const page = () => {
                                     meetingData.map((data: Meeting, index: number) => {
                                         return (
                                             <div className="meeting-content" key={index}>
+                                                <h4>
+                                                    {data.title}
+                                                </h4>
                                                 <p>
                                                     {data.description}
                                                 </p>
