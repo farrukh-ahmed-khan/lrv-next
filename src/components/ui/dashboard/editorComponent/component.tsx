@@ -3,7 +3,6 @@ import ReactDOM from "react-dom";
 import { css, cx } from "@emotion/css";
 
 
-// Button
 type ButtonProps = {
   className?: string;
   active?: boolean;
