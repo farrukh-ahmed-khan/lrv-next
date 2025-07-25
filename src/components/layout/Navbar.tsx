@@ -280,19 +280,22 @@ const Header = () => {
                 </div>
               ) : (<div className={`menu`}>
                 <ul className="menu">
+
                   {
                     user.role === "home owner" || user.role === "home member" ? (
                       <>
+                        
                         <li className="btn-li">
                           <Link href="/profile"><Person /></Link>
                         </li>
+
                         <li className="btn-li" onClick={() => handleLogout()}>
                           <Link href="">Sign Out</Link>
                         </li>
                       </>
                     ) : (
                       <>
-                       
+
                         <li className="btn-li">
                           <Link href="/login">Dashboard</Link>
                         </li>

@@ -314,7 +314,7 @@ const Profile = () => {
                         </Card>
                     </div>
                     {
-                        user.role === "home member" ? (
+                        user.role === "home owner" ? (
                             <div className="row">
                                 <div className="col-md-12">
                                     <div className="row store-wrap">
