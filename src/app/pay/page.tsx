@@ -22,8 +22,8 @@ export default function PayPage() {
     const dueId = searchParams.get("dueId");
 
     const [due, setDue] = useState<Due | null>(null);
-    const user = JSON.parse(sessionStorage.getItem("user") || "{}");
-    const token = sessionStorage.getItem("token");
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    const token = localStorage.getItem("token");
 
     const resolvedId = user.role === "home member" ? user.ownerId : user.id;
 

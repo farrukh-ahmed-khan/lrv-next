@@ -44,8 +44,8 @@ const Login = () => {
             toast.success(data.message);
 
 
-            sessionStorage.setItem("user", JSON.stringify(data.user));
-            sessionStorage.setItem("token", (data.token));
+            localStorage.setItem("user", JSON.stringify(data.user));
+            localStorage.setItem("token", (data.token));
             window.location.reload()
 
             if (data.user.role === "admin") {
@@ -68,8 +68,8 @@ const Login = () => {
     };
 
     useEffect(() => {
-        const token = sessionStorage.getItem('token');
-        const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+        const token = localStorage.getItem('token');
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
 
         if (token && user?.role) {
             switch (user.role) {

@@ -34,8 +34,8 @@ const UsersApproval = () => {
     const [loadingStates, setLoadingStates] = useState<{ [key: string]: string | null }>({});
     const [dues, setDues] = useState<Due[]>([]);
     const [userData, setUserData] = useState([]);
-    const user = JSON.parse(sessionStorage.getItem("user") || "{}");
-    const token = sessionStorage.getItem("token")
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    const token = localStorage.getItem("token")
     const role = user.role;
 
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -43,7 +43,7 @@ const UsersApproval = () => {
     const [selectedUserName, setSelectedUserName] = useState<string>("");
 
     const fetchData = async () => {
-        const token = sessionStorage.getItem("token");
+        const token = localStorage.getItem("token");
         if (!token) {
             console.error("No token found.");
             return;
@@ -98,7 +98,7 @@ const UsersApproval = () => {
 
 
     const handleUpdateStatus = async (record: any, status: any) => {
-        const token = sessionStorage.getItem("token");
+        const token = localStorage.getItem("token");
         setLoadingStates((prev) => ({ ...prev, [record.id]: "updateStatus" }));
 
         if (!token) {

@@ -3,7 +3,7 @@ import axios from "axios";
 
 export const fetchDue = createAsyncThunk("due/fetchDue", async (_, thunkAPI) => {
   try {
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
     const response = await axios.get("/api/dues/get", {
       headers: {
         Authorization: `Bearer ${token}`,

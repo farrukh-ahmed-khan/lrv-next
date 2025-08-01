@@ -17,8 +17,8 @@ const HouseMembers = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [userData, setUserData] = useState<any>(null);
 
-    const token = sessionStorage.getItem("token");
-    const user = JSON.parse(sessionStorage.getItem("user") || "{}");
+    const token = localStorage.getItem("token");
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
 
     useEffect(() => {
         if (user) {
@@ -49,7 +49,7 @@ const HouseMembers = () => {
             toast.success("Profile updated successfully!");
 
             const updatedUser = { ...user, ...values };
-            sessionStorage.setItem("user", JSON.stringify(updatedUser));
+            localStorage.setItem("user", JSON.stringify(updatedUser));
         } catch (error: any) {
             console.error(error);
             toast.error(error?.response?.data?.message || "Something went wrong!");

@@ -20,8 +20,8 @@ const HouseMembers = () => {
     const [isNavClosed, setIsNavClosed] = useState(false);
     const responsiveBreakpoint = 991;
 
-    const token = sessionStorage.getItem("token");
-    const user = JSON.parse(sessionStorage.getItem("user") || "{}");
+    const token = localStorage.getItem("token");
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
 
     const [dues, setDues] = useState<Due[]>([]);
     const router = useRouter()
@@ -31,7 +31,7 @@ const HouseMembers = () => {
             try {
                 const res = await axios.get("/api/dues/get", {
                     headers: {
-                        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+                        Authorization: `Bearer ${localStorage.getItem("token")}`,
                     },
                 });
                 setDues(res.data.due);

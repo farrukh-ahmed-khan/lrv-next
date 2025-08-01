@@ -28,7 +28,7 @@ const Dues = () => {
             try {
                 const res = await axios.get("/api/dues/get", {
                     headers: {
-                        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+                        Authorization: `Bearer ${localStorage.getItem("token")}`,
                     },
                 });
                 const fetchedData = res.data.due.map((data: Due, index: number) => ({

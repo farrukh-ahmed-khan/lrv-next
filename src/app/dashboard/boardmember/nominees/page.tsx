@@ -29,8 +29,8 @@ const page = () => {
 
     const [isNavClosed, setIsNavClosed] = useState(false);
     const responsiveBreakpoint = 991;
-    const user = JSON.parse(sessionStorage.getItem("user") || "{}");
-    const token = sessionStorage.getItem("token")
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    const token = localStorage.getItem("token")
     const [isModalVisible, setIsModalVisible] = useState(false);
 
 
@@ -39,7 +39,7 @@ const page = () => {
 
 
     const fetchData = async () => {
-        const token = sessionStorage.getItem("token");
+        const token = localStorage.getItem("token");
         if (!token) {
             console.error("No token found.");
             return;

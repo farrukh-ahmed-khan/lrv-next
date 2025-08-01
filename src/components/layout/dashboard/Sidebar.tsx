@@ -37,7 +37,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavClosed }) => {
         setActiveLink(link);
     };
 
-    const userData = JSON.parse(sessionStorage.getItem("user") || "{}")
+    const userData = JSON.parse(localStorage.getItem("user") || "{}")
 
     const [role, setRole] = useState(
         userData.role
@@ -50,8 +50,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavClosed }) => {
     const handleLogout = () => {
         router.push("/login")
         window.location.reload()
-        sessionStorage.removeItem("token");
-        sessionStorage.removeItem("user");
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
     };
 
     if (role == "board member") {

@@ -33,7 +33,7 @@ export default function PayPalSubscriptionButton({ planId, dueId, }: { planId: s
             },
             {
               headers: {
-                Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
               },
             }
           );

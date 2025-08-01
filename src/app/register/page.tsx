@@ -96,8 +96,8 @@ const Signup = () => {
     };
 
     useEffect(() => {
-        const token = sessionStorage.getItem('token');
-        const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+        const token = localStorage.getItem('token');
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
 
         if (token && user?.role) {
             switch (user.role) {

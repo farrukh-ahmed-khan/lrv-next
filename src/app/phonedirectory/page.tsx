@@ -34,7 +34,7 @@ const PhoneDirectory = () => {
     const [searchText, setSearchText] = useState<string>("");
     const [userData, setUserData] = useState<User[]>([]);
     const [filterData, setFilterData] = useState<User[]>([]);
-    const token = sessionStorage.getItem("token")
+    const token = localStorage.getItem("token")
 
     const columns: ColumnsType<User> = [
         {

@@ -70,7 +70,7 @@ const AddEvent = () => {
 
 
     const [form] = Form.useForm();
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
 
 

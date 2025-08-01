@@ -27,8 +27,8 @@ const Profile = () => {
     const [profileForm] = Form.useForm();
     const [modalVisible, setModalVisible] = useState(false);
 
-    const user = JSON.parse(sessionStorage.getItem("user") || "{}");
-    const token = sessionStorage.getItem("token")
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    const token = localStorage.getItem("token")
 
     const [userData, setUserData] = useState<any>([]);
     const [presentData, setPresentData] = useState<any>([]);
@@ -184,7 +184,7 @@ const Profile = () => {
 
             toast.success("Profile updated successfully!");
             const updatedUser = { ...user, ...values };
-            sessionStorage.setItem("user", JSON.stringify(updatedUser));
+            localStorage.setItem("user", JSON.stringify(updatedUser));
         } catch (error: any) {
             console.error(error);
             toast.error(error?.response?.data?.message || "Something went wrong!");

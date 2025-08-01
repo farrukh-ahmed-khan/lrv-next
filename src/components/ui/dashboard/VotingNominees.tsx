@@ -11,7 +11,7 @@ const NomineeVote = () => {
     const [loading, setLoading] = useState(false);
     const [voted, setVoted] = useState(false);
 
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
     const fetchNominees = async () => {
         if (!token) {

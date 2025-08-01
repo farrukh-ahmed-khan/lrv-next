@@ -30,8 +30,8 @@ const HouseMembers = () => {
 
     const [isNavClosed, setIsNavClosed] = useState(false);
     const responsiveBreakpoint = 991;
-    const user = JSON.parse(sessionStorage.getItem("user") || "{}");
-    const token = sessionStorage.getItem("token")
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    const token = localStorage.getItem("token")
 
     const [userData, setUserData] = useState<any>([]);
     const [editingMember, setEditingMember] = useState<any>(null);

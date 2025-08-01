@@ -12,8 +12,8 @@ const UsersApproval = () => {
     const [statusUpdates, setStatusUpdates] = useState<{ [key: string]: string }>({});
     const [loadingStates, setLoadingStates] = useState<{ [key: string]: string | null }>({});
     const [userData, setUserData] = useState([]);
-    const user = JSON.parse(sessionStorage.getItem("user") || "{}");
-    const token = sessionStorage.getItem("token")
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    const token = localStorage.getItem("token")
     const role = user.role;
 
     interface User {
@@ -57,7 +57,7 @@ const UsersApproval = () => {
     };
 
     const handleUpdateStatus = async (record: any, status: any) => {
-        const token = sessionStorage.getItem("token");
+        const token = localStorage.getItem("token");
         setLoadingStates((prev) => ({ ...prev, [record.id]: "updateStatus" }));
 
         if (!token) {

@@ -10,7 +10,7 @@ import React, { useEffect, useState } from 'react'
 const page = () => {
     const [meetingData, setMeetingData] = useState<any[]>([]);
     const [isNavClosed, setIsNavClosed] = useState(false);
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
     interface Meeting {
         _id: string;

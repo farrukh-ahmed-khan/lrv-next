@@ -21,7 +21,7 @@ const AddNewsletter = () => {
 
     const [isNavClosed, setIsNavClosed] = useState(false);
     const responsiveBreakpoint = 991;
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
     const [newsletterData, setNewsletterData] = useState<any[]>([]);
 
