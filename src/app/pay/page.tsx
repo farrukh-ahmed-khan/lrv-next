@@ -8,6 +8,7 @@ import ProtectedPage from '@/components/ProtectedPage';
 import Header from '@/components/layout/Navbar';
 import InnerBanner from '@/components/ui/InnerBanner';
 import Footer from '@/components/layout/Footer';
+import toast from 'react-hot-toast';
 
 
 type Due = {
@@ -22,10 +23,38 @@ export default function PayPage() {
     const dueId = searchParams.get("dueId");
 
     const [due, setDue] = useState<Due | null>(null);
+    const [checkImage, setCheckImage] = useState<File | null>(null);
     const user = JSON.parse(localStorage.getItem("user") || "{}");
     const token = localStorage.getItem("token");
 
     const resolvedId = user.role === "home member" ? user.ownerId : user.id;
+
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) setCheckImage(file);
+    };
+
+    const handleCheckUpload = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!checkImage) return toast.error("Please select an image first");
+
+        const formData = new FormData();
+        formData.append("checkImage", checkImage);
+        formData.append("dueId", dueId || "");
+
+        try {
+            await axios.post("/api/dues/upload-check", formData, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            toast.success("Check uploaded successfully");
+        } catch (error) {
+            console.error("Upload failed", error);
+            toast.error("Failed to upload check");
+        }
+    };
 
     useEffect(() => {
         const fetchDue = async () => {
@@ -92,6 +121,16 @@ export default function PayPage() {
                                             <h2>One-Time Payment</h2>
                                             <PayPalOneTimeButton amount={due.amount} dueId={due._id} />
 
+
+                                            <h2 className="mt-4">Upload Bank Check</h2>
+                                            <form
+                                                onSubmit={handleCheckUpload}
+                                                encType="multipart/form-data"
+                                                className="flex flex-col gap-2"
+                                            >
+                                                <input type="file" accept="image/*" onChange={handleFileChange} />
+                                                <button className="btn btn-primary" type="submit">Upload Check</button>
+                                            </form>
                                             {/* <h2>Auto-Pay Subscription</h2>
                                     <PayPalSubscriptionButton planId="P-1UC67166DB986312YNAJ4N4Q" dueId={due._id}/> */}
                                         </div>

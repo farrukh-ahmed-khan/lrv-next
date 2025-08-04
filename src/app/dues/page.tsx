@@ -67,20 +67,20 @@ const Dues = () => {
             key: "paid",
         },
 
-        {
+       {
             title: "Actions",
             key: "actions",
             render: (_: any, record: any) => (
                 <Space size="middle">
-                    {!record.paid && !record.subscriptionId && (
-                        <Button type="link"
-                            onClick={() => router.push(`/pay?dueId=${record._id}`)}>
+                    {record.paid === "Unpaid" && record.subscriptionId === null && (
+                        <Button type="link" onClick={() => router.push(`/pay?dueId=${record.id}`)}>
                             Pay
                         </Button>
                     )}
                 </Space>
             ),
         }
+
     ];
 
     return (
@@ -135,7 +135,7 @@ const Dues = () => {
                                     <p>
                                         There are three easy methods to pay your annual LRV Homeowner dues:
                                     </p>
-                                    <ul>
+                                    {/* <ul>
                                         <li>
                                             <span>
                                                 Subscribe,
@@ -150,7 +150,7 @@ const Dues = () => {
                                     </ul>
                                     <div className="btn-img-wrap">
                                         <Image src={btnImg} alt="" />
-                                    </div>
+                                    </div> */}
                                     <ul>
                                         <li>
                                             <span>
@@ -164,9 +164,9 @@ const Dues = () => {
                                             </ul>
                                         </li>
                                     </ul>
-                                    <div className="pay-btn-wrap">
+                                    {/* <div className="pay-btn-wrap">
                                         <button className="pay-now-btn">Pay Now</button>
-                                    </div>
+                                    </div> */}
                                     <ul>
                                         <li>
                                             <span>

@@ -1,16 +1,43 @@
 import { Schema, model, models } from "mongoose";
 
+// const duesSchema = new Schema(
+//   {
+//     userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+//     streetAddress: { type: String, required: true },
+//     amount: { type: Number, required: true },
+//     dueDate: { type: Date, required: true },
+//     paid: { type: Boolean, default: false },
+//     paymentMethod: { type: String, enum: ["Credit Card", "PayPal", "Check"] },
+//     autoPay: { type: Boolean, default: false },
+//     transactionId: { type: String },
+//     subscriptionId: { type: String },
+//   },
+//   { timestamps: true }
+// );
+
 const duesSchema = new Schema(
   {
     userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
     streetAddress: { type: String, required: true },
     amount: { type: Number, required: true },
     dueDate: { type: Date, required: true },
-    paid: { type: Boolean, default: false },
-    paymentMethod: { type: String, enum: ["Credit Card", "PayPal", "Check"] },
+
+    paid: { type: Boolean, default: false }, // Still used by card/paypal
+    paidStatus: {
+      type: String,
+      enum: ["Unpaid", "Pending", "Paid"],
+      default: "Unpaid",
+    },
+
+    paymentMethod: {
+      type: String,
+      enum: ["Credit Card", "PayPal", "Check"],
+    },
     autoPay: { type: Boolean, default: false },
     transactionId: { type: String },
     subscriptionId: { type: String },
+
+    checkImage: { type: String }, // ✅ New field for S3 URL
   },
   { timestamps: true }
 );

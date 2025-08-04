@@ -66,7 +66,6 @@ const Header = () => {
       ],
       hasSubmenu: true,
     },
-
     {
       id: 4,
       title: "Community",
