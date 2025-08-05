@@ -117,6 +117,29 @@ export const updateUserStatus = async (
   }
 };
 
+export const updateUserDuesStatus = async (
+  token: string,
+  paidStatus: string, 
+  id: string
+) => {
+  try {
+    const response = await API.put(
+      `/dues/update-paid-status/${id}`,
+      { paidStatus }, 
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    throw new Error(
+      error.response?.data?.message || "Failed to update due status"
+    );
+  }
+};
+
 export const getAllUsers = async (token: string) => {
   try {
     const response = await API.get("/user/getAllUsers", {
@@ -147,7 +170,10 @@ export const resetPassword = async ({
   password: string;
 }) => {
   try {
-    const response = await API.post("/auth/reset-password", { token, password });
+    const response = await API.post("/auth/reset-password", {
+      token,
+      password,
+    });
     return response.data;
   } catch (error: any) {
     throw new Error(error.response?.data?.message || "Password reset failed");
