@@ -261,7 +261,6 @@ const CheckedDues = () => {
                     onCancel={() => setIsModalVisible(false)}
                     footer={null}
                 >
-
                     <ul>
                         {selectedUserDues?.checkImage && (
                             <>
@@ -276,8 +275,6 @@ const CheckedDues = () => {
                         )}
 
                     </ul>
-
-
                 </Modal>
 
 
