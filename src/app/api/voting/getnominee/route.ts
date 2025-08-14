@@ -1,5 +1,4 @@
 import { client } from "@/lib/mongodb";
-import Newsletter from "@/lib/models/Newsletter";
 import { NextResponse } from "next/server";
 import Nominee from "@/lib/models/Nominee";
 

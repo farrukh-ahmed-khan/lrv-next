@@ -22,14 +22,30 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: "Forbidden" }, { status: 403 });
   }
 
-  const { firstname, lastname, role, email, streetAddress, phoneNumber } =
-    await req.json();
+  const {
+    firstname,
+    lastname,
+    role,
+    email,
+    streetAddress,
+    phoneNumber,
+    position,
+  } = await req.json();
   const year = new Date().getFullYear();
 
-  const existingNominee = await Nominee.findOne({ email, year });
+  if (!position) {
+    return NextResponse.json(
+      { message: "Position is required" },
+      { status: 400 }
+    );
+  }
+
+  const existingNominee = await Nominee.findOne({ email, year, position }); // ✅ ensure unique per position/year
   if (existingNominee) {
     return NextResponse.json(
-      { message: "This user is already added as a nominee for this year." },
+      {
+        message: "This user is already a nominee for this position this year.",
+      },
       { status: 400 }
     );
   }
@@ -41,6 +57,7 @@ export async function POST(req: Request) {
     email,
     streetAddress,
     phoneNumber,
+    position, // ✅
     year,
     addedBy: decoded.id,
   });

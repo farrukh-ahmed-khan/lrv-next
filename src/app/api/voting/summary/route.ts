@@ -36,6 +36,7 @@ export async function GET(req: Request) {
         lastname: nominee.lastname,
         email: nominee.email,
         role: nominee.role,
+        position: nominee.position,
         voteCount,
       };
     })

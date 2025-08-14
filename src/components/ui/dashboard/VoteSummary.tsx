@@ -1,9 +1,22 @@
+// VoteSummary.tsx
 import { Table, Button, message, Spin } from "antd";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+interface Nominee {
+  _id: string;
+  firstname: string;
+  lastname: string;
+  role: string;
+  email: string;
+  streetAddress?: string;
+  phoneNumber?: string;
+  voteCount?: number;
+  position?: string;
+}
+
 const VoteSummary = () => {
-  const [nominees, setNominees] = useState([]);
+  const [nominees, setNominees] = useState<Nominee[]>([]);
   const [loading, setLoading] = useState(false);
 
   const token = localStorage.getItem("token");
@@ -14,6 +27,7 @@ const VoteSummary = () => {
       const res = await axios.get("/api/voting/summary", {
         headers: { Authorization: `Bearer ${token}` },
       });
+       console.log(res.data.nominees)
       setNominees(res.data.nominees || []);
     } catch (err: any) {
       message.error(err.response?.data?.message || "Failed to fetch data");
@@ -22,21 +36,15 @@ const VoteSummary = () => {
     }
   };
 
-  const promoteToBoardMember = async (userId: string) => {
+  const assignPositions = async () => {
     try {
-      await axios.put(
-        "/api/user/update-role",
-        { userId },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      message.success("User promoted to board member");
-      fetchNominees(); 
+      await axios.post("/api/voting/assignPositions", {}, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      message.success("Positions updated based on votes");
+      fetchNominees();
     } catch (err: any) {
-      message.error(err.response?.data?.message || "Failed to update role");
+      message.error(err.response?.data?.message || "Failed to assign positions");
     }
   };
 
@@ -47,39 +55,40 @@ const VoteSummary = () => {
   const columns = [
     {
       title: "Name",
-      render: (_: any, record: any) => `${record.firstname} ${record.lastname}`,
+      render: (_: any, record: Nominee) => `${record.firstname} ${record.lastname}`,
     },
-    {
-      title: "Email",
-      dataIndex: "email",
-    },
-    {
-      title: "Role",
-      dataIndex: "role",
-    },
-    {
-      title: "Votes",
-      dataIndex: "voteCount",
-    },
-    {
-      title: "Action",
-      render: (_: any, record: any) =>
-        record.role !== "board member" ? (
-          <Button onClick={() => promoteToBoardMember(record.id)}>
-            Make Board Member
-          </Button>
-        ) : (
-          <span style={{ color: "green" }}>Already Board</span>
-        ),
-    },
+    { title: "Email", dataIndex: "email" },
+    { title: "Role", dataIndex: "role" },
+    { title: "Votes", dataIndex: "voteCount" },
+    { title: "Position", dataIndex: "position" },
   ];
+
 
   return (
     <div>
       <h2>Vote Summary</h2>
-      {loading ? <Spin /> : <Table columns={columns} dataSource={nominees} rowKey="id" />}
+      <Button type="primary" onClick={assignPositions} style={{ marginBottom: 16 }}>
+        Assign Positions
+      </Button>
+      {loading ? (
+        <Spin />
+      ) : (
+        [...new Set(nominees.map(n => n.position))].map(pos => (
+          <div key={pos}>
+            <h3>{pos || "No Position Assigned"}</h3>
+           
+            <Table
+              columns={columns}
+              dataSource={nominees.filter(n => n.position === pos)}
+              rowKey="_id"
+              pagination={false}
+            />
+          </div>
+        ))
+      )}
     </div>
   );
+
 };
 
 export default VoteSummary;

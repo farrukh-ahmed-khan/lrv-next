@@ -23,13 +23,24 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: "Forbidden" }, { status: 403 });
   }
 
-  const { nomineeId } = await req.json();
+  const { nomineeId, position } = await req.json();
   const year = new Date().getFullYear();
 
-  const existingVote = await Vote.findOne({ voter: decoded.id, year });
+  if (!position) {
+    return NextResponse.json(
+      { message: "Position is required" },
+      { status: 400 }
+    );
+  }
+
+  const existingVote = await Vote.findOne({
+    voter: decoded.id,
+    year,
+    position,
+  }); // ✅ per position
   if (existingVote) {
     return NextResponse.json(
-      { message: "You already voted this year" },
+      { message: `You already voted for ${position} this year` },
       { status: 400 }
     );
   }
@@ -38,6 +49,7 @@ export async function POST(req: Request) {
     voter: decoded.id,
     nominee: nomineeId,
     year,
+    position, // ✅
   });
 
   return NextResponse.json({ message: "Vote recorded", vote }, { status: 201 });
