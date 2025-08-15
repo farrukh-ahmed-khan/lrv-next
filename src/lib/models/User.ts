@@ -1,3 +1,4 @@
+// User.ts
 import { Schema, model, models } from "mongoose";
 
 const userSchema = new Schema(
@@ -27,15 +28,13 @@ const userSchema = new Schema(
         return this.role === "home member";
       },
     },
-  
+    position: { type: String },
     approvedAt: { type: Date },
     resetToken: { type: String },
     resetTokenExpiry: { type: Date },
   },
-
   { timestamps: true }
 );
 
 const User = models.User || model("User", userSchema);
-
 export default User;

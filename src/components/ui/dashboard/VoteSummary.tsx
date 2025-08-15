@@ -1,5 +1,4 @@
-// VoteSummary.tsx
-import { Table, Button, message, Spin } from "antd";
+import { Table, Button, message, Spin, Input } from "antd";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -18,6 +17,7 @@ interface Nominee {
 const VoteSummary = () => {
   const [nominees, setNominees] = useState<Nominee[]>([]);
   const [loading, setLoading] = useState(false);
+  const [editingPosition, setEditingPosition] = useState<{ [key: string]: string }>({}); // store per-user position input
 
   const token = localStorage.getItem("token");
 
@@ -27,7 +27,6 @@ const VoteSummary = () => {
       const res = await axios.get("/api/voting/summary", {
         headers: { Authorization: `Bearer ${token}` },
       });
-       console.log(res.data.nominees)
       setNominees(res.data.nominees || []);
     } catch (err: any) {
       message.error(err.response?.data?.message || "Failed to fetch data");
@@ -36,15 +35,17 @@ const VoteSummary = () => {
     }
   };
 
-  const assignPositions = async () => {
+  const updatePosition = async (email: string) => {
     try {
-      await axios.post("/api/voting/assignPositions", {}, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      message.success("Positions updated based on votes");
+      await axios.post(
+        "/api/voting/assignPositions", // new API endpoint
+        { email, position: editingPosition[email] },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      message.success("Position updated successfully");
       fetchNominees();
     } catch (err: any) {
-      message.error(err.response?.data?.message || "Failed to assign positions");
+      message.error(err.response?.data?.message || "Failed to update position");
     }
   };
 
@@ -61,34 +62,45 @@ const VoteSummary = () => {
     { title: "Role", dataIndex: "role" },
     { title: "Votes", dataIndex: "voteCount" },
     { title: "Position", dataIndex: "position" },
+    {
+      title: "Update Position",
+      render: (_: any, record: Nominee) => (
+        <>
+          <Input
+            placeholder="Enter new position"
+            value={editingPosition[record.email] || ""}
+            onChange={(e) =>
+              setEditingPosition({ ...editingPosition, [record.email]: e.target.value })
+            }
+            style={{ width: 150, marginRight: 8 }}
+          />
+          <Button
+            type="primary"
+            onClick={() => updatePosition(record.email)}
+            disabled={!editingPosition[record.email]}
+          >
+            Update
+          </Button>
+        </>
+      ),
+    },
   ];
-
 
   return (
     <div>
       <h2>Vote Summary</h2>
-      <Button type="primary" onClick={assignPositions} style={{ marginBottom: 16 }}>
-        Assign Positions
-      </Button>
       {loading ? (
         <Spin />
       ) : (
-        [...new Set(nominees.map(n => n.position))].map(pos => (
-          <div key={pos}>
-            <h3>{pos || "No Position Assigned"}</h3>
-           
-            <Table
-              columns={columns}
-              dataSource={nominees.filter(n => n.position === pos)}
-              rowKey="_id"
-              pagination={false}
-            />
-          </div>
-        ))
+        <Table
+          columns={columns}
+          dataSource={nominees}
+          rowKey="_id"
+          pagination={false}
+        />
       )}
     </div>
   );
-
 };
 
 export default VoteSummary;
