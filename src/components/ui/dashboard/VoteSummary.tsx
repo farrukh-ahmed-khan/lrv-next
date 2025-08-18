@@ -1,6 +1,8 @@
-import { Table, Button, message, Spin, Input } from "antd";
+// VoteSummary.tsx
+import { Table, Button, message, Spin } from "antd";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { getUsers } from "@/lib/UsersApi/api";
 
 interface Nominee {
   _id: string;
@@ -14,11 +16,22 @@ interface Nominee {
   position?: string;
 }
 
+interface User {
+  _id: string;
+  firstname: string;
+  lastname: string;
+  email: string;
+  phoneNumber: string;
+  streetAddress: string;
+  status: string;
+  role: string;
+  position: string
+}
+
 const VoteSummary = () => {
   const [nominees, setNominees] = useState<Nominee[]>([]);
   const [loading, setLoading] = useState(false);
-  const [editingPosition, setEditingPosition] = useState<{ [key: string]: string }>({}); // store per-user position input
-
+  const [userData, setUserData] = useState([]);
   const token = localStorage.getItem("token");
 
   const fetchNominees = async () => {
@@ -35,22 +48,60 @@ const VoteSummary = () => {
     }
   };
 
-  const updatePosition = async (email: string) => {
+  const assignPosition = async (position: string) => {
+    if (!nominees.length) return;
+
+    const positionNominees = nominees.filter((n) => n.position === position);
+
+    if (!positionNominees.length) {
+      message.warning(`No nominees found for ${position}`);
+      return;
+    }
+
+    const topNominee = [...positionNominees].sort(
+      (a, b) => (b.voteCount || 0) - (a.voteCount || 0)
+    )[0];
+
     try {
       await axios.post(
-        "/api/voting/assignPositions", // new API endpoint
-        { email, position: editingPosition[email] },
+        "/api/voting/assignPositions",
+        {
+          email: topNominee.email,
+          position,
+        },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      message.success("Position updated successfully");
+
+      message.success(
+        `Assigned "${position}" to ${topNominee.firstname} ${topNominee.lastname} (${topNominee.email})`
+      );
       fetchNominees();
     } catch (err: any) {
       message.error(err.response?.data?.message || "Failed to update position");
     }
   };
 
+  const fetchData = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.error("No token found.");
+      return;
+    }
+
+    try {
+      const usersRes = await getUsers(token);
+      const filteredUsers = usersRes.users.filter((user: User) => user.role === "home owner");
+
+      setUserData(filteredUsers); // keep full users with position
+    } catch (error: any) {
+      console.error("Failed to fetch users", error);
+    }
+  };
+
+
   useEffect(() => {
     fetchNominees();
+    fetchData();
   }, []);
 
   const columns = [
@@ -63,42 +114,45 @@ const VoteSummary = () => {
     { title: "Votes", dataIndex: "voteCount" },
     { title: "Position", dataIndex: "position" },
     {
-      title: "Update Position",
-      render: (_: any, record: Nominee) => (
-        <>
-          <Input
-            placeholder="Enter new position"
-            value={editingPosition[record.email] || ""}
-            onChange={(e) =>
-              setEditingPosition({ ...editingPosition, [record.email]: e.target.value })
-            }
-            style={{ width: 150, marginRight: 8 }}
-          />
-          <Button
-            type="primary"
-            onClick={() => updatePosition(record.email)}
-            disabled={!editingPosition[record.email]}
-          >
-            Update
-          </Button>
-        </>
-      ),
-    },
+      title: "Assign Position",
+      render: (_: any, record: Nominee) => {
+        const matchedUser = (userData as any[]).find((u) => u.email === record.email);
+        return matchedUser?.position ?? "N/A";
+      },
+    }
+
   ];
 
   return (
     <div>
-      <h2>Vote Summary</h2>
       {loading ? (
         <Spin />
       ) : (
-        <Table
-          columns={columns}
-          dataSource={nominees}
-          rowKey="_id"
-          pagination={false}
-        />
+        [...new Set(nominees.map((n) => n.position))].map((pos) => (
+          <div key={pos}>
+            <h3>{pos || "No Position Assigned"}</h3>
+
+            {/* Assign button for this position only */}
+            {pos && (
+              <Button
+                type="primary"
+                onClick={() => assignPosition(pos)}
+                style={{ marginBottom: 8 }}
+              >
+                Assign {pos}
+              </Button>
+            )}
+
+            <Table
+              columns={columns}
+              dataSource={nominees.filter((n) => n.position === pos)}
+              rowKey="_id"
+              pagination={false}
+            />
+          </div>
+        ))
       )}
+
     </div>
   );
 };

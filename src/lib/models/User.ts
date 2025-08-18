@@ -28,7 +28,7 @@ const userSchema = new Schema(
         return this.role === "home member";
       },
     },
-    position: { type: String },
+    position: { type: String, default: null },
     approvedAt: { type: Date },
     resetToken: { type: String },
     resetTokenExpiry: { type: Date },

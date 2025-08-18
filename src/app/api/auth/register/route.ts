@@ -83,6 +83,7 @@ export async function POST(req: Request) {
           password: hashedPassword,
           ownerId: homeOwner._id,
           approvedAt: null,
+          position: null,
         });
 
         await newUser.save();
@@ -119,6 +120,7 @@ export async function POST(req: Request) {
       role,
       password: hashedPassword,
       approvedAt: null,
+      position: null,
     });
 
     await newUser.save();
