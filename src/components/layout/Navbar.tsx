@@ -163,14 +163,15 @@ const Header = () => {
   const fetchEventData = async () => {
     try {
       const data = await getEvents();
-      console.log(data)
-      setEventData(data || []);
-
+      if (JSON.stringify(data) !== JSON.stringify(eventData)) {
+        setEventData(data || []);
+      }
     } catch (error) {
       console.error(error);
       // toast.error("Failed to fetch events.");
     }
   };
+
 
 
   useEffect(() => {
@@ -283,7 +284,7 @@ const Header = () => {
                   {
                     user.role === "home owner" || user.role === "home member" ? (
                       <>
-                        
+
                         <li className="btn-li">
                           <Link href="/profile"><Person /></Link>
                         </li>

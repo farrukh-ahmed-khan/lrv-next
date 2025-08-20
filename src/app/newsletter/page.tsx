@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
+import Link from "next/link";
 
 const NewsLetter = () => {
   const [newslettersByYear, setNewslettersByYear] = useState<{ [year: string]: any[] }>({});
@@ -21,9 +22,8 @@ const NewsLetter = () => {
       try {
         const res = await axios.get("/api/newsletter/getAll");
         const grouped: { [year: string]: any[] } = {};
-
         res.data.newsletters.forEach((newsletter: any) => {
-          const year = new Date(newsletter.createdAt).getFullYear();
+          const year = newsletter.year;
           if (!grouped[year]) grouped[year] = [];
           grouped[year].push(newsletter);
         });
@@ -90,6 +90,8 @@ const NewsLetter = () => {
     }
   };
 
+
+
   return (
     <ProtectedPage allowedRoles={["home owner", "home member", "board member", "admin"]}>
       <div className="newsletter-wrapper">
@@ -130,13 +132,16 @@ const NewsLetter = () => {
                           {newslettersByYear[year].map((nl) => (
                             <div className="newsletter-item" key={nl._id}>
                               <div className="left">
-                                <input
-                                  type="checkbox"
-                                  checked={!!selectedPdfs[nl._id]}
-                                  onChange={(e) => handlePdfSelect(nl, e.target.checked)}
-                                />
-                                <div className="pdf-icon">PDF</div>
-                                <span className="title">{nl.title}</span>
+                                <Link href={nl.fileUrl} target="_blank" rel="noopener noreferrer">
+                                  <input
+                                    type="checkbox"
+                                    checked={!!selectedPdfs[nl._id]}
+                                    onChange={(e) => handlePdfSelect(nl, e.target.checked)}
+                                  />
+                                  <div className="pdf-icon">PDF</div>
+                                  <span className="title">{nl.title}</span>
+                                </Link>
+
                               </div>
                               <div className="right">
                                 <span className="date">
