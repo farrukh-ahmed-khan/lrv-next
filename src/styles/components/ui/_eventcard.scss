@@ -1,0 +1,135 @@
+.event-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  }
+
+  h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #222;
+    font-family: var(--fontkarantine);
+  }
+
+  h4 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #222;
+    font-family: var(--fontkarantine);
+  }
+
+  p {
+    font-size: 0.95rem;
+    color: #555;
+    margin: 6px 0;
+    font-family: var(--fontgilroy);
+
+    &:last-of-type {
+      font-weight: 500;
+      color: #333;
+    }
+  }
+
+  img {
+    width: 100%;
+    max-height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin: 15px 0;
+  }
+
+  div {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 10px;
+
+    button {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: var(--fontgilroy);
+      &:disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+
+      &:first-of-type {
+        background: #28a745;
+        color: #fff;
+
+        &:hover:not(:disabled) {
+          background: #218838;
+        }
+      }
+
+      &:last-of-type {
+        background: #dc3545;
+        color: #fff;
+
+        &:hover:not(:disabled) {
+          background: #c82333;
+        }
+      }
+    }
+  }
+}
+.rsvp-list {
+  padding: 12px 16px;
+  background: #fafafa;
+  border-radius: 8px;
+}
+
+.rsvp-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 12px 0 6px;
+  color: #333;
+}
+
+.rsvp-ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 12px;
+}
+
+.rsvp-li {
+  padding: 6px 10px;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.rsvp-li.attended {
+  color: #16a34a; // green
+  font-weight: 500;
+}
+
+.rsvp-li.not-attended {
+  color: #dc2626; // red
+  font-weight: 500;
+}
+
+.rsvp-li .email {
+  color: #666;
+  font-size: 13px;
+  font-weight: 400;
+}
+

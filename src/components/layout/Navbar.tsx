@@ -105,6 +105,7 @@ const Header = () => {
       ],
       hasSubmenu: true,
     },
+
     {
       id: 5,
       title: "About LRV",
@@ -137,6 +138,11 @@ const Header = () => {
       id: 6,
       title: "Vote Candidate",
       link: "/vote-candidate",
+    },
+    {
+      id: 7,
+      title: "Upcoming Events",
+      link: "/upcomingEvents",
     },
   ];
 
@@ -198,14 +204,14 @@ const Header = () => {
             <span></span>
           </div>
           <div className="row d-flex align-items-center">
-            <div className="col-lg-3">
+            <div className="col-lg-2">
               <div className="logo">
                 <Link href="/">
                   <Image src={logo} alt="logo" />
                 </Link>
               </div>
             </div>
-            <div className="col-lg-6">
+            <div className="col-lg-7">
               <div className={`menu ${menuOpen ? "open" : ""}`}>
                 <ul className="menu">
                   {navbardata.map((data) => (

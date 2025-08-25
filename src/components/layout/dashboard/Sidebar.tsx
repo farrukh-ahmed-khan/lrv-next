@@ -10,6 +10,7 @@ import LocalAtmIcon from "@mui/icons-material/LocalAtm";
 import {
     AddCard,
     Email,
+    Event,
     MeetingRoom,
     Person,
     Receipt,
@@ -71,7 +72,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavClosed }) => {
                 icon: <Person />,
                 link: "/dashboard/boardmember/homeMembers",
             },
-             {
+            {
                 title: "Create Board Member",
                 icon: <Person />,
                 link: "/dashboard/boardmember/createBoardMember",
@@ -112,6 +113,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavClosed }) => {
                 link: "/dashboard/boardmember/addEvent",
             },
             {
+                title: "Upcoming Events",
+                icon: <Event />,
+                link: "/dashboard/boardmember/upcomingEvents",
+            },
+            {
                 title: "Send Email",
                 icon: <Email />,
                 link: "/dashboard/boardmember/sendMail",
@@ -126,11 +132,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavClosed }) => {
                 icon: <Person />,
                 link: "/dashboard/boardmember/nominees",
             },
-             {
+            {
                 title: "Voting Result",
                 icon: <ResetTvSharp />,
                 link: "/dashboard/boardmember/votingResult",
             },
+            
         ];
         return (
             <div className={`sidebar ${isNavClosed ? "nav-closed" : ""}`}>
