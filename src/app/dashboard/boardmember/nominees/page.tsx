@@ -258,7 +258,7 @@ const Page = () => {
                     }
                     options={usersData.map((u) => ({
                       label: `${u.firstname} ${u.lastname} (${u.email})`,
-                      value: u.email, // keep as email because you search by it above
+                      value: u.email, 
                     }))}
                   />
                 </Form.Item>
