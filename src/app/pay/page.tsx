@@ -24,6 +24,8 @@ export default function PayPage() {
 
     const [due, setDue] = useState<Due | null>(null);
     const [checkImage, setCheckImage] = useState<File | null>(null);
+    const [loading, setLoading] = useState(false);
+    const [uploaded, setUploaded] = useState(false);
     const user = JSON.parse(localStorage.getItem("user") || "{}");
     const token = localStorage.getItem("token");
 
@@ -32,7 +34,10 @@ export default function PayPage() {
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
-        if (file) setCheckImage(file);
+        if (file) {
+            setCheckImage(file)
+            setUploaded(false);
+        };
     };
 
     const handleCheckUpload = async (e: React.FormEvent) => {
@@ -44,15 +49,20 @@ export default function PayPage() {
         formData.append("dueId", dueId || "");
 
         try {
+            setLoading(true);
             await axios.post("/api/dues/upload-check", formData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             });
             toast.success("Check uploaded successfully");
+            setUploaded(true);
+            setCheckImage(null);
         } catch (error) {
             console.error("Upload failed", error);
             toast.error("Failed to upload check");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -128,8 +138,10 @@ export default function PayPage() {
                                                 encType="multipart/form-data"
                                                 className="flex flex-col gap-2"
                                             >
-                                                <input type="file" accept="image/*" onChange={handleFileChange} />
-                                                <button className="btn btn-primary" type="submit">Upload Check</button>
+                                                <input type="file" accept="image/*" onChange={handleFileChange} disabled={loading} />
+                                                <button className="btn btn-primary" type="submit"  disabled={loading || uploaded}>
+                                                    {loading ? "Uploading..." : uploaded ? "Uploaded ✅" : "Upload Check"}
+                                                </button>
                                             </form>
                                             {/* <h2>Auto-Pay Subscription</h2>
                                     <PayPalSubscriptionButton planId="P-1UC67166DB986312YNAJ4N4Q" dueId={due._id}/> */}

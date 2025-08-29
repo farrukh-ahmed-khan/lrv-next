@@ -15,6 +15,7 @@ type Due = {
     date: string;
     userId: string;
     dueDate: string;
+    paymentMethod: string;
 };
 
 interface User {
@@ -73,6 +74,7 @@ const AdminDues = () => {
                     dueAmount: due.amount,
                     duePaid: due.paid,
                     dueDate: due.dueDate,
+                    paymentMethod: due.paymentMethod || "N/A",
                 }));
             });
 
@@ -87,11 +89,6 @@ const AdminDues = () => {
     useEffect(() => {
         fetchData();
     }, []);
-
-
-
-
-
 
     const columns = [
         {
@@ -131,6 +128,12 @@ const AdminDues = () => {
             render: (amount: number) => `$${amount.toFixed(2)}`
         },
         {
+            title: "Payment Method", // ✅ new column
+            dataIndex: "paymentMethod",
+            key: "paymentMethod",
+            render: (method: string) => method || "N/A",
+        },
+        {
             title: "Paid",
             dataIndex: "duePaid",
             key: "duePaid",
@@ -141,7 +144,8 @@ const AdminDues = () => {
             dataIndex: "dueDate",
             key: "dueDate",
             render: (date: string) => new Date(date).toLocaleDateString(),
-        }
+        },
+
     ];
 
 

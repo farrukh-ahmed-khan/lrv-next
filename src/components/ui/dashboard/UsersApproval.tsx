@@ -59,7 +59,9 @@ const UsersApproval = () => {
             setDues(allDues);
 
             const usersRes = await getUsers(token);
-            const filteredUsers = usersRes.users.filter((user: User) => user.role === "home owner");
+            const filteredUsers = usersRes.users.filter(
+                (user: User) => user.role === "home owner" || user.role === "board member"
+            );
 
             const usersWithDues = filteredUsers.map((user: User) => {
 

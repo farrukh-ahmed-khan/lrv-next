@@ -63,7 +63,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavClosed }) => {
                 link: "/dashboard/boardmember",
             },
             {
-                title: "Home Owners",
+                title: "Home Owners/ Board Members",
                 icon: <Person />,
                 link: "/dashboard/boardmember/homeAdmins",
             },

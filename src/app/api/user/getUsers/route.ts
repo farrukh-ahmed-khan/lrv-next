@@ -27,7 +27,7 @@ export async function GET(req: Request) {
 
     const users = await User.find(
       { 
-        role: { $nin: ["admin", "board member"] }, 
+        role: { $nin: ["admin"] }, 
         password: { $exists: true, $ne: null }
       },
       "-password"

@@ -119,8 +119,15 @@ const CreateBoardMembers = () => {
             fetchData();
         } catch (err: any) {
             message.error(err.response?.data?.message || "Failed to update role");
+        } finally {
+            // ✅ clear loading state
+            setLoadingStates((prev) => {
+                const { [record.id]: _, ...rest } = prev;
+                return rest;
+            });
         }
     };
+
 
     useEffect(() => {
         fetchData();
@@ -161,13 +168,17 @@ const CreateBoardMembers = () => {
             title: "Action",
             render: (_: any, record: any) =>
                 record.role !== "board member" ? (
-                    <Button onClick={() => promoteToBoardMember(record.id)}>
+                    <Button
+                        onClick={() => promoteToBoardMember(record)}
+                        loading={loadingStates[record.id] === "updateStatus"} // ✅ show spinner while updating
+                    >
                         Make Board Member
                     </Button>
                 ) : (
                     <span style={{ color: "green" }}>Already Board</span>
                 ),
         },
+
     ];
 
 
