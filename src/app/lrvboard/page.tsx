@@ -44,14 +44,14 @@ const director = [
     para: "58 Silver Saddle Lane 303-880-7455 Spouse - Aga LRV homeowner since 2015 Management Consultant",
     image: director4,
   },
-  {
-    id: 5,
-    name: "Neil Chhabria",
-    designation: "Director",
-    para: "23 Santa Bella Road 310-902-7227 Spouse - Sanam LRV homeowner since 2021 Real Estate Broke",
+  // {
+  //   id: 5,
+  //   name: "Neil Chhabria",
+  //   designation: "Director",
+  //   para: "23 Santa Bella Road 310-902-7227 Spouse - Sanam LRV homeowner since 2021 Real Estate Broke",
 
-    image: director5,
-  },
+  //   image: director5,
+  // },
   {
     id: 6,
     name: "Dave Luzan",
