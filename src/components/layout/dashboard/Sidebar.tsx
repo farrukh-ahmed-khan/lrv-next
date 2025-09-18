@@ -103,7 +103,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavClosed }) => {
                 link: "/dashboard/boardmember/meeting",
             },
             {
-                title: "Lrv Law",
+                title: "LRV Bylaw",
                 icon: <VerifiedUserRounded />,
                 link: "/dashboard/boardmember/lrvhoa-law",
             },
@@ -137,7 +137,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavClosed }) => {
                 icon: <ResetTvSharp />,
                 link: "/dashboard/boardmember/votingResult",
             },
-            
+
         ];
         return (
             <div className={`sidebar ${isNavClosed ? "nav-closed" : ""}`}>

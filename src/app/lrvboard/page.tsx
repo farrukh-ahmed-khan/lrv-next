@@ -6,6 +6,8 @@ import director4 from "@/assets/images/directors/director4.png";
 import director5 from "@/assets/images/directors/director5.png";
 import director6 from "@/assets/images/directors/director6.png";
 import director7 from "@/assets/images/directors/director7.png";
+import director8 from "@/assets/images/directors/director8.jpg";
+import personIcon from "../../../public/images/person-icon.png"
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Navbar";
 import InnerBanner from "@/components/ui/InnerBanner";
@@ -18,7 +20,7 @@ const director = [
     id: 1,
     name: "Steve Moe",
     designation: "President",
-    image: director1,
+    image: personIcon,
   },
   {
     id: 2,
@@ -64,6 +66,13 @@ const director = [
     para: "36 Silver Saddle Lane 310-351-4999 Spouse - Brian LRV Homeowner - 23 years Retired Del Taco Food Scientist Realtor & Office Manager",
     image: director7,
   },
+  {
+    id: 8,
+    name: "Keith",
+    designation: "Director",
+    para: "Spouse - Lisa - LRV Homeowner - since 2018 - Business owner - Real Estate",
+    image: director8,
+  },
 ];
 
 const LrvBoard = () => {
@@ -90,7 +99,7 @@ const LrvBoard = () => {
                 <div className="col-lg-3">
                   <div className="director-card">
                     <div className="img-wrap">
-                      <Image src={member.image} alt=""  />
+                      <Image src={member.image} alt="" />
                     </div>
                     <div className="content-wrap">
                       <h4>{member.name}</h4>
