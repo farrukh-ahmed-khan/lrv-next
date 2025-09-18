@@ -194,7 +194,7 @@ const Header = () => {
   return (
     <div className="headers-wrapper">
       <div className="header-wrapper">
-        <div className="container">
+        <div className="container-fluid">
           <div
             className={`menu-Bar ${menuOpen ? "open" : ""}`}
             onClick={toggleMenu}

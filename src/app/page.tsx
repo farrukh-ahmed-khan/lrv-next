@@ -72,12 +72,12 @@ const director: Director[] = [
     designation: "Treasurer",
     image: director4,
   },
-  {
-    id: 5,
-    name: "Neil Chhabria",
-    designation: "Director",
-    image: director5,
-  },
+  // {
+  //   id: 5,
+  //   name: "Neil Chhabria",
+  //   designation: "Director",
+  //   image: director5,
+  // },
   {
     id: 6,
     name: "Dave Luzan",

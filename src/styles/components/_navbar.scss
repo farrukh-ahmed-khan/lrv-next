@@ -134,7 +134,7 @@
     justify-content: center;
     align-items: center;
 
-    .container {
+    .container-fluid {
       margin: 20px;
       padding: 20px;
       background-color: var(--white);
@@ -212,10 +212,10 @@
                 color: var(--white);
                 text-align: center;
                 font-family: var(--fontfamily);
-                font-size: 14px;
+                font-size: 12px;
                 font-style: normal;
                 font-weight: 500;
-                line-height: 20px;
+                line-height: 18px;
                 text-transform: capitalize;
               }
 
