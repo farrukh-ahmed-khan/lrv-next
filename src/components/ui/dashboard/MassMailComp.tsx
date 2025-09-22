@@ -37,13 +37,12 @@ const SendMassMail = () => {
             console.error("No token found.");
             return;
         }
-
-
-
         try {
             const data = await getUsers(token);
             const fetchedData = data.users
-                .filter((user: User) => user.role === "home owner")
+                .filter(
+                    (user: User) => user.role === "home owner" && user.status === "approved"
+                )
                 .map((data: User) => ({
                     _id: data._id,
                     firstname: data.firstname,
@@ -54,12 +53,14 @@ const SendMassMail = () => {
                     role: data.role,
                     status: data.status,
                 }));
+
             setUserData(fetchedData);
         } catch (error: any) {
             console.error(error);
             toast.error("Error fetching user data");
         }
     };
+
 
     const handleSendEmails = async () => {
         if (!subject || !message) {

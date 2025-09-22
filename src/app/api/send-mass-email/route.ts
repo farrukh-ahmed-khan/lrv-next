@@ -3,6 +3,8 @@ import { client } from "@/lib/mongodb";
 import User from "@/lib/models/User";
 import { verifyToken } from "@/lib/jwt";
 import nodemailer from "nodemailer";
+import mongoose from "mongoose";
+
 
 export async function POST(req: Request) {
   try {
@@ -33,12 +35,12 @@ export async function POST(req: Request) {
     } else if (recipientType === "street" && street) {
       recipients = await User.find({
         role: "home owner",
-        streetAddress: street,
+        streetAddress: { $regex: new RegExp(`^${street}$`, "i") }, // case-insensitive
         status: "approved",
       });
     } else if (recipientType === "specific" && Array.isArray(userIds)) {
       recipients = await User.find({
-        _id: { $in: userIds },
+        _id: { $in: userIds.map((id) => new mongoose.Types.ObjectId(id)) }, // convert to ObjectId
         role: "home owner",
         status: "approved",
       });
@@ -61,7 +63,7 @@ export async function POST(req: Request) {
     const transporter = nodemailer.createTransport({
       host: process.env.MAIL_HOST,
       port: parseInt(process.env.MAIL_PORT || "587"),
-      secure: false, 
+      secure: false,
       auth: {
         user: process.env.MAIL_USERNAME,
         pass: process.env.MAIL_PASSWORD,
@@ -72,12 +74,12 @@ export async function POST(req: Request) {
     });
 
     await transporter.sendMail({
-        from: `"${process.env.MAIL_FROM_NAME}" <${process.env.MAIL_FROM_ADDRESS}>`,
-        to: emails, 
-        subject,
-        html: `<p>${message}</p>`,
-      });
-      
+      from: `"${process.env.MAIL_FROM_NAME}" <${process.env.MAIL_FROM_ADDRESS}>`,
+      to: emails,
+      subject,
+      html: `<p>${message}</p>`,
+    });
+
     return NextResponse.json({ message: "Emails sent successfully" });
   } catch (error: any) {
     console.error("Email sending error:", error);
