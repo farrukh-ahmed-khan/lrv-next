@@ -78,6 +78,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavClosed }) => {
                 link: "/dashboard/boardmember/createBoardMember",
             },
             {
+                title: "Create Board Directors",
+                icon: <Person />,
+                link: "/dashboard/boardmember/boardOfdirector",
+            },
+            {
                 title: "Your Dues",
                 icon: <Receipt />,
                 link: "/dashboard/boardmember/ownerDues",
