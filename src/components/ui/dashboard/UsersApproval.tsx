@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { Space, Table, Select, Button, Modal } from "antd";
+import { Space, Table, Select, Button, Modal, Form, Input  } from "antd";
 import toast from "react-hot-toast";
 import { getUsers, updateUserStatus } from "@/lib/UsersApi/api";
 import axios from "axios";
@@ -41,6 +41,11 @@ const UsersApproval = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [selectedUserDues, setSelectedUserDues] = useState<Due[]>([]);
     const [selectedUserName, setSelectedUserName] = useState<string>("");
+
+
+    const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+    const [editingUser, setEditingUser] = useState<any>(null);
+    const [form] = Form.useForm();
 
     const fetchData = async () => {
         const token = localStorage.getItem("token");
@@ -124,6 +129,27 @@ const UsersApproval = () => {
         }
     };
 
+    const handleEditUser = async () => {
+        console.log(editingUser)
+        try {
+            const values = await form.validateFields();
+            if (!editingUser) return;
+
+            await axios.put(
+                `/api/user/${editingUser.id}`,
+                { ...values },
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+
+            toast.success("User updated successfully!");
+            setIsEditModalVisible(false);
+            fetchData();
+        } catch (error: any) {
+            console.error(error);
+            toast.error(error.response?.data?.message || "Failed to update user");
+        }
+    };
+
     const columns = [
         {
             title: "First Name",
@@ -189,6 +215,22 @@ const UsersApproval = () => {
                                     <Option value="approved">Approved</Option>
                                     <Option value="movedout">Moved Out</Option>
                                 </Select>
+
+                                <Button
+                                    type="link"
+                                    onClick={() => {
+                                        setEditingUser(record);
+                                        form.setFieldsValue({
+                                            firstname: record.firstname,
+                                            lastname: record.lastname,
+                                            email: record.email,
+                                            phoneNumber: record.phonenumber,
+                                        });
+                                        setIsEditModalVisible(true);
+                                    }}
+                                >
+                                    Edit
+                                </Button>
                             </Space>
                         )}
                     </Space>
@@ -242,6 +284,28 @@ const UsersApproval = () => {
                     ) : (
                         <p>No dues found for this user.</p>
                     )}
+                </Modal>
+
+                <Modal
+                    title={`Edit User`}
+                    open={isEditModalVisible}
+                    onCancel={() => setIsEditModalVisible(false)}
+                    onOk={handleEditUser}
+                >
+                    <Form form={form} layout="vertical">
+                        <Form.Item name="firstname" label="First Name" rules={[{ required: true }]}>
+                            <Input />
+                        </Form.Item>
+                        <Form.Item name="lastname" label="Last Name" rules={[{ required: true }]}>
+                            <Input />
+                        </Form.Item>
+                        <Form.Item name="email" label="Email" rules={[{ required: true, type: "email" }]}>
+                            <Input />
+                        </Form.Item>
+                        <Form.Item name="phoneNumber" label="Phone Number" rules={[{ required: true }]}>
+                            <Input />
+                        </Form.Item>
+                    </Form>
                 </Modal>
             </div>
 

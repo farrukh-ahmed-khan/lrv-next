@@ -1,11 +1,24 @@
 // import "./addstorecompany.css";
 import React, { useEffect, useState } from "react";
 
-import { Space, Table, Select } from "antd";
+import { Space, Table, Select, Button, Modal, Form, Input } from "antd";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import toast from "react-hot-toast";
 import Link from "next/link";
 import { getUsers, updateUserStatus } from "@/lib/UsersApi/api";
+import axios from "axios";
+
+interface User {
+    _id: string;
+    firstname: string;
+    lastname: string;
+    email: string;
+    phoneNumber: string;
+    streetAddress: string;
+    status: string;
+    role: string;
+}
+
 
 const UsersApproval = () => {
     const { Option } = Select;
@@ -16,16 +29,10 @@ const UsersApproval = () => {
     const token = localStorage.getItem("token")
     const role = user.role;
 
-    interface User {
-        _id: string;
-        firstname: string;
-        lastname: string;
-        email: string;
-        phoneNumber: string;
-        streetAddress: string;
-        status: string;
-        role: string;
-    }
+    const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+    const [editingUser, setEditingUser] = useState<any>(null);
+    const [form] = Form.useForm();
+
 
     const fetchUserData = async () => {
         if (!token) {
@@ -83,6 +90,27 @@ const UsersApproval = () => {
     };
 
 
+    const handleEditUser = async () => {
+        console.log(editingUser)
+        try {
+            const values = await form.validateFields();
+            if (!editingUser) return;
+
+            await axios.put(
+                `/api/user/${editingUser.id}`,
+                { ...values },
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+
+            toast.success("User updated successfully!");
+            setIsEditModalVisible(false);
+            fetchUserData();
+        } catch (error: any) {
+            console.error(error);
+            toast.error(error.response?.data?.message || "Failed to update user");
+        }
+    };
+
 
 
     const columns = [
@@ -137,6 +165,23 @@ const UsersApproval = () => {
                                     <Option value="approved">Approved</Option>
                                     <Option value="movedout">Moved Out</Option>
                                 </Select>
+
+
+                                <Button
+                                    type="link"
+                                    onClick={() => {
+                                        setEditingUser(record);
+                                        form.setFieldsValue({
+                                            firstname: record.firstname,
+                                            lastname: record.lastname,
+                                            email: record.email,
+                                            phoneNumber: record.phonenumber,
+                                        });
+                                        setIsEditModalVisible(true);
+                                    }}
+                                >
+                                    Edit
+                                </Button>
                             </Space>
                         )}
                     </Space>
@@ -182,6 +227,27 @@ const UsersApproval = () => {
                 </div>
             </div>
 
+            <Modal
+                title={`Edit User`}
+                open={isEditModalVisible}
+                onCancel={() => setIsEditModalVisible(false)}
+                onOk={handleEditUser}
+            >
+                <Form form={form} layout="vertical">
+                    <Form.Item name="firstname" label="First Name" rules={[{ required: true }]}>
+                        <Input />
+                    </Form.Item>
+                    <Form.Item name="lastname" label="Last Name" rules={[{ required: true }]}>
+                        <Input />
+                    </Form.Item>
+                    <Form.Item name="email" label="Email" rules={[{ required: true, type: "email" }]}>
+                        <Input />
+                    </Form.Item>
+                    <Form.Item name="phoneNumber" label="Phone Number" rules={[{ required: true }]}>
+                        <Input />
+                    </Form.Item>
+                </Form>
+            </Modal>
 
         </>
     );
