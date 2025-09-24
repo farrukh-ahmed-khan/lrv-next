@@ -1,16 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import aboutUsImg from "@/assets/images/aboutImg.png";
 import payImg from "@/assets/images/home/pay-img.png";
-import director1 from "@/assets/images/directors/director1.png";
-import director2 from "@/assets/images/directors/director2.png";
-import director3 from "@/assets/images/directors/director3.png";
-import director4 from "@/assets/images/directors/director4.png";
-import director5 from "@/assets/images/directors/director5.png";
-import director6 from "@/assets/images/directors/director6.png";
-import director7 from "@/assets/images/directors/director7.png";
 import slide1 from "@/assets/images/home/slide1.png";
 import slide2 from "@/assets/images/home/slide2.png";
 
@@ -39,6 +32,7 @@ import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Navbar";
 import HomeBanner from "@/components/ui/HomeBanner";
 import AboutUs from "@/components/ui/AboutUs";
+import { getDirectors } from "@/lib/DirectorsApi/api";
 
 interface Director {
   id: number;
@@ -47,50 +41,7 @@ interface Director {
   image: StaticImageData;
 }
 
-const director: Director[] = [
-  {
-    id: 1,
-    name: "Steve Moe",
-    designation: "President",
-    image: director1,
-  },
-  {
-    id: 2,
-    name: "Jeff Romanelli",
-    designation: "Vice President",
-    image: director2,
-  },
-  {
-    id: 3,
-    name: "Tom Wynne",
-    designation: "Secretary",
-    image: director3,
-  },
-  {
-    id: 4,
-    name: "Praveen Gattu",
-    designation: "Treasurer",
-    image: director4,
-  },
-  // {
-  //   id: 5,
-  //   name: "Neil Chhabria",
-  //   designation: "Director",
-  //   image: director5,
-  // },
-  {
-    id: 6,
-    name: "Dave Luzan",
-    designation: "Director",
-    image: director6,
-  },
-  {
-    id: 7,
-    name: "Meg Puccinelli",
-    designation: "Director",
-    image: director7,
-  },
-];
+
 
 interface Event {
   id: number;
@@ -139,6 +90,15 @@ const events: Event[] = [
   },
 ];
 
+interface DirectorType {
+  _id: string;
+  directorname: string;
+  designation: string;
+  description?: string;
+  image?: string;
+}
+
+
 const images: StaticImageData[] = [
   gallery1,
   gallery2,
@@ -152,6 +112,7 @@ const images: StaticImageData[] = [
 
 
 const Home: React.FC = () => {
+  const [directorData, setDirectorData] = useState<DirectorType[]>([]);
   const [selectedImage, setSelectedImage] = useState<StaticImageData | null>(null);
   const [currentIndex, setCurrentIndex] = useState<number | null>(null);
 
@@ -178,6 +139,25 @@ const Home: React.FC = () => {
       setSelectedImage(images[currentIndex + 1]);
     }
   };
+
+  const fetchDirectorData = async () => {
+    try {
+      const data = await getDirectors();
+      if (Array.isArray(data)) {
+        setDirectorData(data);
+      } else if (data?.directors && Array.isArray(data.directors)) {
+        setDirectorData(data.directors);
+      } else {
+        setDirectorData([]);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchDirectorData();
+  }, []);
 
   return (
     <>
@@ -293,15 +273,26 @@ const Home: React.FC = () => {
               </div>
             </div>
             <div className="row d-flex justify-content-center">
-              {director.map((member, index) => (
-                <div className="col-lg-3" key={index}>
+              
+              {directorData.map((member, index) => (
+                <div className="col-lg-3" key={member._id || index}>
                   <div className="director-card">
                     <div className="img-wrap">
-                      <Image src={member.image} alt="" />
+                      <Image
+                        src={member.image || "/images/person-icon.png"} // fallback image
+                        alt={member.directorname || "director"}
+                        width={200}
+                        height={200}
+                      />
                     </div>
                     <div className="content-wrap">
-                      <h4>{member.name}</h4>
+                      <h4>{member.directorname}</h4>
                       <p>{member.designation}</p>
+                      {member?.description ? (
+                        <p>{member.description}</p>
+                      ) : (
+                        <p></p>
+                      )}
                     </div>
                   </div>
                 </div>
