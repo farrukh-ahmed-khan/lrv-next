@@ -33,6 +33,9 @@ import Header from "@/components/layout/Navbar";
 import HomeBanner from "@/components/ui/HomeBanner";
 import AboutUs from "@/components/ui/AboutUs";
 import { getDirectors } from "@/lib/DirectorsApi/api";
+import toast from "react-hot-toast";
+import { uploadContactForms } from "@/lib/ContactFormApi/api";
+import { getEvents } from "@/lib/UpcomingEventsApi/api";
 
 interface Director {
   id: number;
@@ -50,45 +53,6 @@ interface Event {
   para1: string;
   para2: string;
 }
-
-const events: Event[] = [
-  {
-    id: 1,
-    img: slide1,
-    name: "HALLOWEEN PARTY",
-    para1:
-      "The Los Ranchos Verdes Homeowners Association sponsors, in part, an annual LRV Halloween Party.We also include our adjacent neighbors from Ranchview Road.",
-    para2:
-      "This children's and adult event takes place at the intersection of Seacrest Road and Shady Vista Road, and precedes trick-or-treating activities in LRV. There are games, prizes, food (pizza), and soft drinks.",
-  },
-  {
-    id: 2,
-    img: slide2,
-    name: "CHRISTMAS PARTY",
-    para1:
-      "The Los Ranchos Verdes Homeowners Association sponsors, in part, an Annual LRV Christmas Party in December. All homeowners are invited to attend. Each year, the Christmas Party gathering is hosted by a volunteer homeowner.",
-    para2:
-      "Around 6:00PM, residents meet at the designated Christmas Party home for food, beverages, fun, voting for your favorite Christmas decorations, and perhaps a Santa visit for the kids!",
-  },
-  {
-    id: 3,
-    img: slide1,
-    name: "CHRISTMAS PARTY",
-    para1:
-      "The Los Ranchos Verdes Homeowners Association sponsors, in part, an Annual LRV Christmas Party in December. All homeowners are invited to attend. Each year, the Christmas Party gathering is hosted by a volunteer homeowner.",
-    para2:
-      "Around 6:00PM, residents meet at the designated Christmas Party home for food, beverages, fun, voting for your favorite Christmas decorations, and perhaps a Santa visit for the kids!",
-  },
-  {
-    id: 4,
-    img: slide2,
-    name: "CHRISTMAS PARTY",
-    para1:
-      "The Los Ranchos Verdes Homeowners Association sponsors, in part, an Annual LRV Christmas Party in December. All homeowners are invited to attend. Each year, the Christmas Party gathering is hosted by a volunteer homeowner.",
-    para2:
-      "Around 6:00PM, residents meet at the designated Christmas Party home for food, beverages, fun, voting for your favorite Christmas decorations, and perhaps a Santa visit for the kids!",
-  },
-];
 
 interface DirectorType {
   _id: string;
@@ -110,11 +74,29 @@ const images: StaticImageData[] = [
   gallery8,
 ];
 
+interface EventType {
+  _id: string;
+  eventname: string;
+  description?: string;
+  image: string;
+}
+
+
 
 const Home: React.FC = () => {
   const [directorData, setDirectorData] = useState<DirectorType[]>([]);
   const [selectedImage, setSelectedImage] = useState<StaticImageData | null>(null);
   const [currentIndex, setCurrentIndex] = useState<number | null>(null);
+  const [eventData, setEventData] = useState<EventType[]>([]);
+  const [loading, setLoading] = useState(false)
+
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
+
 
   const openImage = (index: number) => {
     setSelectedImage(images[index]);
@@ -155,7 +137,46 @@ const Home: React.FC = () => {
     }
   };
 
+  const fetchEventData = async () => {
+    try {
+      const data = await getEvents();
+      if (Array.isArray(data)) {
+        setEventData(data);
+      } else if (data?.events && Array.isArray(data.events)) {
+        setEventData(data.events);
+      } else {
+        setEventData([]);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to fetch events.");
+    }
+  };
+
+  const handleChange = (e: any) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    try {
+      setLoading(true)
+      const data = await uploadContactForms(formData);
+      setFormData({ fullName: "", email: "", phone: "", message: "" });
+      toast.success(data.message);
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+    finally {
+      setLoading(false);
+    }
+  };
+
+  console.log(eventData)
+
   useEffect(() => {
+    fetchEventData();
     fetchDirectorData();
   }, []);
 
@@ -168,8 +189,8 @@ const Home: React.FC = () => {
             title="LOS RANCHOS VERDES HOA"
             subtitle="Welcome To"
             buttons={[
-              { label: "Board Member Voting", link: "#" },
-              { label: "Pay My LRVHOA Dues", link: "#" },
+              { label: "Board Member Voting", link: "/vote-candidate" },
+              { label: "Pay My LRVHOA Dues", link: "/dues" },
             ]}
           />
         </section>
@@ -181,7 +202,7 @@ const Home: React.FC = () => {
               "Los Ranchos Verdes is located very close to the intersection of Hawthorne Boulevard and Palos Verdes Drive North. We are also 'just-down-road' from Rolling Hills Estates City Hall, located at the NW corner of Palos Verdes Drive North and Crenshaw Boulevard.",
               "Our small, beautiful, country-like community consists of 151 households. We have an active Homeowners Association, a Board of Directors, and an effective Neighborhood Watch Program.",
             ]}
-            button={{ label: "Read More", link: "#" }}
+            button={{ label: "Read More", link: "/about" }}
             image={aboutUsImg}
           />
         </>
@@ -205,7 +226,7 @@ const Home: React.FC = () => {
                   </p>
                   <p>Here's a link to the most current LRV Phone Directory:</p>
                   <div className="btn-wrap">
-                    <Link href="#" className="btns-style green">
+                    <Link href="/phonedirectory" className="btns-style green">
                       Read More
                     </Link>
                   </div>
@@ -223,7 +244,7 @@ const Home: React.FC = () => {
                     Silver Saddle Lane.
                   </p>
                   <div className="btn-wrap">
-                    <Link href="#" className="btns-style green">
+                    <Link href="/dues" className="btns-style green">
                       Read More
                     </Link>
                   </div>
@@ -247,7 +268,7 @@ const Home: React.FC = () => {
                     (HOA) dues online or by other convenient methods.
                   </p>
                   <div className="btn-wrap">
-                    <Link href="#" className="btns-style">
+                    <Link href="/dues" className="btns-style">
                       Pay My LRVHOA Dues
                     </Link>
                   </div>
@@ -273,7 +294,7 @@ const Home: React.FC = () => {
               </div>
             </div>
             <div className="row d-flex justify-content-center">
-              
+
               {directorData.map((member, index) => (
                 <div className="col-lg-3" key={member._id || index}>
                   <div className="director-card">
@@ -337,42 +358,34 @@ const Home: React.FC = () => {
                 freeMode={true}
                 speed={3000}
                 modules={[Autoplay]}
-                // pagination={{
-                //   clickable: true,
-                // }}
-                // modules={[Pagination]}
                 className="mySwiper"
               >
-                {events.map((member, index) => (
-                  <>
-                    <SwiperSlide key={index}>
-                      <div className="slide-wrapper">
-                        <div className="slide-img">
-                          <Image src={member.img} alt="" />
-                        </div>
-                        <div className="slide-content">
-                          <h4>{member.name}</h4>
-                          <p>{member.para1}</p>
-                          <p>{member.para2}</p>
-                          <div className="btn-wrap">
-                            <Link href="#" className="btns-style">
-                              See Details
-                            </Link>
-                          </div>
+                {eventData.map((member) => (
+                  <SwiperSlide key={member._id}>
+                    <div className="slide-wrapper">
+                      <div className="slide-img relative w-full h-[300px]">
+                        <Image
+                          src={member.image}
+                          alt={member.eventname}
+                          width={500}
+                          height={300}
+                        // fill
+                        // className="object-cover rounded-lg"
+                        />
+                      </div>
+                      <div className="slide-content">
+                        <h4>{member.eventname}</h4>
+                        <p>{member.description}</p>
+                        <div className="btn-wrap">
+                          <Link href="/upcomingEvents" className="btns-style">
+                            See Details
+                          </Link>
                         </div>
                       </div>
-                    </SwiperSlide>
-                  </>
+                    </div>
+                  </SwiperSlide>
                 ))}
 
-                {/* <SwiperSlide>Slide 2</SwiperSlide>
-                <SwiperSlide>Slide 3</SwiperSlide>
-                <SwiperSlide>Slide 4</SwiperSlide>
-                <SwiperSlide>Slide 5</SwiperSlide>
-                <SwiperSlide>Slide 6</SwiperSlide>
-                <SwiperSlide>Slide 7</SwiperSlide>
-                <SwiperSlide>Slide 8</SwiperSlide>
-                <SwiperSlide>Slide 9</SwiperSlide> */}
               </Swiper>
             </div>
           </div>
@@ -402,7 +415,7 @@ const Home: React.FC = () => {
                   ))}
 
                   <div className="btn-wrap">
-                    <Link href="#" className="btns-style green">
+                    <Link href="/photoGallery" className="btns-style green">
                       Read More
                     </Link>
                   </div>
@@ -452,27 +465,56 @@ const Home: React.FC = () => {
               <div className="col-lg-4"></div>
               <div className="col-lg-4">
                 <div className="form-wrapper">
-                  <form className="contact-form">
-                    <input type="text" placeholder="Enter Your Full Name..." />
+                  <form className="contact-form" onSubmit={handleSubmit}>
                     <input
                       type="text"
-                      placeholder="Enter Your Email Address..."
+                      name="fullName"
+                      placeholder="Enter Your Full Name..."
+                      value={formData.fullName}
+                      onChange={handleChange}
                     />
                     <input
                       type="text"
+                      name="email"
+                      placeholder="Enter Your Email Address..."
+                      value={formData.email}
+                      onChange={handleChange}
+                    />
+                    <input
+                      type="text"
+                      name="phone"
                       placeholder="Enter Your Phone Number..."
+                      value={formData.phone}
+                      onChange={handleChange}
                     />
                     <textarea
                       name="message"
-                      id="message"
                       placeholder="Enter Your Message..."
-                    ></textarea>
+                      value={formData.message}
+                      onChange={handleChange}
+                    />
                     <div className="btn-wrap">
-                      <button className="btns-style green">
-                        Contact Us
+                      <button
+                        type="submit"
+                        className="btns-style green"
+                        disabled={loading}
+                      >
+                        {loading ? (
+                          <>
+                            <span
+                              className="spinner-border spinner-border-sm me-2"
+                              role="status"
+                              aria-hidden="true"
+                            ></span>
+                            Sending...
+                          </>
+                        ) : (
+                          "Contact Us"
+                        )}
                       </button>
                     </div>
                   </form>
+
                 </div>
               </div>
               <div className="col-lg-4"></div>

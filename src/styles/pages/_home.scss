@@ -214,10 +214,12 @@
     .swiper-slide {
       .slide-wrapper {
         display: flex;
-        justify-content: space-between;
+        // justify-content: space-between;
         gap: 20px;
         border-radius: 30px;
         background: #f0f0f0;
+        overflow: hidden;
+        min-height: 300px;
         .slide-img {
           width: 100%;
           height: auto;
@@ -228,6 +230,10 @@
           }
         }
         .slide-content {
+          flex: 0 0 49%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
           h4 {
             color: var(--primary-color);
             font-family: var(--fontkarantine);

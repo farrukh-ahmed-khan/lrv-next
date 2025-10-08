@@ -5,7 +5,7 @@ const Footer = () => {
     <>
       <div className="footer-wrapper">
         <div className="container">
-          <div className="row">
+          {/* <div className="row">
             <div className="col-lg-1"></div>
             <div className="col-lg-10">
               <div className="subscribe-form">
@@ -19,7 +19,7 @@ const Footer = () => {
               </div>
             </div>
             <div className="col-lg-1"></div>
-          </div>
+          </div> */}
 
           <div className="row">
             <div className="col-lg-3">
@@ -37,17 +37,17 @@ const Footer = () => {
                 <div className="footersocial-icons">
                   <ul>
                     <li>
-                      <a href="https://www.facebook.com/scottmillerauthor/">
+                      <a href="https://www.facebook.com/">
                         <i className="fa fa-facebook-official"></i>
                       </a>
                     </li>
                     <li>
-                      <a href="https://x.com/scottm_author">
+                      <a href="https://x.com/">
                         <i className="fa fa-instagram"></i>
                       </a>
                     </li>
                     <li>
-                      <a href="https://www.instagram.com/scottmiller_author/">
+                      <a href="https://www.instagram.com/">
                         <i className="fa fa-twitter"></i>
                       </a>
                     </li>
@@ -63,19 +63,19 @@ const Footer = () => {
                     <Link href="/">Home</Link>
                   </li>
                   <li>
-                    <Link href="/about">Subscribe</Link>
+                    <Link href="/about">About</Link>
                   </li>
                   <li>
-                    <Link href="/books">Faster Claims Processing</Link>
+                    <Link href="/books">Services</Link>
                   </li>
                   <li>
-                    <Link href="/blogs">What We Do For You</Link>
+                    <Link href="/services">What We Do For You</Link>
                   </li>
                   <li>
-                    <Link href="/contact">Room Builder</Link>
+                    <Link href="/lrvboard">Lrv Board</Link>
                   </li>
                   <li>
-                    <Link href="/contact">Contact Us</Link>
+                    <Link href="/community">Community</Link>
                   </li>
                 </ul>
               </div>
@@ -85,13 +85,13 @@ const Footer = () => {
                 <h3>Useful links</h3>
                 <ul>
                   <li>
-                    <Link href="/">Pat my LRVHOA Dues</Link>
+                    <Link href="/dues">Pat my LRVHOA Dues</Link>
                   </li>
                   <li>
-                    <Link href="/about">Board Member Voting</Link>
+                    <Link href="/vote-candidate">Board Member Voting</Link>
                   </li>
                   <li>
-                    <Link href="/books">Directory</Link>
+                    <Link href="/phonedirectory">Directory</Link>
                   </li>
                 </ul>
               </div>

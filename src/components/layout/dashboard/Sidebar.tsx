@@ -1,14 +1,12 @@
 "use client"
 import { useState, useEffect } from "react";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
-
-import PersonIcon from "@mui/icons-material/Person";
 import LocalAtmIcon from "@mui/icons-material/LocalAtm";
 
 import {
     AddCard,
+    ContactEmergency,
     Email,
     Event,
     MeetingRoom,
@@ -83,6 +81,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavClosed }) => {
                 link: "/dashboard/boardmember/boardOfdirector",
             },
             {
+                title: "Add Lrv Photo Gallery",
+                icon: <Person />,
+                link: "/dashboard/boardmember/lrvPhotoGallery",
+            },
+            {
                 title: "Your Dues",
                 icon: <Receipt />,
                 link: "/dashboard/boardmember/ownerDues",
@@ -96,6 +99,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavClosed }) => {
                 title: "Checked Dues",
                 icon: <Receipt />,
                 link: "/dashboard/boardmember/checkedDues",
+            },
+            {
+                title: "Contact Forms",
+                icon: <ContactEmergency />,
+                link: "/dashboard/boardmember/contactForms",
             },
             {
                 title: "Newsletter",

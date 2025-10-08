@@ -19,7 +19,6 @@ interface EventType {
 
 function EventsList() {
     const [eventData, setEventData] = useState<EventType[]>([]);
-    const [loading, setLoading] = useState(true);
     const token = localStorage.getItem("token") || "";
 
     useEffect(() => {
@@ -50,7 +49,9 @@ function EventsList() {
                 <div className="container">
                     <div className="events-grid row">
                         {eventData.map((event: any) => (
-                            <EventCard key={event._id} event={event} token={token} />
+                            <div className="col-lg-4">
+                                <EventCard key={event._id} event={event} token={token} />
+                            </div>
                         ))}
                     </div>
                 </div>

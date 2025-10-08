@@ -73,27 +73,6 @@ const Signup = () => {
         }
     };
 
-    const handleSubmit2 = async (e: any) => {
-        e.preventDefault();
-
-        if (formData.password !== formData.confirmPassword) {
-            toast.error("Passwords do not match!");
-            return;
-        }
-        formData.role = "home member"
-
-        try {
-            setLoading(true)
-            const data = await registerUser(formData);
-            toast.success(data.message);
-            router.push("/login");
-        } catch (error: any) {
-            toast.error(error.message);
-        } finally {
-            setLoading(false);
-        }
-
-    };
 
     useEffect(() => {
         const token = localStorage.getItem('token');

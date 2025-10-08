@@ -1,14 +1,44 @@
 "use client";
-
+import Link from 'next/link';
+import { useState } from "react";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Navbar";
 import ProtectedPage from "@/components/ProtectedPage";
 import InnerBanner from "@/components/ui/InnerBanner";
+import { uploadContactForms } from '@/lib/ContactFormApi/api';
+import toast from 'react-hot-toast';
 
-import Link from 'next/link';
+
 
 
 const CarShow = () => {
+    const [formData, setFormData] = useState({
+        fullName: "",
+        email: "",
+        phone: "",
+        message: "",
+    });
+    const [loading, setLoading] = useState(false)
+
+    const handleChange = (e: any) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = async (e: any) => {
+        e.preventDefault();
+        try {
+            setLoading(true)
+            const data = await uploadContactForms(formData);
+            setFormData({ fullName: "", email: "", phone: "", message: "" });
+            toast.success(data.message);
+        } catch (error: any) {
+            toast.error(error.message);
+        }
+        finally {
+            setLoading(false);
+        }
+    };
+
 
     return (
         <ProtectedPage allowedRoles={["home owner", "home member", "board member", "admin"]}>
@@ -49,26 +79,66 @@ const CarShow = () => {
                         </div>
                         <div className="col-lg-6">
                             <div className="form-wrapper">
-                                <form action="">
+                                <form onSubmit={handleSubmit}>
                                     <div className="row">
                                         <div className="col-lg-12">
-                                            <input type="text" placeholder='Name' name="Name" id="Name" />
+                                            <input
+                                                type="text"
+                                                name="fullName"
+                                                placeholder="Enter Your Full Name..."
+                                                value={formData.fullName}
+                                                onChange={handleChange}
+                                            />
                                         </div>
                                         <div className="col-lg-12">
 
-                                            <input type="text" placeholder='Email' name="Email" id="Email" />
+                                            <input
+                                                type="text"
+                                                name="email"
+                                                placeholder="Enter Your Email Address..."
+                                                value={formData.email}
+                                                onChange={handleChange}
+                                            />
                                         </div>
                                         <div className="col-lg-12">
 
-                                            <input type="text" placeholder='Subject' name="Subject" id="Subject" />
+                                            <input
+                                                type="text"
+                                                name="phone"
+                                                placeholder="Enter Your Phone Number..."
+                                                value={formData.phone}
+                                                onChange={handleChange}
+                                            />
                                         </div>
                                         <div className="col-lg-12">
 
-                                            <textarea name="Message" id="Message" placeholder='Message'></textarea>
+                                            <textarea
+                                                name="message"
+                                                placeholder="Enter Your Message..."
+                                                value={formData.message}
+                                                onChange={handleChange}
+                                            />
                                         </div>
                                         <div className="col-lg-12">
                                             <div className="btn-wrap">
-                                                <button>Send</button>
+                                                <button
+                                                    type="submit"
+                                                    className="btns-style green"
+                                                    disabled={loading}
+                                                >
+                                                    {loading ? (
+                                                        <>
+                                                            <span
+                                                                className="spinner-border spinner-border-sm me-2"
+                                                                role="status"
+                                                                aria-hidden="true"
+                                                            ></span>
+                                                            Sending...
+                                                        </>
+                                                    ) : (
+                                                        "Contact Us"
+                                                    )}
+                                                </button>
                                             </div>
                                         </div>
                                     </div>

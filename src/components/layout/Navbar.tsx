@@ -71,37 +71,10 @@ const Header = () => {
       title: "Community",
       link: "/community",
       submenu: [
-        // {
-        //   title: "Neighborhood Watch",
-        //   link: "/neighborhood-watch",
-        // },
-        // {
-        //   title: "City of Rulling Hills Estate",
-        //   link: "/city-of-rolling-hills-estates",
-        // },
-        // {
-        //   title: "Nextdoor LRV Group",
-        //   link: "/nextdoor-lrv-group",
-        // },
-
-        // {
-        //   title: "Christmas Party",
-        //   link: "/annual-lrv-christmas-party",
-        // },
-        // {
-        //   title: "Halloween Party",
-        //   link: "/halloween",
-        // },
-        // {
-        //   title: "Car Show",
-        //   link: "/car-show",
-        // },
-
         ...eventData.map((event) => ({
           title: event.eventname,
           link: `/event/${event._id}`,
         })),
-
       ],
       hasSubmenu: true,
     },

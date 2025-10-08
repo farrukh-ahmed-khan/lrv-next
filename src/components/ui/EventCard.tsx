@@ -35,7 +35,7 @@ function EventCard({ event, token }: EventCardProps) {
   };
 
   return (
-    <div className="event-card col-lg-3 my-5">
+    <div className="event-card  my-5">
       <h3>{event.eventname}</h3>
       <p>{event.description}</p>
       <p>Date: {new Date(event.date).toLocaleDateString()}</p>
@@ -46,13 +46,13 @@ function EventCard({ event, token }: EventCardProps) {
           onClick={() => handleRSVP("attended")}
           disabled={status === "attended"}
         >
-          Attended ✅
+          Attending ✅
         </button>
         <button
           onClick={() => handleRSVP("not attended")}
           disabled={status === "not attended"}
         >
-          Not Attended ❌
+          Not Attending ❌
         </button>
       </div>
     </div>

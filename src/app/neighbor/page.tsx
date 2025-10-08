@@ -28,12 +28,12 @@ const Securiy = () => {
                             <div className="col-lg-12">
                                 <div className="content">
                                     <p className="text-center">
-                                        We’re delighted you are here in Los Ranchos Verdes! Click the link or “Hi there!” image below for a special Welcome-To-LRV message!
+                                        We're delighted you are here in Los Ranchos Verdes! Click the link or “Hi there!” image below for a special Welcome-To-LRV message!
                                     </p>
 
-                                    <div className="pay-btn-wrap mb-3 text-center">
+                                    {/* <div className="pay-btn-wrap mb-3 text-center">
                                         <button className="pay-now-btn">LRV WELCOME FLYER</button>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                             <div className="col-lg-12">
