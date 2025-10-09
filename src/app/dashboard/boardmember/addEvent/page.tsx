@@ -12,7 +12,7 @@ import { PlusOutlined } from "@ant-design/icons";
 
 
 import toast from "react-hot-toast";
-import { getEvents, createEvent, addEventDescription, deleteEvent, uploadImageToEvent } from "@/lib/EventsApi/api"; // you'll define these
+import { getEvents, createEvent, addEventDescription, deleteEvent, uploadImageToEvent, deleteUploadimage } from "@/lib/EventsApi/api"; // you'll define these
 import type { ColumnsType } from "antd/es/table";
 import ProtectedPage from "@/components/ProtectedPage";
 import Navbar from "@/components/layout/dashboard/Navbar";
@@ -150,21 +150,8 @@ const AddEvent = () => {
             return;
         }
         try {
-            const response = await axios.delete('/api/events/deleteImages', {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-                data: {
-                    eventId,
-                    imageUrl,
-                },
-            });
-
-            if (response.status === 200) {
-                console.log('Image deleted successfully:', response.data);
-            } else {
-                console.error('Error deleting image:', response.data.message);
-            }
+            await deleteUploadimage(eventId, imageUrl, token)
+            fetchEventData();
         } catch (error) {
             console.error('Error deleting image:', error);
         }
@@ -323,7 +310,7 @@ const AddEvent = () => {
                                                     console.error(error);
                                                     toast.error("Failed to add description.");
                                                 } finally {
-                                                    setDescModalLoading(false); 
+                                                    setDescModalLoading(false);
                                                 }
                                             }}
                                         >
@@ -363,14 +350,14 @@ const AddEvent = () => {
                                                 // beforeUpload={() => false}
                                                 beforeUpload={(file) => {
                                                     handleUpload(file);
-                                                    return false; 
-                                                }} 
+                                                    return false;
+                                                }}
                                             >
                                                 {/* {fileList.length >= 8 ? null : ( */}
-                                                    <div>
-                                                        <PlusOutlined />
-                                                        <div style={{ marginTop: 8 }}>Upload</div>
-                                                    </div>
+                                                <div>
+                                                    <PlusOutlined />
+                                                    <div style={{ marginTop: 8 }}>Upload</div>
+                                                </div>
                                                 {/* )} */}
                                             </Upload>
                                         </Modal>
