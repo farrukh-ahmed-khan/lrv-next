@@ -30,9 +30,11 @@ export default function DueBanner() {
         new Date(prev.dueDate) < new Date(curr.dueDate) ? prev : curr
     );
 
+    const dueYear = new Date(earliestDue.dueDate).getFullYear();
+
     return (
         <div style={{ backgroundColor: "red", color: "white", padding: "10px", textAlign: "center", position: "fixed", zIndex: "99", width: "100%" }}>
-            <strong>Important:</strong> You have an outstanding due until {new Date(earliestDue.dueDate).toLocaleDateString()}!
+            <strong>Important:</strong> You have an outstanding due until {dueYear}!
         </div>
     );
 }

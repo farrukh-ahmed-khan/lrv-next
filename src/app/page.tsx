@@ -36,6 +36,7 @@ import { getDirectors } from "@/lib/DirectorsApi/api";
 import toast from "react-hot-toast";
 import { uploadContactForms } from "@/lib/ContactFormApi/api";
 import { getEvents } from "@/lib/UpcomingEventsApi/api";
+import { getLibrarys } from "@/lib/GalleryApi/api";
 
 interface Director {
   id: number;
@@ -63,16 +64,16 @@ interface DirectorType {
 }
 
 
-const images: StaticImageData[] = [
-  gallery1,
-  gallery2,
-  gallery3,
-  gallery4,
-  gallery5,
-  gallery6,
-  gallery7,
-  gallery8,
-];
+// const images: StaticImageData[] = [
+//   gallery1,
+//   gallery2,
+//   gallery3,
+//   gallery4,
+//   gallery5,
+//   gallery6,
+//   gallery7,
+//   gallery8,
+// ];
 
 interface EventType {
   _id: string;
@@ -89,6 +90,7 @@ const Home: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState<number | null>(null);
   const [eventData, setEventData] = useState<EventType[]>([]);
   const [loading, setLoading] = useState(false)
+  const [images, setImages] = useState([])
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -173,9 +175,20 @@ const Home: React.FC = () => {
     }
   };
 
-  console.log(eventData)
+  const fetchLibraryData = async () => {
+    try {
+      const data = await getLibrarys();
+      // console.log(data[0].images)
+      setImages(data[0].images || []);
+
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to fetch librarys.");
+    }
+  };
 
   useEffect(() => {
+    fetchLibraryData();
     fetchEventData();
     fetchDirectorData();
   }, []);
@@ -403,13 +416,15 @@ const Home: React.FC = () => {
                   </div>
                 </div>
                 <div className="row">
-                  {images.map((img, index) => (
+                  {images.slice(0, 12).map((img, index) => (
                     <div className="col-lg-3" key={index}>
                       <Image
                         key={index}
                         src={img}
                         alt={`Gallery ${index}`}
                         onClick={() => openImage(index)}
+                        width={400}
+                        height={400}
                       />
                     </div>
                   ))}
@@ -432,6 +447,8 @@ const Home: React.FC = () => {
                   src={selectedImage}
                   alt="Large Preview"
                   className="lightbox-image"
+                  width={400}
+                  height={400}
                 />
                 <button
                   className="prev-btn"

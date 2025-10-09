@@ -4,7 +4,7 @@ import { Table, Button, Modal, Form, Input } from "antd";
 import { Upload } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import toast from "react-hot-toast";
-import { getEvents, createEvent, deleteEvent, uploadImageToEvent } from "@/lib/EventsApi/api"; 
+import { getLibrarys, createLibrary, deleteLibrary, uploadImageToLibrary } from "@/lib/GalleryApi/api";
 import type { ColumnsType } from "antd/es/table";
 import ProtectedPage from "@/components/ProtectedPage";
 import Navbar from "@/components/layout/dashboard/Navbar";
@@ -13,7 +13,7 @@ import axios from "axios";
 
 
 
-const AddEvent = () => {
+const AddLibrary = () => {
     const [isNavClosed, setIsNavClosed] = useState(false);
     const responsiveBreakpoint = 991;
     useEffect(() => {
@@ -31,89 +31,89 @@ const AddEvent = () => {
     const toggleNav = () => {
         setIsNavClosed(!isNavClosed);
     };
-    interface EventType {
+    interface LibraryType {
         _id: string;
-        eventname: string;
+        libraryname: string;
         description?: string;
         images?: string[];
     }
-    const [eventData, setEventData] = useState<EventType[]>([]);
+    const [libraryData, setLibraryData] = useState<LibraryType[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [libraryModalOpen, setLibraryModalOpen] = useState(false);
-    const [currentLibraryEventId, setCurrentLibraryEventId] = useState<string | null>(null);
+    const [currentLibraryLibraryId, setCurrentLibraryLibraryId] = useState<string | null>(null);
     const [fileList, setFileList] = useState<any[]>([]);
 
     // loading states
-    const [addingEvent, setAddingEvent] = useState(false);
-    const [deletingEventId, setDeletingEventId] = useState<string | null>(null);
+    const [addingLibrary, setAddingLibrary] = useState(false);
+    const [deletingLibraryId, setDeletingLibraryId] = useState<string | null>(null);
 
     const [form] = Form.useForm();
     const token = localStorage.getItem("token");
 
 
 
-    const fetchEventData = async () => {
+    const fetchLibraryData = async () => {
         try {
-            const data = await getEvents();
-            setEventData(data || []);
+            const data = await getLibrarys();
+            setLibraryData(data || []);
 
         } catch (error) {
             console.error(error);
-            toast.error("Failed to fetch events.");
+            toast.error("Failed to fetch librarys.");
         }
     };
 
-    const handleAddEvent = async (values: { eventname: string }) => {
+    const handleAddLibrary = async (values: { libraryname: string }) => {
         if (!token) {
             console.error("No token found.");
             return;
         }
-        setAddingEvent(true);
+        setAddingLibrary(true);
         try {
-            await createEvent(values.eventname, token);
-            toast.success("Event added!");
+            await createLibrary(values.libraryname, token);
+            toast.success("Library added!");
             form.resetFields();
             setIsModalOpen(false);
-            fetchEventData();
+            fetchLibraryData();
         } catch (error) {
             console.error(error);
-            toast.error("Failed to add event.");
+            toast.error("Failed to add library.");
         } finally {
-            setAddingEvent(false);
+            setAddingLibrary(false);
         }
     };
 
-    const handleDeleteEvent = async (eventId: string) => {
+    const handleDeleteLibrary = async (libraryId: string) => {
         if (!token) {
             toast.error("No token found.");
             return;
         }
-        setDeletingEventId(eventId);
+        setDeletingLibraryId(libraryId);
 
         try {
-            await deleteEvent(eventId, token);
-            toast.success("Event deleted successfully!");
-            fetchEventData();
+            await deleteLibrary(libraryId, token);
+            toast.success("Library deleted successfully!");
+            fetchLibraryData();
         } catch (error) {
             console.error(error);
-            toast.error("Failed to delete event.");
+            toast.error("Failed to delete library.");
         } finally {
-            setDeletingEventId(null);
+            setDeletingLibraryId(null);
         }
     };
 
 
     const handleUpload = async (file: File) => {
-        if (!currentLibraryEventId || !token) return;
+        if (!currentLibraryLibraryId || !token) return;
         const formData = new FormData();
-        formData.append("eventId", currentLibraryEventId);
+        formData.append("libraryId", currentLibraryLibraryId);
         formData.append("image", file);
 
         try {
-            await uploadImageToEvent(currentLibraryEventId, formData, token);
+            await uploadImageToLibrary(formData, token);
             toast.success("Image uploaded successfully!");
             setLibraryModalOpen(false);
-            fetchEventData();
+            fetchLibraryData();
         } catch (error) {
             console.error(error);
             toast.error("Image upload failed.");
@@ -121,18 +121,18 @@ const AddEvent = () => {
     };
 
 
-    const deleteImage = async (eventId: string, imageUrl: string) => {
+    const deleteImage = async (libraryId: string, imageUrl: string) => {
         if (!token) {
             toast.error("No token found.");
             return;
         }
         try {
-            const response = await axios.delete('/api/events/deleteImages', {
+            const response = await axios.delete('/api/librarys/deleteImages', {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },
                 data: {
-                    eventId,
+                    libraryId,
                     imageUrl,
                 },
             });
@@ -148,9 +148,9 @@ const AddEvent = () => {
     };
 
 
-    const columns: ColumnsType<EventType> = [
-        { title: "Event Name", dataIndex: "eventname", key: "eventname" },
-        
+    const columns: ColumnsType<LibraryType> = [
+        { title: "Library Name", dataIndex: "libraryname", key: "libraryname" },
+
         {
             title: "Actions",
             key: "actions",
@@ -158,12 +158,12 @@ const AddEvent = () => {
                 <>
                     <Button
                         onClick={() => {
-                            setCurrentLibraryEventId(record._id);
+                            setCurrentLibraryLibraryId(record._id);
                             setLibraryModalOpen(true);
 
-                            const event = eventData.find(event => event._id === record._id);
-                            if (event?.images?.length) {
-                                const mappedImages = event.images.map((imgUrl, index) => ({
+                            const library = libraryData.find(library => library._id === record._id);
+                            if (library?.images?.length) {
+                                const mappedImages = library.images.map((imgUrl, index) => ({
                                     uid: String(-index),
                                     name: `image-${index}`,
                                     status: 'done',
@@ -181,9 +181,9 @@ const AddEvent = () => {
 
                     <Button
                         danger
-                        onClick={() => handleDeleteEvent(record._id)}
-                        loading={deletingEventId === record._id}
-                        disabled={deletingEventId === record._id}
+                        onClick={() => handleDeleteLibrary(record._id)}
+                        loading={deletingLibraryId === record._id}
+                        disabled={deletingLibraryId === record._id}
                     >
                         Delete
                     </Button>
@@ -195,7 +195,7 @@ const AddEvent = () => {
 
 
     useEffect(() => {
-        fetchEventData();
+        fetchLibraryData();
     }, []);
 
 
@@ -212,41 +212,41 @@ const AddEvent = () => {
                                 <>
                                     <div className="store-wrap">
                                         <div className="d-flex justify-content-between align-items-center">
-                                            <h6>Events List</h6>
-                                            <Button onClick={() => setIsModalOpen(true)}>Add Event</Button>
+                                            <h6>Librarys List</h6>
+                                            <Button onClick={() => setIsModalOpen(true)}>Add Library</Button>
                                         </div>
 
-                                        <div className="event-table-wrap">
+                                        <div className="library-table-wrap">
                                             <Table
                                                 className="mt-3"
                                                 columns={columns}
-                                                dataSource={eventData}
+                                                dataSource={libraryData}
                                                 rowKey="_id"
                                             />
                                         </div>
 
                                         <Modal
-                                            title="Add Event"
+                                            title="Add Library"
                                             open={isModalOpen}
                                             onCancel={() => setIsModalOpen(false)}
                                             footer={null}
                                         >
-                                            <Form form={form} onFinish={handleAddEvent} layout="vertical">
+                                            <Form form={form} onFinish={handleAddLibrary} layout="vertical">
                                                 <Form.Item
-                                                    label="Event Name"
-                                                    name="eventname"
-                                                    rules={[{ required: true, message: "Please enter event name" }]}
+                                                    label="Library Name"
+                                                    name="libraryname"
+                                                    rules={[{ required: true, message: "Please enter library name" }]}
                                                 >
                                                     <Input />
                                                 </Form.Item>
-                                                <Button type="primary" htmlType="submit" loading={addingEvent}>Submit</Button>
+                                                <Button type="primary" htmlType="submit" loading={addingLibrary}>Submit</Button>
                                             </Form>
                                         </Modal>
 
-                                        
+
 
                                         <Modal
-                                            title="Upload Event Images"
+                                            title="Upload Library Images"
                                             open={libraryModalOpen}
                                             onCancel={() => {
                                                 setLibraryModalOpen(false);
@@ -263,8 +263,8 @@ const AddEvent = () => {
                                                         .catch(onError);
                                                 }}
                                                 onRemove={async (file) => {
-                                                    if (!currentLibraryEventId || !file.url) return;
-                                                    await deleteImage(currentLibraryEventId, file.url);
+                                                    if (!currentLibraryLibraryId || !file.url) return;
+                                                    await deleteImage(currentLibraryLibraryId, file.url);
                                                     setFileList((prev) => prev.filter((f) => f.uid !== file.uid));
                                                 }}
                                                 showUploadList={{ showRemoveIcon: true }}
@@ -272,14 +272,14 @@ const AddEvent = () => {
                                                 // beforeUpload={() => false}
                                                 beforeUpload={(file) => {
                                                     handleUpload(file);
-                                                    return false; 
-                                                }} 
+                                                    return false;
+                                                }}
                                             >
                                                 {/* {fileList.length >= 8 ? null : ( */}
-                                                    <div>
-                                                        <PlusOutlined />
-                                                        <div style={{ marginTop: 8 }}>Upload</div>
-                                                    </div>
+                                                <div>
+                                                    <PlusOutlined />
+                                                    <div style={{ marginTop: 8 }}>Upload</div>
+                                                </div>
                                                 {/* )} */}
                                             </Upload>
                                         </Modal>
@@ -297,4 +297,4 @@ const AddEvent = () => {
     );
 };
 
-export default AddEvent;
+export default AddLibrary;

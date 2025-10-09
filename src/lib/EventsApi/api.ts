@@ -46,7 +46,6 @@ export const deleteEvent = async (eventId: string, token: string) => {
 
 
 export const uploadImageToEvent = async (
-  eventId: string,
   formData: FormData,
   token: string
 ) => {
