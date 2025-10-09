@@ -4,12 +4,13 @@ import { Table, Button, Modal, Form, Input } from "antd";
 import { Upload } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import toast from "react-hot-toast";
-import { getLibrarys, createLibrary, deleteLibrary, uploadImageToLibrary } from "@/lib/GalleryApi/api";
+import { getLibrarys, createLibrary, deleteLibrary, uploadImageToLibrary, deleteUploadimage } from "@/lib/GalleryApi/api";
 import type { ColumnsType } from "antd/es/table";
 import ProtectedPage from "@/components/ProtectedPage";
 import Navbar from "@/components/layout/dashboard/Navbar";
 import Sidebar from "@/components/layout/dashboard/Sidebar";
-import axios from "axios";
+
+
 
 
 
@@ -121,32 +122,19 @@ const AddLibrary = () => {
     };
 
 
+
     const deleteImage = async (libraryId: string, imageUrl: string) => {
         if (!token) {
             toast.error("No token found.");
             return;
         }
         try {
-            const response = await axios.delete('/api/librarys/deleteImages', {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-                data: {
-                    libraryId,
-                    imageUrl,
-                },
-            });
-
-            if (response.status === 200) {
-                console.log('Image deleted successfully:', response.data);
-            } else {
-                console.error('Error deleting image:', response.data.message);
-            }
+            await deleteUploadimage(libraryId, imageUrl, token)
+            fetchLibraryData();
         } catch (error) {
             console.error('Error deleting image:', error);
         }
     };
-
 
     const columns: ColumnsType<LibraryType> = [
         { title: "Library Name", dataIndex: "libraryname", key: "libraryname" },

@@ -18,7 +18,6 @@ import ProtectedPage from "@/components/ProtectedPage";
 import Navbar from "@/components/layout/dashboard/Navbar";
 import Sidebar from "@/components/layout/dashboard/Sidebar";
 import Editor from "@/components/ui/dashboard/editor";
-import axios from "axios";
 
 
 
