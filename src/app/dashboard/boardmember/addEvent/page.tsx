@@ -133,7 +133,7 @@ const AddEvent = () => {
         formData.append("image", file);
 
         try {
-            await uploadImageToEvent(currentLibraryEventId, formData, token);
+            await uploadImageToEvent(formData, token);
             toast.success("Image uploaded successfully!");
             setLibraryModalOpen(false);
             fetchEventData();

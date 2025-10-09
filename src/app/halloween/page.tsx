@@ -108,7 +108,7 @@ const Halloween = () => {
                                 The Los Ranchos Verdes Homeowners Association sponsors, in part, an annual LRV Halloween Party.
                             </p>
                             <p>
-                                This children’s and adult event takes place on Halloween at the Cul
+                                This children's and adult event takes place on Halloween at the Cul
                                 de Sac at 40 Santa Bella Road or at the intersection of Seacrest Road
                                 and Shady Vista Road, and precedes trick-or-treating activities in LRV.
                                 There are games, food (pizza), and soft drinks. The LRV Homeowners Association
