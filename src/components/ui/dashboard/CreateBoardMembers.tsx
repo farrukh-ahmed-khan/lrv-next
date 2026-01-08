@@ -60,7 +60,9 @@ const CreateBoardMembers = () => {
 
             const usersRes = await getUsers(token);
             const filteredUsers = usersRes.users.filter(
-                (user: User) => user.role === "home owner" && user.status === "approved"
+                (user: User) =>
+                    (user.role === "home owner" || user.role === "board member") &&
+                    user.status === "approved"
             );
 
             const usersWithDues = filteredUsers.map((user: User) => {
@@ -175,7 +177,13 @@ const CreateBoardMembers = () => {
                         Make Board Member
                     </Button>
                 ) : (
-                    <span style={{ color: "green" }}>Already Board</span>
+                    // <span style={{ color: "green" }}>Already Board</span>
+                    <Button
+                        onClick={() => promoteToBoardMember(record)}
+                        loading={loadingStates[record.id] === "updateStatus"} // ✅ show spinner while updating
+                    >
+                        Remove as Board Member
+                    </Button>
                 ),
         },
 
@@ -190,7 +198,7 @@ const CreateBoardMembers = () => {
                     <div className="row store-wrap">
                         <div className="col-lg-6 col-md-2">
                             <div>
-                                <h6>Approved Home Owner List</h6>
+                                <h6>Manage Board Members</h6>
                             </div>
                         </div>
 

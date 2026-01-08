@@ -101,15 +101,16 @@ const Login = () => {
             <section className="signup-wrapper">
                 <div className="container">
                     <div className="row d-flex align-items-center">
-                        <div className="col-lg-7">
+                        {/* <div className="col-lg-7">
                             <div className="img-wrap">
                                 <Image src={reg} alt="" />
                             </div>
-                        </div>
-                        <div className="col-lg-5">
+                        </div> */}
+                        <div className="col-lg-3"></div>
+                        <div className="col-lg-6">
                             <div className="create-acc-wrap">
                                 <div className="head">
-                                    <h2>Create your account</h2>
+                                    <h2>Sign in to your account</h2>
                                 </div>
                                 <div className="tabs-wrapper"></div>
                                 <div className="tab-content">
@@ -179,12 +180,14 @@ const Login = () => {
                                         </form>
                                         <div className="sign-in-wrap">
                                             <Link href="/register">Sign up now</Link>
-                                            <Link href="/forgetPassword">Forget Password</Link>
+                                            <Link href="/forgetPassword">Forgot Password</Link>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <div className="col-lg-3"></div>
+
                     </div>
                 </div>
             </section>

@@ -110,12 +110,13 @@ const Signup = () => {
             <section className="signup-wrapper">
                 <div className="container">
                     <div className="row d-flex align-items-center">
-                        <div className="col-lg-7">
+                        {/* <div className="col-lg-7">
                             <div className="img-wrap">
                                 <Image src={reg} alt="" />
                             </div>
-                        </div>
-                        <div className="col-lg-5">
+                        </div> */}
+                        <div className="col-lg-3"></div>
+                        <div className="col-lg-6">
                             <div className="create-acc-wrap">
                                 <div className="head">
                                     <h2>Create your account</h2>
@@ -221,23 +222,20 @@ const Signup = () => {
                                                         >
                                                             Street Address
                                                         </label>
-                                                        <select
+
+                                                        <input
+                                                            type="text"
                                                             className="form-control"
                                                             id="streetAddress"
                                                             name="streetAddress"
+                                                            placeholder="Enter Street Address"
                                                             required
                                                             value={formData.streetAddress}
                                                             onChange={handleChange}
-                                                        >
-                                                            <option value="">Select Street Address</option>
-                                                            {streetOptions.map((address, index) => (
-                                                                <option key={index} value={address}>
-                                                                    {address}
-                                                                </option>
-                                                            ))}
-                                                        </select>
+                                                        />
                                                     </div>
                                                 </div>
+
 
                                                 <div className="form-group row">
                                                     <label
@@ -348,6 +346,7 @@ const Signup = () => {
                                             </form>
                                             <div className="sign-in-wrap">
                                                 <Link href="/login">Sign in now</Link>
+                                                <Link href="/forgetPassword">Forgot Password</Link>
                                             </div>
                                         </div>
                                     )}
@@ -537,6 +536,8 @@ const Signup = () => {
                                 </div>
                             </div>
                         </div>
+                        <div className="col-lg-3"></div>
+
                     </div>
                 </div>
             </section>
