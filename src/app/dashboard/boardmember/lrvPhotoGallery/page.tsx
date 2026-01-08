@@ -164,7 +164,7 @@ const AddLibrary = () => {
                         }}
                         style={{ marginRight: 8 }}
                     >
-                        Add Library
+                        Images
                     </Button>
 
                     <Button
@@ -200,9 +200,15 @@ const AddLibrary = () => {
                                 <>
                                     <div className="store-wrap">
                                         <div className="d-flex justify-content-between align-items-center">
-                                            <h6>Librarys List</h6>
-                                            <Button onClick={() => setIsModalOpen(true)}>Add Library</Button>
+                                            <h6>Library List</h6>
+
+                                            {libraryData.length === 0 && (
+                                                <Button onClick={() => setIsModalOpen(true)}>
+                                                    Add Library
+                                                </Button>
+                                            )}
                                         </div>
+
 
                                         <div className="library-table-wrap">
                                             <Table

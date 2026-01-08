@@ -81,15 +81,15 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavClosed }) => {
                 link: "/dashboard/boardmember/boardOfdirector",
             },
             {
-                title: "Add Lrv Photo Gallery",
+                title: "Home Page Images",
                 icon: <Person />,
                 link: "/dashboard/boardmember/lrvPhotoGallery",
             },
-            {
-                title: "Your Dues",
-                icon: <Receipt />,
-                link: "/dashboard/boardmember/ownerDues",
-            },
+            // {
+            //     title: "Your Dues",
+            //     icon: <Receipt />,
+            //     link: "/dashboard/boardmember/ownerDues",
+            // },
             {
                 title: "Dues",
                 icon: <Receipt />,
