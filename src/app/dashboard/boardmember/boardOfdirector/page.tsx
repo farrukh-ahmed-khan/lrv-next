@@ -1,14 +1,13 @@
 "use client"
 import React, { useEffect, useState } from "react";
-import { Table, Button, Modal, Form, Input, Upload } from "antd";
+import { Table, Button, Modal, Form, Input, Upload, Space } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import toast from "react-hot-toast";
-import { createEvent, deleteEvent, RsvpEvents } from "@/lib/UpcomingEventsApi/api";
 import type { ColumnsType } from "antd/es/table";
 import ProtectedPage from "@/components/ProtectedPage";
 import Navbar from "@/components/layout/dashboard/Navbar";
 import Sidebar from "@/components/layout/dashboard/Sidebar";
-import { createDirector, getDirectors } from "@/lib/DirectorsApi/api";
+import { createDirector, deleteDirector, editDirector, getDirectors } from "@/lib/DirectorsApi/api";
 
 
 
@@ -25,9 +24,11 @@ const BoardOfDirector = () => {
     const [isNavClosed, setIsNavClosed] = useState(false);
 
     const [directorData, setDirectorData] = useState<DirectorType[]>([]);
+    const [editingDirector, setEditingDirector] = useState<DirectorType | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const [addingDirector, setAddingDirector] = useState(false);
+
     const [deletingDirectorId, setDeletingDirectorId] = useState<string | null>(null);
 
     const [form] = Form.useForm();
@@ -51,37 +52,57 @@ const BoardOfDirector = () => {
         }
     };
 
-    const handleAddDirector = async (values: {
-        directorname: string;
-        designation: string; description?: string; image?: any[]
-    }) => {
-        if (!token) {
-            console.error("No token found.");
-            return;
-        }
 
-        const imageFile = values.image?.[0]?.originFileObj;
-        if (!imageFile) {
-            toast.error("Please upload an image");
-            return;
-        }
+    const handleSubmit = async (values: any) => {
+        if (!token) return;
 
-        setAddingDirector(true);
+        setIsSubmitting(true);
+
+        const imageFile = values.image?.[0]?.originFileObj || null;
+
         try {
-            await createDirector(
-                values.directorname, values.designation, values.description || "",
-                imageFile, token);
-            toast.success("Director added!");
-            form.resetFields();
+            if (editingDirector) {
+                // EDIT
+                await editDirector(
+                    editingDirector._id,
+                    values.directorname,
+                    values.designation,
+                    values.description || "",
+                    imageFile,
+                    token
+                );
+                toast.success("Director updated successfully!");
+            } else {
+                // ADD
+                if (!imageFile) {
+                    toast.error("Please upload an image");
+                    return;
+                }
+
+                await createDirector(
+                    values.directorname,
+                    values.designation,
+                    values.description || "",
+                    imageFile,
+                    token
+                );
+                toast.success("Director added successfully!");
+            }
+
             setIsModalOpen(false);
+            setEditingDirector(null);
+            form.resetFields();
             fetchDirectorData();
         } catch (error) {
             console.error(error);
-            toast.error("Failed to add Director.");
+            toast.error("Operation failed");
         } finally {
-            setAddingDirector(false);
+            setIsSubmitting(false);
         }
     };
+
+
+
 
 
     const handleDeleteDirector = async (directorId: string) => {
@@ -92,7 +113,7 @@ const BoardOfDirector = () => {
         setDeletingDirectorId(directorId);
 
         try {
-            await deleteEvent(directorId, token);
+            await deleteDirector(directorId, token);
             toast.success("Director deleted successfully!");
             fetchDirectorData();
         } catch (error) {
@@ -131,14 +152,44 @@ const BoardOfDirector = () => {
             title: "Actions",
             key: "actions",
             render: (_, record) => (
-                <Button
-                    danger
-                    onClick={() => handleDeleteDirector(record._id)}
-                    loading={deletingDirectorId === record._id}
-                    disabled={deletingDirectorId === record._id}
-                >
-                    Delete
-                </Button>
+                <Space>
+                    <Button
+                        danger
+                        onClick={() => handleDeleteDirector(record._id)}
+                        loading={deletingDirectorId === record._id}
+                        disabled={deletingDirectorId === record._id}
+                    >
+                        Delete
+                    </Button>
+
+                    <Button
+                        type="link"
+                        onClick={() => {
+                            setEditingDirector(record);
+
+                            form.setFieldsValue({
+                                directorname: record.directorname,
+                                designation: record.designation,
+                                description: record.description,
+                                image: record.image
+                                    ? [
+                                        {
+                                            uid: "-1",
+                                            name: "existing-image",
+                                            status: "done",
+                                            url: record.image,
+                                        },
+                                    ]
+                                    : [],
+                            });
+
+                            setIsModalOpen(true);
+                        }}
+                    >
+                        Edit
+                    </Button>
+
+                </Space>
             ),
         },
     ];
@@ -179,8 +230,16 @@ const BoardOfDirector = () => {
                     >
                         <div className="store-wrap">
                             <div className="d-flex justify-content-between align-items-center">
-                                <h6>Events List</h6>
-                                <Button onClick={() => setIsModalOpen(true)}>Add Director</Button>
+                                <h6>Board Member Bio</h6>
+                                <Button
+                                    onClick={() => {
+                                        form.resetFields();
+                                        setEditingDirector(null);
+                                        setIsModalOpen(true);
+                                    }}
+                                >
+                                    Add Director
+                                </Button>
                             </div>
 
                             <div className="event-table-wrap">
@@ -192,12 +251,21 @@ const BoardOfDirector = () => {
                                 />
                             </div>
 
-                            <Modal title="Add Director" open={isModalOpen} onCancel={() => setIsModalOpen(false)} footer={null}>
-                                <Form form={form} onFinish={handleAddDirector} layout="vertical">
+                            <Modal
+                                title={editingDirector ? "Edit Director" : "Add Director"}
+                                open={isModalOpen}
+                                onCancel={() => {
+                                    setIsModalOpen(false);
+                                    setEditingDirector(null);
+                                    form.resetFields();
+                                }}
+                                footer={null}
+                            >
+                                <Form form={form} onFinish={handleSubmit} layout="vertical">
                                     <Form.Item
                                         label="Director Name"
                                         name="directorname"
-                                        rules={[{ required: true, message: "Please enter name" }]}
+                                        rules={[{ required: true }]}
                                     >
                                         <Input />
                                     </Form.Item>
@@ -205,7 +273,7 @@ const BoardOfDirector = () => {
                                     <Form.Item
                                         label="Designation"
                                         name="designation"
-                                        rules={[{ required: true, message: "Please enter designation" }]}
+                                        rules={[{ required: true }]}
                                     >
                                         <Input />
                                     </Form.Item>
@@ -213,27 +281,44 @@ const BoardOfDirector = () => {
                                     <Form.Item label="Description" name="description">
                                         <Input.TextArea rows={3} />
                                     </Form.Item>
+
                                     <Form.Item
-                                        label="Upload Image"
+                                        label={editingDirector ? "Update Image (optional)" : "Upload Image"}
                                         name="image"
                                         valuePropName="fileList"
                                         getValueFromEvent={(e) => (Array.isArray(e) ? e : e?.fileList)}
-                                        rules={[{ required: true, message: "Please upload an image" }]}
+                                        rules={
+                                            editingDirector
+                                                ? []
+                                                : [{ required: true, message: "Please upload an image" }]
+                                        }
                                     >
                                         <Upload beforeUpload={() => false} maxCount={1}>
-                                            <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                                            <Button icon={<UploadOutlined />}>Upload</Button>
                                         </Upload>
                                     </Form.Item>
 
-                                    <Button type="primary" htmlType="submit" loading={addingDirector}>
-                                        Submit
+                                    <Button
+                                        type="primary"
+                                        htmlType="submit"
+                                        loading={isSubmitting}
+                                        disabled={isSubmitting}
+                                    >
+                                        {editingDirector ? "Update Director" : "Add Director"}
                                     </Button>
+
                                 </Form>
                             </Modal>
+
+
+
+
                         </div>
                     </div>
                 </div>
             </section>
+
+
         </ProtectedPage>
     );
 };
