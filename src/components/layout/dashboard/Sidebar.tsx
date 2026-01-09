@@ -111,17 +111,17 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavClosed }) => {
                 link: "/dashboard/boardmember/newsletter",
             },
             {
-                title: "Meeting",
+                title: "Board Meetings",
                 icon: <MeetingRoom />,
                 link: "/dashboard/boardmember/meeting",
             },
             {
-                title: "LRV Bylaw",
+                title: "Bylaws",
                 icon: <VerifiedUserRounded />,
                 link: "/dashboard/boardmember/lrvhoa-law",
             },
             {
-                title: "Add Events",
+                title: "Events",
                 icon: <AddCard />,
                 link: "/dashboard/boardmember/addEvent",
             },

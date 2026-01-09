@@ -106,7 +106,7 @@ export async function POST(req: Request) {
       await Dues.create({
         userId: dueUserId,
         streetAddress: dueStreetAddress,
-        amount: 300,
+        amount: 30,
         dueDate,
         paymentMethod: null,
         autoPay: false,

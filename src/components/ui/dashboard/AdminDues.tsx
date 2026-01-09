@@ -139,12 +139,12 @@ const AdminDues = () => {
             key: "duePaid",
             render: (paid: boolean) => paid ? "Yes" : "No",
         },
-        {
-            title: "Due Date",
-            dataIndex: "dueDate",
-            key: "dueDate",
-            render: (date: string) => new Date(date).toLocaleDateString(),
-        },
+        // {
+        //     title: "Due Date",
+        //     dataIndex: "dueDate",
+        //     key: "dueDate",
+        //     render: (date: string) => new Date(date).toLocaleDateString(),
+        // },
 
     ];
 

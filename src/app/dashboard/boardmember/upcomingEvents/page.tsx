@@ -1,9 +1,9 @@
 "use client"
 import React, { useEffect, useState } from "react";
-import { Table, Button, Modal, Form, Input, Upload } from "antd";
+import { Table, Button, Modal, Form, Input, Upload, Space } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import toast from "react-hot-toast";
-import { createEvent, deleteEvent, RsvpEvents } from "@/lib/UpcomingEventsApi/api";
+import { createEvent, deleteEvent, editEvent, RsvpEvents } from "@/lib/UpcomingEventsApi/api";
 import type { ColumnsType } from "antd/es/table";
 import ProtectedPage from "@/components/ProtectedPage";
 import Navbar from "@/components/layout/dashboard/Navbar";
@@ -14,14 +14,15 @@ interface RSVP {
     status: "attended" | "not attended";
 }
 
+
 interface EventType {
     _id: string;
     eventname: string;
+    date: string;
     description?: string;
-    images?: string[];
+    image?: string;
     rsvps?: RSVP[];
 }
-
 
 const AddEvent = () => {
     const [isNavClosed, setIsNavClosed] = useState(false);
@@ -44,18 +45,15 @@ const AddEvent = () => {
         setIsNavClosed(!isNavClosed);
     };
 
-    interface EventType {
-        _id: string;
-        eventname: string;
-        description?: string;
-        images?: string[];
-    }
+
 
     const [eventData, setEventData] = useState<EventType[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    // loading states
-    const [addingEvent, setAddingEvent] = useState(false);
+    const [editingEvent, setEditingEvent] = useState<EventType | null>(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+
     const [deletingEventId, setDeletingEventId] = useState<string | null>(null);
 
     const [form] = Form.useForm();
@@ -77,32 +75,53 @@ const AddEvent = () => {
         }
     };
 
-    const handleAddEvent = async (values: { eventname: string; date: string; description?: string; image?: any[] }) => {
-        if (!token) {
-            console.error("No token found.");
-            return;
-        }
 
-        const imageFile = values.image?.[0]?.originFileObj; // ✅ extract first file
-        if (!imageFile) {
-            toast.error("Please upload an image");
-            return;
-        }
+    const handleSubmit = async (values: any) => {
+        if (!token) return;
 
-        setAddingEvent(true);
+        setIsSubmitting(true);
+
+        const imageFile = values.image?.[0]?.originFileObj || null;
+
         try {
-            await createEvent(values.eventname, values.date, values.description || "", imageFile, token);
-            toast.success("Event added!");
-            form.resetFields();
+            if (editingEvent) {
+                await editEvent(
+                    editingEvent._id,
+                    values.eventname,
+                    values.date,
+                    values.description || "",
+                    imageFile,
+                    token
+                );
+                toast.success("Event updated successfully!");
+            } else {
+                if (!imageFile) {
+                    toast.error("Please upload an image");
+                    return;
+                }
+
+                await createEvent(
+                    values.eventname,
+                    values.date,
+                    values.description || "",
+                    imageFile,
+                    token
+                );
+                toast.success("Event added successfully!");
+            }
+
             setIsModalOpen(false);
+            setEditingEvent(null);
+            form.resetFields();
             fetchEventData();
         } catch (error) {
             console.error(error);
-            toast.error("Failed to add event.");
+            toast.error("Operation failed");
         } finally {
-            setAddingEvent(false);
+            setIsSubmitting(false);
         }
     };
+
 
 
     const handleDeleteEvent = async (eventId: string) => {
@@ -166,14 +185,45 @@ const AddEvent = () => {
             title: "Actions",
             key: "actions",
             render: (_, record) => (
-                <Button
-                    danger
-                    onClick={() => handleDeleteEvent(record._id)}
-                    loading={deletingEventId === record._id}
-                    disabled={deletingEventId === record._id}
-                >
-                    Delete
-                </Button>
+                <Space>
+                    <Button
+                        danger
+                        onClick={() => handleDeleteEvent(record._id)}
+                        loading={deletingEventId === record._id}
+                    >
+                        Delete
+                    </Button>
+
+                    <Button
+                        type="link"
+                        onClick={() => {
+                            setEditingEvent(record);
+
+                            form.setFieldsValue({
+                                eventname: record.eventname,
+                                date: record.date
+                                    ? new Date(record.date).toISOString().split("T")[0]
+                                    : "",
+                                description: record.description,
+                                image: record.image
+                                    ? [
+                                        {
+                                            uid: "-1",
+                                            name: "existing-image",
+                                            status: "done",
+                                            url: record.image,
+                                        },
+                                    ]
+                                    : [],
+                            });
+
+                            setIsModalOpen(true);
+                        }}
+
+                    >
+                        Edit
+                    </Button>
+                </Space>
             ),
         },
     ];
@@ -195,7 +245,7 @@ const AddEvent = () => {
                     >
                         <div className="store-wrap">
                             <div className="d-flex justify-content-between align-items-center">
-                                <h6>Events List</h6>
+                                <h6>Upcoming Events</h6>
                                 <Button onClick={() => setIsModalOpen(true)}>Add Event</Button>
                             </div>
 
@@ -237,42 +287,64 @@ const AddEvent = () => {
 
                             </div>
 
-                            <Modal title="Add Event" open={isModalOpen} onCancel={() => setIsModalOpen(false)} footer={null}>
-                                <Form form={form} onFinish={handleAddEvent} layout="vertical">
+                            <Modal
+                                title={editingEvent ? "Edit Event" : "Add Event"}
+                                open={isModalOpen}
+                                onCancel={() => {
+                                    setIsModalOpen(false);
+                                    setEditingEvent(null);
+                                    form.resetFields();
+                                }}
+                                footer={null}
+                            >
+                                <Form form={form} onFinish={handleSubmit} layout="vertical">
                                     <Form.Item
                                         label="Event Name"
                                         name="eventname"
-                                        rules={[{ required: true, message: "Please enter event name" }]}
+                                        rules={[{ required: true }]}
                                     >
                                         <Input />
                                     </Form.Item>
+
                                     <Form.Item
                                         label="Date"
                                         name="date"
-                                        rules={[{ required: true, message: "Please select date" }]}
+                                        rules={[{ required: true }]}
                                     >
                                         <Input type="date" />
                                     </Form.Item>
+
                                     <Form.Item label="Description" name="description">
                                         <Input.TextArea rows={3} />
                                     </Form.Item>
+
                                     <Form.Item
-                                        label="Upload Image"
+                                        label={editingEvent ? "Update Image (optional)" : "Upload Image"}
                                         name="image"
                                         valuePropName="fileList"
                                         getValueFromEvent={(e) => (Array.isArray(e) ? e : e?.fileList)}
-                                        rules={[{ required: true, message: "Please upload an image" }]}
+                                        rules={
+                                            editingEvent
+                                                ? []
+                                                : [{ required: true, message: "Please upload an image" }]
+                                        }
                                     >
                                         <Upload beforeUpload={() => false} maxCount={1}>
-                                            <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                                            <Button icon={<UploadOutlined />}>Upload</Button>
                                         </Upload>
                                     </Form.Item>
 
-                                    <Button type="primary" htmlType="submit" loading={addingEvent}>
-                                        Submit
+                                    <Button
+                                        type="primary"
+                                        htmlType="submit"
+                                        loading={isSubmitting}
+                                        disabled={isSubmitting}
+                                    >
+                                        {editingEvent ? "Update Event" : "Add Event"}
                                     </Button>
                                 </Form>
                             </Modal>
+
                         </div>
                     </div>
                 </div>

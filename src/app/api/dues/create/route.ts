@@ -54,7 +54,7 @@ export async function GET() {
         await Dues.create({
           userId: user._id,
           streetAddress: user.streetAddress,
-          amount: 300,
+          amount: 30,
           dueDate,
           paymentMethod: null,
           autoPay: false,

@@ -104,7 +104,7 @@ export async function PUT(req: Request) {
         await Dues.create({
           userId: dueUserId,
           streetAddress: dueStreetAddress,
-          amount: userToUpdate.role === "board member" ? 300 : 300, 
+          amount: userToUpdate.role === "board member" ? 30 : 30, 
           dueDate,
           paymentMethod: null,
           autoPay: false,
