@@ -1,18 +1,190 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { DatePicker } from "antd";
+import { DatePicker, Table, TableColumnsType } from "antd";
 import type { Dayjs } from "dayjs";
 import Navbar from "@/components/layout/dashboard/Navbar";
 import Sidebar from "@/components/layout/dashboard/Sidebar";
 import ProtectedPage from "@/components/ProtectedPage";
 import DashStats from "@/components/ui/dashboard/DashStats";
+import axios from "axios";
+import { getUsers } from "@/lib/UsersApi/api";
+import toast from "react-hot-toast";
+
 
 const Page: React.FC = () => {
   const [isNavClosed, setIsNavClosed] = useState(false);
+  const [dues, setDues] = useState<any[]>([]);
+  const [unpaidMembers, setUnpaidMembers] = useState<any[]>([]);
   const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
   const [selectedYear, setSelectedYear] = useState<string | null>(null);
   const responsiveBreakpoint = 991;
+
+  const columns = [
+    {
+      title: "Label",
+      dataIndex: "label",
+      key: "label",
+    },
+    {
+      title: "Total Amount",
+      dataIndex: "amount",
+      key: "amount",
+      render: (amount: any) => (amount !== undefined ? `$${amount.toFixed(2)}` : "-"),
+    },
+    {
+      title: "Percentage",
+      dataIndex: "percentage",
+      key: "percentage",
+    },
+    {
+      title: "Count",
+      dataIndex: "count",
+      key: "count",
+    },
+  ];
+
+  const Seccolumns = [
+    {
+      title: "Street Address",
+      dataIndex: "streetaddresss",
+      key: "streetaddresss",
+    },
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+    },
+    {
+      title: "Total Overdue",
+      dataIndex: "totaloverdue",
+      key: "totaloverdue",
+    },
+    {
+      title: "Due Last Paid Year",
+      dataIndex: "lastpaidyear",
+      key: "lastpaidyear",
+    },
+  ]
+
+  const fetchData = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    try {
+      const duesRes = await axios.get("/api/dues/getAll", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      const allDues: any[] = duesRes.data;
+
+      const usersRes = await getUsers(token);
+      const Users = usersRes.users;
+
+      /* ---------------- SUMMARY TABLE (already working) ---------------- */
+      const totalAmount = allDues.reduce((sum, d) => sum + d.amount, 0);
+
+      const paidAmount = allDues
+        .filter((d) => d.paid || d.paidStatus === "Paid")
+        .reduce((sum, d) => sum + d.amount, 0);
+
+      const unpaidAmount = totalAmount - paidAmount;
+
+      const paidCount = allDues.filter(
+        (d) => d.paid || d.paidStatus === "Paid"
+      ).length;
+
+      const unpaidCount = allDues.length - paidCount;
+
+      const paidPercentage = totalAmount
+        ? ((paidAmount / totalAmount) * 100).toFixed(0) + "%"
+        : "0%";
+
+      setDues([
+        { key: "total", label: "Total Dues", amount: totalAmount },
+        {
+          key: "paid",
+          label: "Paid Dues",
+          amount: paidAmount,
+          percentage: paidPercentage,
+          count: paidCount,
+        },
+        {
+          key: "unpaid",
+          label: "Unpaid Dues",
+          amount: unpaidAmount,
+          percentage: (100 - Number(paidPercentage.replace("%", ""))) + "%",
+          count: unpaidCount,
+        },
+      ]);
+
+      /* ---------------- SECOND TABLE: UNPAID MEMBERS ---------------- */
+
+      // Only unpaid dues
+      const unpaidDues = allDues.filter(
+        (d) => !d.paid && d.paidStatus !== "Paid"
+      );
+
+      // Group unpaid dues by userId
+      const groupedByUser: Record<string, any[]> = unpaidDues.reduce(
+        (acc, due) => {
+          if (!acc[due.userId]) acc[due.userId] = [];
+          acc[due.userId].push(due);
+          return acc;
+        },
+        {}
+      );
+
+      const unpaidTableData = Object.entries(groupedByUser).map(
+        ([userId, dues]) => {
+          const user = Users.find((u: any) => u._id === userId);
+
+          const totalOverdue = dues.reduce(
+            (sum, d) => sum + d.amount,
+            0
+          );
+
+          // last paid year (from user's paid dues)
+          const paidDuesOfUser = allDues.filter(
+            (d) => d.userId === userId && (d.paid || d.paidStatus === "Paid")
+          );
+
+          const lastPaidYear =
+            paidDuesOfUser.length > 0
+              ? new Date(
+                Math.max(
+                  ...paidDuesOfUser.map((d) =>
+                    new Date(d.updatedAt || d.createdAt).getTime()
+                  )
+                )
+              ).getFullYear()
+              : "Never";
+
+          return {
+            key: userId,
+            streetaddresss: dues[0].streetAddress,
+            name: user ? `${user.firstname} ${user.lastname}` : "Unknown",
+            email: user?.email || "-",
+            totaloverdue: totalOverdue,
+            lastpaidyear: lastPaidYear,
+          };
+        }
+      );
+
+      setUnpaidMembers(unpaidTableData);
+
+    } catch (error: any) {
+      console.error("Failed to fetch dues", error);
+      toast.error("Failed to fetch dues data");
+    }
+  };
+
+
 
   useEffect(() => {
     const handleResize = () => {
@@ -22,9 +194,15 @@ const Page: React.FC = () => {
         setIsNavClosed(false);
       }
     };
+
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+
+  useEffect(() => {
+    fetchData();
   }, []);
 
   const toggleNav = () => {
@@ -34,11 +212,12 @@ const Page: React.FC = () => {
   const handleMonthChange = (date: Dayjs | null, dateString: string | string[]) => {
     setSelectedMonth(typeof dateString === "string" ? dateString : dateString[0] || null);
   };
-  
+
   const handleYearChange = (date: Dayjs | null, dateString: string | string[]) => {
     setSelectedYear(typeof dateString === "string" ? dateString : dateString[0] || null);
   };
-  
+
+
 
   return (
     <ProtectedPage allowedRoles={["board member"]}>
@@ -79,41 +258,24 @@ const Page: React.FC = () => {
               </div>
 
               <div className="row mb-4">
-                <div className="col-md-3">
-                  <div className="main-stats">
-                    <div className="d-flex flex-column">
-                      <p>Total Profile Created</p>
-                      <h2>321</h2>
-                    </div>
-                  </div>
+                <div className="col-md-6">
+                  <Table
+                    className="responsive-table"
+                    columns={columns}
+                    dataSource={dues}
+                    pagination={false}
+                  />
                 </div>
-                <div className="col-md-3">
-                  <div className="main-stats">
-                    <div className="d-flex flex-column">
-                      <p>Total Offenses</p>
-                      <h2>20</h2>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-3">
-                  <div className="main-stats">
-                    <div className="d-flex flex-column">
-                      <p>Total Tickets</p>
-                      <h2>120</h2>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-3">
-                  <div className="main-stats">
-                    <div className="d-flex flex-column">
-                      <p>Expunge Request</p>
-                      <h2>15</h2>
-                    </div>
-                  </div>
+                <div className="col-md-6">
+                  <Table
+                    className="responsive-table"
+                    columns={Seccolumns}
+                    dataSource={unpaidMembers}
+                    pagination={{ pageSize: 10 }}
+                  />
+
                 </div>
               </div>
-
-              <DashStats />
             </div>
           </div>
         </div>

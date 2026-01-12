@@ -50,28 +50,38 @@ const Signup = () => {
         setFormData({ ...formData, [name]: value });
     };
 
+    const passwordRegex =
+        /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
+
     const handleSubmit = async (e: any) => {
         e.preventDefault();
+
+        if (!passwordRegex.test(formData.password)) {
+            toast.error(
+                "Password must contain at least 1 uppercase letter, 1 number, 1 special character, and be at least 8 characters long."
+            );
+            return;
+        }
 
         if (formData.password !== formData.confirmPassword) {
             toast.error("Passwords do not match!");
             return;
         }
 
-        formData.role = "home owner"
+        formData.role = "home owner";
 
         try {
-            setLoading(true)
+            setLoading(true);
             const data = await registerUser(formData);
             toast.success(data.message);
             router.push("/login");
         } catch (error: any) {
             toast.error(error.message);
-        }
-        finally {
+        } finally {
             setLoading(false);
         }
     };
+
 
 
     useEffect(() => {
@@ -100,7 +110,6 @@ const Signup = () => {
         }
     }, []);
 
-    const streetOptions = ["123 Main St", "456 Oak Ave", "789 Pine Blvd", "1010 Maple Dr", "2020 Elm St"];
 
 
     return (
