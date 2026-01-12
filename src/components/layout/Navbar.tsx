@@ -20,104 +20,164 @@ const Header = () => {
   const local_token = localStorage.getItem("token");
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const router = useRouter();
-  const navbardata = [
+
+  const navbardata: any[] = [
     {
       id: 1,
-      title: "Home",
-      link: "/",
+      title: "Member Directory",
+      link: "/phonedirectory",
     },
     {
       id: 2,
-      title: "Services",
-      link: "/services",
+      title: "About LRV",
+      link: "/about",
+      hasSubmenu: true,
       submenu: [
+        { title: "About Us", link: "/about" },
+        { title: "Welcome Flyer", link: "/neighbor" },
+        { title: "Bylaws", link: "/lrvlaw" },
         {
-          title: "NewsLetter",
-          link: "/newsletter",
+          title: "Neighborhood Watch",
+          link: "/event/686eaf69226e06ff7b833d8b",
         },
         {
-          title: "Directory",
-          link: "/phonedirectory",
-        },
-        {
-          title: "Dues",
-          link: "/dues",
+          title: "City of Rolling Hills Estates",
+          link: "http://www.ci.rolling-hills-estates.ca.us/",
         },
       ],
-      hasSubmenu: true,
     },
     {
       id: 3,
       title: "LRV Board",
       link: "/lrvboard",
-      submenu: [
-        {
-          title: "Board Of Directors",
-          link: "/lrvboard",
-        },
-        {
-          title: "LRV Board Meetings",
-          link: "/lrv-board-meeting",
-        },
-        {
-          title: "LRVHOA By laws",
-          link: "/lrvlaw",
-        },
-      ],
       hasSubmenu: true,
+      submenu: [
+        { title: "Board Of Directors", link: "/lrvboard" },
+        { title: "LRV Board Meetings", link: "/lrv-board-meeting" },
+      ],
     },
     {
       id: 4,
-      title: "Community",
-      link: "/community",
+      title: "Events",
+      link: "#",
+      hasSubmenu: true,
       submenu: [
+        { title: "Upcoming Events", link: "/upcomingEvents" },
         ...eventData.map((event) => ({
           title: event.eventname,
           link: `/event/${event._id}`,
         })),
       ],
-      hasSubmenu: true,
     },
-
     {
       id: 5,
-      title: "About LRV",
-      link: "/about",
-      submenu: [
-        {
-          title: "Contact LRV",
-          link: "/contactus",
-        },
-        {
-          title: "LRV streets Portfolio",
-          link: "/streetportfolio",
-        },
-        {
-          title: "LRVHOA.NET SECURITY",
-          link: "/security",
-        },
-        {
-          title: "New Neighbor Welcome Flyer",
-          link: "/neighbor",
-        },
-        {
-          title: "LRV PHOTO GALLERY",
-          link: "/photoGallery",
-        },
-      ],
-      hasSubmenu: true,
+      title: "My Dues",
+      link: "/dues",
     },
     {
       id: 6,
-      title: "Vote Candidate",
-      link: "/vote-candidate",
-    },
-    {
-      id: 7,
-      title: "Upcoming Events",
-      link: "/upcomingEvents",
+      title: "Contact",
+      link: "/contactus",
     },
   ];
+
+  // {
+  //   id: 1,
+  //   title: "Home",
+  //   link: "/",
+  // },
+  // {
+  //   id: 2,
+  //   title: "Services",
+  //   link: "/services",
+  //   submenu: [
+  //     {
+  //       title: "NewsLetter",
+  //       link: "/newsletter",
+  //     },
+  //     {
+  //       title: "Directory",
+  //       link: "/phonedirectory",
+  //     },
+  //     {
+  //       title: "Dues",
+  //       link: "/dues",
+  //     },
+  //   ],
+  //   hasSubmenu: true,
+  // },
+  // {
+  //   id: 3,
+  //   title: "LRV Board",
+  //   link: "/lrvboard",
+  //   submenu: [
+  //     {
+  //       title: "Board Of Directors",
+  //       link: "/lrvboard",
+  //     },
+  //     {
+  //       title: "LRV Board Meetings",
+  //       link: "/lrv-board-meeting",
+  //     },
+  //     {
+  //       title: "LRVHOA By laws",
+  //       link: "/lrvlaw",
+  //     },
+  //   ],
+  //   hasSubmenu: true,
+  // },
+  // {
+  //   id: 4,
+  //   title: "Community",
+  //   link: "/community",
+  //   submenu: [
+  //     ...eventData.map((event) => ({
+  //       title: event.eventname,
+  //       link: `/event/${event._id}`,
+  //     })),
+  //   ],
+  //   hasSubmenu: true,
+  // },
+
+  // {
+  //   id: 5,
+  //   title: "About LRV",
+  //   link: "/about",
+  //   submenu: [
+  //     {
+  //       title: "Contact LRV",
+  //       link: "/contactus",
+  //     },
+  //     {
+  //       title: "LRV streets Portfolio",
+  //       link: "/streetportfolio",
+  //     },
+  //     {
+  //       title: "LRVHOA.NET SECURITY",
+  //       link: "/security",
+  //     },
+  //     {
+  //       title: "New Neighbor Welcome Flyer",
+  //       link: "/neighbor",
+  //     },
+  //     {
+  //       title: "LRV PHOTO GALLERY",
+  //       link: "/photoGallery",
+  //     },
+  //   ],
+  //   hasSubmenu: true,
+  // },
+  // {
+  //   id: 6,
+  //   title: "Vote Candidate",
+  //   link: "/vote-candidate",
+  // },
+  // {
+  //   id: 7,
+  //   title: "Upcoming Events",
+  //   link: "/upcomingEvents",
+  // },
+
 
 
 
@@ -185,7 +245,7 @@ const Header = () => {
               </div>
             </div>
             <div className="col-lg-7">
-              <div className={`menu ${menuOpen ? "open" : ""}`}>
+              <div className={`menu ${menuOpen ? "open" : ""}`} style={{display: "flex", justifyContent: "center",}}>
                 <ul className="menu">
                   {navbardata.map((data) => (
                     <li
@@ -200,7 +260,7 @@ const Header = () => {
                       </Link>
                       {data.submenu && (
                         <ul className="submenu">
-                          {data.submenu.map((subitem, subindex) => (
+                          {data.submenu.map((subitem: any, subindex: any) => (
                             <li key={subindex}>
                               <Link href={subitem.link}>{subitem.title}</Link>
                             </li>
@@ -278,7 +338,7 @@ const Header = () => {
                         <li className="btn-li">
                           <Link href="/login">Dashboard</Link>
                         </li>
-                        
+
                         <li className="btn-li" onClick={() => handleLogout()}>
                           <Link href="">Sign Out</Link>
                         </li>

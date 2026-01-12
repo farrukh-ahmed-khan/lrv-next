@@ -37,11 +37,17 @@ const SendMassMail = () => {
             console.error("No token found.");
             return;
         }
+
         try {
             const data = await getUsers(token);
+
+            const allowedRoles = ["home owner", "home member", "board member"];
+
             const fetchedData = data.users
                 .filter(
-                    (user: User) => user.role === "home owner" && user.status === "approved"
+                    (user: User) =>
+                        allowedRoles.includes(user.role) &&
+                        user.status === "approved"
                 )
                 .map((data: User) => ({
                     _id: data._id,
@@ -60,6 +66,7 @@ const SendMassMail = () => {
             toast.error("Error fetching user data");
         }
     };
+
 
 
     const handleSendEmails = async () => {
@@ -111,7 +118,7 @@ const SendMassMail = () => {
             <div className="col-md-12">
                 {role === "board member" && (
                     <div className="mt-4 mb-4">
-                        <h6>Send Mass Email</h6>
+                        <h6>Email HOA Members</h6>
                         <Space direction="vertical" style={{ width: "100%" }}>
                             <Select
                                 value={emailMode}
@@ -119,7 +126,7 @@ const SendMassMail = () => {
                                 style={{ width: 300 }}
                             >
                                 <Option value="all">All Homeowners</Option>
-                                <Option value="street">By Street</Option>
+                                {/* <Option value="street">By Street</Option> */}
                                 <Option value="specific">Select Specific Users</Option>
                             </Select>
 
@@ -143,7 +150,7 @@ const SendMassMail = () => {
                                     mode="multiple"
                                     allowClear
                                     style={{ width: "100%" }}
-                                    placeholder="Select Homeowners"
+                                    placeholder="Select HOA Members"
                                     value={selectedUserIds}
                                     onChange={setSelectedUserIds}
                                 >
