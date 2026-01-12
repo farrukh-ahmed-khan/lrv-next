@@ -34,7 +34,7 @@ const LrvLaws = () => {
 
 
     return (
-        <ProtectedPage allowedRoles={["home owner", "home member", "board member", "admin"]}>
+        // <ProtectedPage allowedRoles={["home owner", "home member", "board member", "admin"]}>
             <div className="law-wrapper">
                 <Header />
                 <InnerBanner title="LRVHOA By-Laws" />
@@ -93,7 +93,7 @@ const LrvLaws = () => {
                 </div>
                 <Footer />
             </div>
-        </ProtectedPage>
+        // </ProtectedPage>
     );
 };
 

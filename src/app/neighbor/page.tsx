@@ -9,7 +9,7 @@ import Image from "next/image";
 
 const Securiy = () => {
     return (
-        <ProtectedPage allowedRoles={["home owner", "home member", "board member", "admin"]}>
+        // <ProtectedPage allowedRoles={["home owner", "home member", "board member", "admin"]}>
             <div className="Dues-wrapper">
                 <Header />
                 <>
@@ -47,7 +47,7 @@ const Securiy = () => {
 
                 <Footer />
             </div>
-        </ProtectedPage>
+        // </ProtectedPage>
     );
 };
 

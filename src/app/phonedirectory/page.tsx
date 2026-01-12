@@ -92,16 +92,19 @@ const PhoneDirectory = () => {
         try {
             const data = await getAllUsers(token);
 
-            const fetchedData = data.users.map((data: User, index: number) => ({
-                id: data._id,
-                firstname: data.firstname,
-                lastname: data.lastname,
-                email: data.email,
-                phoneNumber: data.phoneNumber,
-                streetAddress: data.streetAddress,
-                role: data.role,
-                status: data.status,
-            }));
+            const fetchedData = data.users
+                .filter((user: User) => user.status === "approved")
+                .map((user: User) => ({
+                    id: user._id,
+                    firstname: user.firstname,
+                    lastname: user.lastname,
+                    email: user.email,
+                    phoneNumber: user.phoneNumber,
+                    streetAddress: user.streetAddress,
+                    role: user.role,
+                    status: user.status,
+                }));
+
             setUserData(fetchedData)
             setFilterData(fetchedData)
             // toast.success(data.message);

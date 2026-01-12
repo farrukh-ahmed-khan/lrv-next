@@ -71,7 +71,7 @@ const AboutLrv: React.FC = () => {
                 </section>
                 <>
                     <AboutUs
-                        title="About Us"
+                        // title="About Us"
                         paragraphs={[
                             "Los Ranchos Verdes is a small community in Rolling Hills Estates, California. Los Ranchos Verdes is Spanish, meaning “The Green Ranches”",
                             "Los Ranchos Verdes is located very close to the intersection of Hawthorne Boulevard and Palos Verdes Drive North. We are also ‘just-down-road’ from Rolling Hills Estates City Hall, located at the NW corner of Palos Verdes Drive North and Crenshaw Boulevard.",
@@ -89,8 +89,7 @@ const AboutLrv: React.FC = () => {
                                 <div className="heading-wrap">
                                     <h4>LRV STREETS</h4>
                                     <p>
-                                        Welcome, LRV homeowners and guests! …these are “The Streets
-                                        of Los Ranchos Verdes”…
+                                       LRV HOA serves homeowners on the following streets.
                                     </p>
                                 </div>
                             </div>
@@ -141,7 +140,7 @@ const AboutLrv: React.FC = () => {
                             </div>
                             <div className="col-lg-6">
                                 <ul className="list-style-wrap">
-                                    <li>
+                                    {/* <li>
                                         <span>
                                             <svg
                                                 aria-hidden="true"
@@ -153,7 +152,7 @@ const AboutLrv: React.FC = () => {
                                             </svg>
                                         </span>
                                         <span>Golden Spar Place</span>
-                                    </li>
+                                    </li> */}
                                     <li>
                                         <span>
                                             <svg

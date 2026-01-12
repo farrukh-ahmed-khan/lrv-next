@@ -41,7 +41,7 @@ const CarShow = () => {
 
 
     return (
-        <ProtectedPage allowedRoles={["home owner", "home member", "board member", "admin"]}>
+        // <ProtectedPage allowedRoles={["home owner", "home member", "board member", "admin"]}>
             <div className="contactus-wrapper">
                 <Header />
                 <InnerBanner title="Contact us" />
@@ -160,7 +160,7 @@ const CarShow = () => {
                 </div>
                 <Footer />
             </div>
-        </ProtectedPage>
+        // </ProtectedPage>
     );
 };
 
