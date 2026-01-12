@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { client } from "../../../lib/mongodb";
 import Contact from "../../../lib/models/Contact";
+import { transporter } from "../../../lib/mail";
 
-// ✅ POST: Save new contact form entry
 export async function POST(req: Request) {
   try {
     const { fullName, email, phone, message } = await req.json();
@@ -16,14 +16,30 @@ export async function POST(req: Request) {
 
     await client;
 
+    // Save to DB
     const newContact = new Contact({
       fullName,
       email,
       phone,
       message,
     });
-
     await newContact.save();
+
+    // 📧 Send Email
+    await transporter.sendMail({
+      from: `"LRV" <${process.env.MAIL_FROM_ADDRESS}>`,
+      to: "pgattu@gmail.com",
+      replyTo: email,
+      subject: "New Contact Form Submission",
+      html: `
+        <h3>New Contact Message</h3>
+        <p><strong>Name:</strong> ${fullName}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Phone:</strong> ${phone}</p>
+        <p><strong>Message:</strong></p>
+        <p>${message}</p>
+      `,
+    });
 
     return NextResponse.json(
       { message: "Thank you for contacting us!" },
@@ -32,7 +48,7 @@ export async function POST(req: Request) {
   } catch (error: any) {
     console.error("Error creating contact:", error);
     return NextResponse.json(
-      { message: "Failed to submit contact form", error: error.message },
+      { message: "Failed to submit contact form" },
       { status: 500 }
     );
   }

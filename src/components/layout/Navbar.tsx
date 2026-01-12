@@ -211,7 +211,8 @@ const Header = () => {
     }
   };
 
-
+  const isExternalLink = (url: string) =>
+    url.startsWith("http://") || url.startsWith("https://");
 
   useEffect(() => {
     return () => {
@@ -245,7 +246,7 @@ const Header = () => {
               </div>
             </div>
             <div className="col-lg-7">
-              <div className={`menu ${menuOpen ? "open" : ""}`} style={{display: "flex", justifyContent: "center",}}>
+              <div className={`menu ${menuOpen ? "open" : ""}`} style={{ display: "flex", justifyContent: "center", }}>
                 <ul className="menu">
                   {navbardata.map((data) => (
                     <li
@@ -260,13 +261,20 @@ const Header = () => {
                       </Link>
                       {data.submenu && (
                         <ul className="submenu">
-                          {data.submenu.map((subitem: any, subindex: any) => (
+                          {data.submenu.map((subitem: any, subindex: number) => (
                             <li key={subindex}>
-                              <Link href={subitem.link}>{subitem.title}</Link>
+                              <Link
+                                href={subitem.link}
+                                target={isExternalLink(subitem.link) ? "_blank" : undefined}
+                                rel={isExternalLink(subitem.link) ? "noopener noreferrer" : undefined}
+                              >
+                                {subitem.title}
+                              </Link>
                             </li>
                           ))}
                         </ul>
                       )}
+
                     </li>
                   ))}
                 </ul>

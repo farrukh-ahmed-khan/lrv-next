@@ -41,7 +41,7 @@ export async function POST(req: Request) {
     } else if (recipientType === "specific" && Array.isArray(userIds)) {
       recipients = await User.find({
         _id: { $in: userIds.map((id) => new mongoose.Types.ObjectId(id)) }, // convert to ObjectId
-        role: "home owner",
+        // role: "home owner",
         status: "approved",
       });
     } else {

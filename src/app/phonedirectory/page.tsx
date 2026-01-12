@@ -128,14 +128,11 @@ const PhoneDirectory = () => {
                             <div className="col-lg-12">
                                 <div className="para-wrap">
                                     <p>
-                                        Our LRV Phone Directory is your connection to your LRV
-                                        neighbors. This Phone Directory is private and used
-                                        exclusively and strictly for neighborly concerns and
-                                        causes.This private directory is not to be used for commercial
-                                        or business marketing purposes.
+                                        The LRV Directory is your connection to your LRV neighbors. This Directory is private and used exclusively and strictly for neighborly concerns and causes.
+                                        This private directory is not to be used for commercial or business marketing purposes.
                                         <br />
                                         <br />
-                                        You have two choices:
+                                        Search Directory
                                     </p>
                                 </div>
                             </div>
@@ -155,11 +152,16 @@ const PhoneDirectory = () => {
                                         className="responsive-table"
                                         columns={columns}
                                         dataSource={filterData}
+                                        pagination={{
+                                            pageSize: 50,
+                                            showSizeChanger: true,
+                                            pageSizeOptions: ["10", "20", "50", "100"],
+                                        }}
                                     />
                                 </div>
                             </div>
                         </div>
-                        <div className="row">
+                        {/* <div className="row">
                             <div className="col-lg-12 d-flex justify-center">
                                 <div className="para-wrap"
                                     style={{
@@ -197,7 +199,7 @@ const PhoneDirectory = () => {
                                     <Image src={directoryimg} alt="directory img"></Image>
                                 </Link>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </section>
 

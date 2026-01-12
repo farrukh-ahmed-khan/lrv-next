@@ -180,7 +180,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavClosed }) => {
                             <span>
                                 <LogoutOutlinedIcon />
                             </span>
-                            <span>Back To Home</span>
+                            <span>Homeowner website</span>
                         </Link>
                     </li>
                 </ul>

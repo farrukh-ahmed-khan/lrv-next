@@ -20,12 +20,12 @@ const Footer = () => {
             </div>
             <div className="col-lg-1"></div>
           </div> */}
-
-          <div className="row">
-            <div className="col-lg-3">
-              {/* <div className="footer-logo-wrapper">
+          {/* <div className="footer-logo-wrapper">
                 <img src={logoft} alt="logo" />
               </div> */}
+
+          <div className="row">
+            {/* <div className="col-lg-3">
               <div className="footer-logo-text">
                 <h3>About Los Ranchos Verdes</h3>
                 <p>
@@ -54,8 +54,8 @@ const Footer = () => {
                   </ul>
                 </div>
               </div>
-            </div>
-            <div className="col-lg-3">
+            </div> */}
+            <div className="col-lg-4">
               <div className="footerLinks">
                 <h3>Quick Links</h3>
                 <ul>
@@ -66,13 +66,10 @@ const Footer = () => {
                     <Link href="/about">About</Link>
                   </li>
                   <li>
-                    <Link href="/books">Services</Link>
+                    <Link href="/services">Services</Link>
                   </li>
                   <li>
-                    <Link href="/services">What We Do For You</Link>
-                  </li>
-                  <li>
-                    <Link href="/lrvboard">Lrv Board</Link>
+                    <Link href="/lrvboard">Board of Directors</Link>
                   </li>
                   <li>
                     <Link href="/community">Community</Link>
@@ -80,24 +77,32 @@ const Footer = () => {
                 </ul>
               </div>
             </div>
-            <div className="col-lg-3">
+            <div className="col-lg-4">
               <div className="footerLinks">
                 <h3>Useful links</h3>
                 <ul>
                   <li>
-                    <Link href="/dues">Pat my LRVHOA Dues</Link>
+                    <Link href="/dues">Dues history</Link>
                   </li>
-                  <li>
+                  {/* <li>
                     <Link href="/vote-candidate">Board Member Voting</Link>
-                  </li>
+                  </li> */}
                   <li>
                     <Link href="/phonedirectory">Directory</Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="https://nextdoor.com/g/6g16yiqza/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >LRV HOA's Nextdoor
+                    </Link>
                   </li>
                 </ul>
               </div>
             </div>
-            <div className="col-lg-3">
-              <div className="footerLinks">
+            <div className="col-lg-4">
+              {/* <div className="footerLinks">
                 <h3>Los Ranchos Verdes Border Map</h3>
                 <div className="map-wrap">
                   <iframe
@@ -107,7 +112,7 @@ const Footer = () => {
                     loading="lazy"
                   ></iframe>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -118,7 +123,7 @@ const Footer = () => {
             <div className="col-lg-4"></div>
             <div className="col-lg-4">
               <div className="footer-bottom-content">
-                <p>© 2025 Docu Loss. All Rights Reserved.</p>
+                <p>© {new Date().getFullYear()} Los Ranchos Verdes HOA. All Rights Reserved.</p>
               </div>
             </div>
             <div className="col-lg-4">

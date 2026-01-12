@@ -200,139 +200,12 @@ const Home: React.FC = () => {
         <section className="homeBanner-wrapper">
           <HomeBanner
             title="LOS RANCHOS VERDES HOA"
-            subtitle="Welcome To"
-            buttons={[
-              { label: "Board Member Voting", link: "/vote-candidate" },
-              { label: "Pay My LRVHOA Dues", link: "/dues" },
-            ]}
+          // subtitle="Welcome To"
+          // buttons={[
+          //   { label: "Board Member Voting", link: "/vote-candidate" },
+          //   { label: "Pay My LRVHOA Dues", link: "/dues" },
+          // ]}
           />
-        </section>
-        <>
-          <AboutUs
-            title="About Us"
-            paragraphs={[
-              "Los Ranchos Verdes is a small community in Rolling Hills Estates, California. Los Ranchos Verdes is Spanish, meaning 'The Green Ranches'.",
-              "Los Ranchos Verdes is located very close to the intersection of Hawthorne Boulevard and Palos Verdes Drive North. We are also 'just-down-road' from Rolling Hills Estates City Hall, located at the NW corner of Palos Verdes Drive North and Crenshaw Boulevard.",
-              "Our small, beautiful, country-like community consists of 151 households. We have an active Homeowners Association, a Board of Directors, and an effective Neighborhood Watch Program.",
-            ]}
-            button={{ label: "Read More", link: "/about" }}
-            image={aboutUsImg}
-          />
-        </>
-        <section className="services-wrapper">
-          <div className="container">
-            <div className="row">
-              <div className="col-lg-12">
-                <div className="heading-wrap">
-                  <h4>Services</h4>
-                </div>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-lg-6" style={{ paddingRight: "0px" }}>
-                <div className="service-card-wrap first">
-                  <h4>DIRECTORY</h4>
-                  <p>
-                    Our LRV Phone Directoryis your connection to your LRV
-                    neighbors. This Phone Directory is private and used
-                    exclusively and strictly for neighborly concerns and causes.
-                  </p>
-                  <p>Here's a link to the most current LRV Phone Directory:</p>
-                  <div className="btn-wrap">
-                    <Link href="/phonedirectory" className="btns-style green">
-                      Read More
-                    </Link>
-                  </div>
-                </div>
-              </div>
-              <div className="col-lg-6" style={{ paddingLeft: "0px" }}>
-                <div className="service-card-wrap">
-                  <h4>DUES</h4>
-                  <p>
-                    LRV Homeowner Association dues are payable annually in
-                    January, by January 31st. Your $30.00 in annual dues helps
-                    to pay for a variety of LRV HOA expenses, i.e., landscaping,
-                    electricity & lighting for the common entry area, and
-                    maintenance at the corners of Palos Verdes Drive North &
-                    Silver Saddle Lane.
-                  </p>
-                  <div className="btn-wrap">
-                    <Link href="/dues" className="btns-style green">
-                      Read More
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="dues-sec-wrapper">
-          <div className="container">
-            <div className="row">
-              <div className="col-lg-3"></div>
-              <div className="col-lg-6">
-                <div className="heading-wrap">
-                  <h4>Pay My LRVHOA Dues</h4>
-                  <p>
-                    Keeping your community running smoothly requires timely
-                    contributions from all homeowners. At LRVHOA, we've made it
-                    easy and secure for you to pay your Homeowners Association
-                    (HOA) dues online or by other convenient methods.
-                  </p>
-                  <div className="btn-wrap">
-                    <Link href="/dues" className="btns-style">
-                      Pay My LRVHOA Dues
-                    </Link>
-                  </div>
-                </div>
-              </div>
-              <div className="col-lg-3"></div>
-              <div className="col-lg-12">
-                <div className="img-wrap">
-                  <Image src={payImg} alt="" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="board-director">
-          <div className="container">
-            <div className="row">
-              <div className="col-lg-12">
-                <div className="heading-wrap">
-                  <h4>our lrv board of directors</h4>
-                </div>
-              </div>
-            </div>
-            <div className="row d-flex justify-content-center">
-
-              {directorData.map((member, index) => (
-                <div className="col-lg-3" key={member._id || index}>
-                  <div className="director-card">
-                    <div className="img-wrap">
-                      <Image
-                        src={member.image || "/images/person-icon.png"} // fallback image
-                        alt={member.directorname || "director"}
-                        width={200}
-                        height={200}
-                      />
-                    </div>
-                    <div className="content-wrap">
-                      <h4>{member.directorname}</h4>
-                      <p>{member.designation}</p>
-                      {member?.description ? (
-                        <p>{member.description}</p>
-                      ) : (
-                        <p></p>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
         </section>
 
         <section className="upcoming-sec">
@@ -403,6 +276,138 @@ const Home: React.FC = () => {
             </div>
           </div>
         </section>
+
+        <>
+          <AboutUs
+            title="About Us"
+            paragraphs={[
+              "Los Ranchos Verdes is a small community in Rolling Hills Estates, California. Los Ranchos Verdes is Spanish, meaning 'The Green Ranches'.",
+              "Los Ranchos Verdes is located very close to the intersection of Hawthorne Boulevard and Palos Verdes Drive North. We are also 'just-down-road' from Rolling Hills Estates City Hall, located at the NW corner of Palos Verdes Drive North and Crenshaw Boulevard.",
+              "Our small, beautiful, country-like community consists of 151 households. We have an active Homeowners Association, a Board of Directors, and an effective Neighborhood Watch Program.",
+            ]}
+            // button={{ label: "Read More", link: "/about" }}
+            image={aboutUsImg}
+          />
+        </>
+
+
+
+        <section className="services-wrapper">
+          <div className="container">
+            <div className="row">
+              <div className="col-lg-12">
+                <div className="heading-wrap">
+                  <h4>DIRECTORY</h4>
+                </div>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-lg-12" style={{ paddingRight: "0px" }}>
+                <div className="service-card-wrap first">
+                  {/* <h4>DIRECTORY</h4> */}
+                  <p>
+                    Our LRV Directory is your connection to your LRV neighbors. This Directory is private and used exclusively and strictly for neighborly concerns and causes.
+
+                  </p>
+                  <p>Click below for the most current LRV Directory:</p>
+                  <div className="btn-wrap">
+                    <Link href="/phonedirectory" className="btns-style green">
+                      Read More
+                    </Link>
+                  </div>
+                </div>
+              </div>
+              {/* <div className="col-lg-6" style={{ paddingLeft: "0px" }}>
+                <div className="service-card-wrap">
+                  <h4>DUES</h4>
+                  <p>
+                    LRV Homeowner Association dues are payable annually in
+                    January, by January 31st. Your $30.00 in annual dues helps
+                    to pay for a variety of LRV HOA expenses, i.e., landscaping,
+                    electricity & lighting for the common entry area, and
+                    maintenance at the corners of Palos Verdes Drive North &
+                    Silver Saddle Lane.
+                  </p>
+                  <div className="btn-wrap">
+                    <Link href="/dues" className="btns-style green">
+                      Read More
+                    </Link>
+                  </div>
+                </div>
+              </div> */}
+            </div>
+          </div>
+        </section>
+
+        <section className="dues-sec-wrapper">
+          <div className="container">
+            <div className="row">
+              <div className="col-lg-3"></div>
+              <div className="col-lg-6">
+                <div className="heading-wrap">
+                  <h4>Pay My LRVHOA Dues</h4>
+                  <p>
+                    Keeping your community running smoothly requires timely
+                    contributions from all homeowners. At LRVHOA, we've made it
+                    easy and secure for you to pay your Homeowners Association
+                    (HOA) dues online or by other convenient methods.
+                  </p>
+                  <div className="btn-wrap">
+                    <Link href="/dues" className="btns-style">
+                      Pay My LRVHOA Dues
+                    </Link>
+                  </div>
+                </div>
+              </div>
+              <div className="col-lg-3"></div>
+              {/* <div className="col-lg-12">
+                <div className="img-wrap">
+                  <Image src={payImg} alt="" />
+                </div>
+              </div> */}
+            </div>
+          </div>
+        </section>
+
+        <section className="board-director">
+          <div className="container">
+            <div className="row">
+              <div className="col-lg-12">
+                <div className="heading-wrap">
+                  <h4>our lrv board of directors</h4>
+                </div>
+              </div>
+            </div>
+            <div className="row d-flex justify-content-center">
+
+              {directorData.map((member, index) => (
+                <div className="col-lg-3" key={member._id || index}>
+                  <div className="director-card">
+                    <div className="img-wrap">
+                      <Image
+                        src={member.image || "/images/person-icon.png"} // fallback image
+                        alt={member.directorname || "director"}
+                        width={200}
+                        height={200}
+                      />
+                    </div>
+                    <div className="content-wrap">
+                      <h4>{member.directorname}</h4>
+                      <p>{member.designation}</p>
+                      {member?.description ? (
+                        <p>{member.description}</p>
+                      ) : (
+                        <p></p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+
 
         <section className="gallery-sec">
           <div className="gallery">
