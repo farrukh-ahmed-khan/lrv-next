@@ -20,6 +20,20 @@ const Page: React.FC = () => {
   const [selectedYear, setSelectedYear] = useState<string | null>(null);
   const responsiveBreakpoint = 991;
 
+
+  const filterDuesByDate = (dues: any[]) => {
+    return dues.filter((due) => {
+      const date = new Date(due.createdAt); // or due.updatedAt
+      const dueMonth = (date.getMonth() + 1).toString().padStart(2, "0");
+      const dueYear = date.getFullYear().toString();
+
+      if (selectedYear && dueYear !== selectedYear) return false;
+      if (selectedMonth && dueMonth !== selectedMonth.split("-")[1]) return false;
+
+      return true;
+    });
+  };
+
   const columns = [
     {
       title: "Label",
@@ -81,7 +95,8 @@ const Page: React.FC = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      const allDues: any[] = duesRes.data;
+      const rawDues: any[] = duesRes.data;
+      const allDues = filterDuesByDate(rawDues);
 
       const usersRes = await getUsers(token);
       const Users = usersRes.users;
@@ -203,7 +218,7 @@ const Page: React.FC = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [selectedMonth, selectedYear]);
 
   const toggleNav = () => {
     setIsNavClosed(!isNavClosed);
