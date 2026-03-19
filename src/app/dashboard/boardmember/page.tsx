@@ -16,6 +16,7 @@ const Page: React.FC = () => {
   const [isNavClosed, setIsNavClosed] = useState(false);
   const [dues, setDues] = useState<any[]>([]);
   const [unpaidMembers, setUnpaidMembers] = useState<any[]>([]);
+  const [pendingAccess, setPendingAccess] = useState<any[]>([]);
   const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
   const [selectedYear, setSelectedYear] = useState<string | null>(null);
   const responsiveBreakpoint = 991;
@@ -85,6 +86,34 @@ const Page: React.FC = () => {
       key: "lastpaidyear",
     },
   ]
+
+  const pendingColumns = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+    },
+    {
+      title: "Role",
+      dataIndex: "role",
+      key: "role",
+    },
+    {
+      title: "Street Address",
+      dataIndex: "streetAddress",
+      key: "streetAddress",
+    },
+    {
+      title: "Requested",
+      dataIndex: "requestedAt",
+      key: "requestedAt",
+    },
+  ];
 
   const fetchData = async () => {
     const token = localStorage.getItem("token");
@@ -193,6 +222,21 @@ const Page: React.FC = () => {
 
       setUnpaidMembers(unpaidTableData);
 
+      /* ---------------- PENDING ACCESS ---------------- */
+      const pendingUsers = Users.filter((u: any) => u.status === "pending");
+      const pendingTableData = pendingUsers.map((u: any) => ({
+        key: u._id,
+        name: `${u.firstname} ${u.lastname}`,
+        email: u.email,
+        role: u.role,
+        streetAddress: u.streetAddress,
+        requestedAt: u.createdAt
+          ? new Date(u.createdAt).toLocaleDateString()
+          : "-",
+      }));
+
+      setPendingAccess(pendingTableData);
+
     } catch (error: any) {
       console.error("Failed to fetch dues", error);
       toast.error("Failed to fetch dues data");
@@ -274,6 +318,7 @@ const Page: React.FC = () => {
 
               <div className="row mb-4">
                 <div className="col-md-6">
+                  <h4>Dues Summary</h4>
                   <Table
                     className="responsive-table"
                     columns={columns}
@@ -282,6 +327,7 @@ const Page: React.FC = () => {
                   />
                 </div>
                 <div className="col-md-6">
+                  <h4>Unpaid Members</h4>
                   <Table
                     className="responsive-table"
                     columns={Seccolumns}
@@ -289,6 +335,18 @@ const Page: React.FC = () => {
                     pagination={{ pageSize: 10 }}
                   />
 
+                </div>
+              </div>
+
+              <div className="row mb-4">
+                <div className="col-md-12">
+                  <h4>Pending Access</h4>
+                  <Table
+                    className="responsive-table"
+                    columns={pendingColumns}
+                    dataSource={pendingAccess}
+                    pagination={{ pageSize: 10 }}
+                  />
                 </div>
               </div>
             </div>

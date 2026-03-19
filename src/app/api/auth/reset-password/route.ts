@@ -2,6 +2,10 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import User from "@/lib/models/User";
 import { client } from "@/lib/mongodb";
+import {
+  isPasswordComplex,
+  passwordRequirementsMessage,
+} from "@/lib/validation/password";
 
 export async function POST(req: Request) {
   await client;
@@ -15,6 +19,13 @@ export async function POST(req: Request) {
   if (!user) {
     return NextResponse.json(
       { message: "Invalid or expired token." },
+      { status: 400 }
+    );
+  }
+
+  if (!isPasswordComplex(password)) {
+    return NextResponse.json(
+      { message: passwordRequirementsMessage },
       { status: 400 }
     );
   }

@@ -2,6 +2,10 @@ import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 import User from "../../../../lib/models/User";
 import { client } from "../../../../lib/mongodb";
+import {
+  isPasswordComplex,
+  passwordRequirementsMessage,
+} from "@/lib/validation/password";
 
 export async function POST(req: Request) {
   try {
@@ -26,6 +30,13 @@ export async function POST(req: Request) {
     ) {
       return NextResponse.json(
         { message: "Missing required fields." },
+        { status: 400 }
+      );
+    }
+
+    if (!isPasswordComplex(password)) {
+      return NextResponse.json(
+        { message: passwordRequirementsMessage },
         { status: 400 }
       );
     }

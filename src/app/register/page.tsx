@@ -11,6 +11,10 @@ import Image from "next/image";
 import Link from "next/link";
 import Footer from "@/components/layout/Footer";
 import { registerUser } from "@/lib/UsersApi/api";
+import {
+    isPasswordComplex,
+    passwordRequirementsMessage,
+} from "@/lib/validation/password";
 import { useRouter } from 'next/navigation';
 
 const Signup = () => {
@@ -50,16 +54,11 @@ const Signup = () => {
         setFormData({ ...formData, [name]: value });
     };
 
-    const passwordRegex =
-        /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
-
     const handleSubmit = async (e: any) => {
         e.preventDefault();
 
-        if (!passwordRegex.test(formData.password)) {
-            toast.error(
-                "Password must contain at least 1 uppercase letter, 1 number, 1 special character, and be at least 8 characters long."
-            );
+        if (!isPasswordComplex(formData.password)) {
+            toast.error(passwordRequirementsMessage);
             return;
         }
 

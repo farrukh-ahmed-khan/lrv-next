@@ -3,6 +3,10 @@ import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Navbar";
 import InnerBanner from "@/components/ui/InnerBanner";
 import { resetPassword } from "@/lib/UsersApi/api";
+import {
+    isPasswordComplex,
+    passwordRequirementsMessage,
+} from "@/lib/validation/password";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -16,11 +20,15 @@ const ResetPassword = () => {
 
     const handleReset = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setLoading(true)
         if (!token) {
             toast.error("Invalid or missing token.");
             return;
         }
+        if (!isPasswordComplex(password)) {
+            toast.error(passwordRequirementsMessage);
+            return;
+        }
+        setLoading(true)
         try {
             const data = await resetPassword({ token, password });
             toast.success(data.message);
