@@ -30,8 +30,15 @@ export async function POST(req: Request) {
 
     let recipients: any[] = [];
 
-    if (recipientType === "all") {
+    if (recipientType === "all" || recipientType === "all_homeowners") {
       recipients = await User.find({ role: "home owner", status: "approved" });
+    } else if (recipientType === "all_members") {
+      recipients = await User.find({
+        role: { $in: ["home owner", "home member", "board member"] },
+        status: "approved",
+      });
+    } else if (recipientType === "all_users") {
+      recipients = await User.find({ status: "approved" });
     } else if (recipientType === "street" && street) {
       recipients = await User.find({
         role: "home owner",

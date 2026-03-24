@@ -21,7 +21,7 @@ const SendMassMail = () => {
 
     const [userData, setUserData] = useState<User[]>([]);
     const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);
-    const [emailMode, setEmailMode] = useState<string>("all");
+    const [emailMode, setEmailMode] = useState<string>("all_members");
     const [selectedStreet, setSelectedStreet] = useState<string>("");
     const [subject, setSubject] = useState("");
     const [message, setMessage] = useState("");
@@ -79,11 +79,15 @@ const SendMassMail = () => {
         try {
             const payload = {
                 recipientType:
-                    emailMode === "all"
-                        ? "all"
-                        : emailMode === "street"
-                            ? "street"
-                            : "specific",
+                    emailMode === "all_homeowners"
+                        ? "all_homeowners"
+                        : emailMode === "all_members"
+                            ? "all_members"
+                            : emailMode === "all_users"
+                                ? "all_users"
+                                : emailMode === "street"
+                                    ? "street"
+                                    : "specific",
                 street: emailMode === "street" ? selectedStreet : undefined,
                 userIds: emailMode === "specific" ? selectedUserIds : undefined,
                 subject,
@@ -125,7 +129,9 @@ const SendMassMail = () => {
                                 onChange={setEmailMode}
                                 style={{ width: 300 }}
                             >
-                                <Option value="all">All Homeowners</Option>
+                                <Option value="all_homeowners">All Homeowners</Option>
+                                <Option value="all_members">All Members</Option>
+                                <Option value="all_users">All Users</Option>
                                 {/* <Option value="street">By Street</Option> */}
                                 <Option value="specific">Select Specific Users</Option>
                             </Select>

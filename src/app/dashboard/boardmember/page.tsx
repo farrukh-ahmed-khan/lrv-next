@@ -298,14 +298,14 @@ const Page: React.FC = () => {
                 </div>
                 <div className="col-lg-6 d-flex align-items-center justify-content-end">
                   <div className="row">
-                    <div className="col-lg-6 d-flex align-items-center justify-content-end">
+                    {/* <div className="col-lg-6 d-flex align-items-center justify-content-end">
                       <div className="date-wrap">
                         <div className="date-input">
                           <DatePicker picker="month" onChange={handleMonthChange} />
                         </div>
                       </div>
-                    </div>
-                    <div className="col-lg-6 d-flex align-items-center justify-content-end">
+                    </div> */}
+                    <div className="col-lg-12 d-flex align-items-center justify-content-end">
                       <div className="date-wrap">
                         <div className="date-input">
                           <DatePicker picker="year" onChange={handleYearChange} />

@@ -34,6 +34,7 @@ const UsersApproval = () => {
     const [loadingStates, setLoadingStates] = useState<{ [key: string]: string | null }>({});
     const [dues, setDues] = useState<Due[]>([]);
     const [userData, setUserData] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
     const user = JSON.parse(localStorage.getItem("user") || "{}");
     const token = localStorage.getItem("token")
     const role = user.role;
@@ -241,6 +242,15 @@ const UsersApproval = () => {
 
 
 
+    const filteredUserData = userData.filter((user: any) => {
+        const term = searchTerm.trim().toLowerCase();
+        if (!term) return true;
+        const fullName = `${user.firstname || ""} ${user.lastname || ""}`.trim().toLowerCase();
+        const email = (user.email || "").toLowerCase();
+        const address = (user.streetAddress || "").toLowerCase();
+        return fullName.includes(term) || email.includes(term) || address.includes(term);
+    });
+
     return (
         <>
             <div className="row">
@@ -248,18 +258,26 @@ const UsersApproval = () => {
                     <div className="row store-wrap">
                         <div className="col-lg-6 col-md-2">
                             <div>
-                                <h6>Users List</h6>
+                                <h6>HOA Members</h6>
                             </div>
                         </div>
 
                     </div>
 
                     <div className="mt-3">
+                        <div className="mb-3">
+                            <Input
+                                placeholder="Search by name, address, or email"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                allowClear
+                            />
+                        </div>
                         <div className={`store-table-wrap active-table`}>
                             <Table
                                 className="responsive-table"
                                 columns={columns}
-                                dataSource={userData}
+                                dataSource={filteredUserData}
                             />
                         </div>
                     </div>
