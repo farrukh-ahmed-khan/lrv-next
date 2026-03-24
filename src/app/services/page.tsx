@@ -22,7 +22,7 @@ const Services = () => {
             paragraphs={[
               "Our LRV Phone Directory is your connection to your LRV neighbors. This Phone Directory is private and used exclusively and strictly for neighborly concerns and causes. Here’s a link to the most current LRV Phone Directory:",
             ]}
-            button={{ label: "Read More", link: "#" }}
+            button={{ label: "Read More", link: "/phonedirectory" }}
             image={aboutUsImg}
           />
         </>

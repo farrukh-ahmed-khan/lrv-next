@@ -60,19 +60,15 @@ const CarShow = () => {
                                     <li>Questions</li>
                                     <li>Comments</li>
                                     <li>Suggestions</li>
-                                    <li>
-                                        Service Provider Recommendations
-                                        (we’ll post your favorites on a separate future page,
-                                        “LRV Marketplace”…stay tuned for that upcoming feature!)
-                                    </li>
+                                    
                                 </ul>
                                 <h4>
-                                    E-mail the webmaster at:
+                                    Email the HOA Board at:
                                 </h4>
                                 <p>
-                                    <Link href="mailto:LRVHomeowners@gmail.com">
+                                    <Link href="mailto:lrvhoa-board@googleGroups.com ">
                                         <i className="fa fa-envelope" aria-hidden="true"></i>
-                                        LRVHomeowners@gmail.com
+                                       lrvhoa-board@googleGroups.com 
                                     </Link>
                                 </p>
                             </div>
@@ -147,7 +143,7 @@ const CarShow = () => {
                         </div>
                     </div>
 
-                    <div className="row">
+                    {/* <div className="row">
                         <div className="col-lg-12">
                             <div className="map-wrapper">
                                 <iframe
@@ -156,7 +152,7 @@ const CarShow = () => {
                                 </iframe>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
                 <Footer />
             </div>

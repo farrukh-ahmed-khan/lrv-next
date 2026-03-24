@@ -67,7 +67,7 @@ const Dues = () => {
             key: "paid",
         },
 
-       {
+        {
             title: "Actions",
             key: "actions",
             render: (_: any, record: any) => (
@@ -192,10 +192,10 @@ const Dues = () => {
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col-lg-12">
+                            <div className="col-lg-12" id="my-dues">
                                 <div className="heading">
                                     <h4>
-                                        Your Dues
+                                        My Dues
                                     </h4>
                                 </div>
                             </div>
@@ -210,7 +210,7 @@ const Dues = () => {
                                         />
                                     </div>
                                 </div>
-                           
+
                             </div>
 
 

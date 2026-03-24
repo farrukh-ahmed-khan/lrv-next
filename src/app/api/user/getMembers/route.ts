@@ -15,10 +15,10 @@ export async function GET(req: Request) {
     const token = authHeader.split(" ")[1];
     const decoded = verifyToken(token);
 
-    if (!decoded || !["home owner"].includes(decoded.role)) {
+    if (!decoded || !["home owner", "board member"].includes(decoded.role)) {
       return NextResponse.json(
         {
-          message: "Forbidden: Only home owner can access this route",
+          message: "Forbidden: Only home owner or board member can access this route",
         },
         { status: 403 }
       );

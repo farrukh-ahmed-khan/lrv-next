@@ -10,7 +10,9 @@ type Due = {
     _id: string;
     amount: number;
     paid: boolean;
+    paidStatus?: "Unpaid" | "Pending" | "Paid";
     createdAt: string;
+    updatedAt?: string;
     subscriptionId: string;
     date: string;
     userId: string;
@@ -32,6 +34,7 @@ interface User {
 const AdminDues = () => {
     const [dues, setDues] = useState<Due[]>([]);
     const [userData, setUserData] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
     const user = JSON.parse(localStorage.getItem("user") || "{}");
     const token = localStorage.getItem("token")
     const role = user.role;
@@ -73,8 +76,10 @@ const AdminDues = () => {
                     status: user.status,
                     dueAmount: due.amount,
                     duePaid: due.paid,
+                    paidStatus: due.paidStatus,
                     dueDate: due.dueDate,
                     paymentMethod: due.paymentMethod || "N/A",
+                    updatedAt: due.updatedAt,
                 }));
             });
 
@@ -89,7 +94,6 @@ const AdminDues = () => {
     useEffect(() => {
         fetchData();
     }, []);
-
     const columns = [
         {
             title: "First Name",
@@ -125,10 +129,16 @@ const AdminDues = () => {
             title: "Amount Due",
             dataIndex: "dueAmount",
             key: "dueAmount",
-            render: (amount: number) => `$${amount.toFixed(2)}`
+            render: (amount: number) => `$${amount.toFixed(2)}`,
         },
         {
-            title: "Payment Method", // ✅ new column
+            title: "Year",
+            dataIndex: "dueDate",
+            key: "year",
+            render: (date: string) => new Date(date).getFullYear(),
+        },
+        {
+            title: "Payment Method",
             dataIndex: "paymentMethod",
             key: "paymentMethod",
             render: (method: string) => method || "N/A",
@@ -137,19 +147,49 @@ const AdminDues = () => {
             title: "Paid",
             dataIndex: "duePaid",
             key: "duePaid",
-            render: (paid: boolean) => paid ? "Yes" : "No",
+            render: (_: boolean, record: any) => {
+                const isPaid = record.duePaid || record.paidStatus === "Paid";
+                return isPaid ? "Yes" : "No";
+            },
         },
-        // {
-        //     title: "Due Date",
-        //     dataIndex: "dueDate",
-        //     key: "dueDate",
-        //     render: (date: string) => new Date(date).toLocaleDateString(),
-        // },
-
+        {
+            title: "Payment Date",
+            dataIndex: "updatedAt",
+            key: "paymentDate",
+            render: (_: string, record: any) => {
+                const isPaid = record.duePaid || record.paidStatus === "Paid";
+                if (!isPaid) return "-";
+                const date = record.updatedAt || record.dueDate;
+                return date ? new Date(date).toLocaleDateString() : "-";
+            },
+        },
     ];
+    const filteredUserData = userData.filter((row: any) => {
+        const term = searchTerm.trim().toLowerCase();
+        if (!term) return true;
+        const fullName = `${row.firstname || ""} ${row.lastname || ""}`.trim().toLowerCase();
+        const email = (row.email || "").toLowerCase();
+        const address = (row.streetAddress || "").toLowerCase();
+        const year = row.dueDate ? String(new Date(row.dueDate).getFullYear()) : "";
+        const isPaid = row.duePaid || row.paidStatus === "Paid";
+        const paidLabel = isPaid ? "paid" : "unpaid";
+        const paidStatus = (row.paidStatus || (isPaid ? "Paid" : "Unpaid")).toLowerCase();
+        const paymentMethod = (row.paymentMethod || "").toLowerCase();
+        const paymentDate = isPaid && row.updatedAt
+            ? new Date(row.updatedAt).toLocaleDateString().toLowerCase()
+            : "";
 
-
-
+        return (
+            fullName.includes(term) ||
+            email.includes(term) ||
+            address.includes(term) ||
+            year.includes(term) ||
+            paidLabel.includes(term) ||
+            paidStatus.includes(term) ||
+            paymentDate.includes(term) ||
+            paymentMethod.includes(term)
+        );
+    });
 
     return (
         <>
@@ -165,11 +205,19 @@ const AdminDues = () => {
                     </div>
 
                     <div className="mt-3">
+                        <div className="mb-3">
+                            <input
+                                className="form-control"
+                                placeholder="Search by year, name, email, address, paid, payment date, or payment method"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
+                        </div>
                         <div className={`store-table-wrap active-table`}>
                             <Table
                                 className="responsive-table"
                                 columns={columns}
-                                dataSource={userData}
+                                dataSource={filteredUserData}
                             />
                         </div>
                     </div>
@@ -203,3 +251,7 @@ const AdminDues = () => {
 };
 
 export default AdminDues;
+
+
+
+

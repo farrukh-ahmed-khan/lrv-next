@@ -36,6 +36,17 @@ const PhoneDirectory = () => {
     const [filterData, setFilterData] = useState<User[]>([]);
     const token = localStorage.getItem("token")
 
+    const normalize = (value: string | undefined) =>
+        (value || "").toLowerCase().trim();
+
+    const sortUsers = (a: any, b: any) => {
+        const streetCompare = normalize(a.streetAddress).localeCompare(normalize(b.streetAddress));
+        if (streetCompare !== 0) return streetCompare;
+        const lastCompare = normalize(a.lastname).localeCompare(normalize(b.lastname));
+        if (lastCompare !== 0) return lastCompare;
+        return normalize(a.firstname).localeCompare(normalize(b.firstname));
+    };
+
     const columns: ColumnsType<User> = [
         {
             title: "First Name",
@@ -43,7 +54,7 @@ const PhoneDirectory = () => {
             key: "firstname",
         },
         {
-            title: "lastName",
+            title: "Last Name",
             dataIndex: "lastname",
             key: "lastname",
         },
@@ -79,7 +90,7 @@ const PhoneDirectory = () => {
                     val.toLowerCase().includes(value.toLowerCase())
             )
         );
-        setFilterData(filtered);
+        setFilterData([...filtered].sort(sortUsers));
     };
 
     const fetchUserData = async () => {
@@ -103,7 +114,8 @@ const PhoneDirectory = () => {
                     streetAddress: user.streetAddress,
                     role: user.role,
                     status: user.status,
-                }));
+                }))
+                .sort(sortUsers);
 
             setUserData(fetchedData)
             setFilterData(fetchedData)

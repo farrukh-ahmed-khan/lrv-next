@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDue } from "@/store/slices/dueSlice";
 import { RootState, AppDispatch } from "@/store";
@@ -34,7 +35,11 @@ export default function DueBanner() {
 
     return (
         <div style={{ backgroundColor: "red", color: "white", padding: "10px", textAlign: "center", position: "fixed", zIndex: "99", width: "100%" }}>
-            <strong>Important:</strong> You have an outstanding due until {dueYear}!
+            <strong>Your dues are unpaid. </strong>
+            <Link href="/dues" style={{ color: "white", textDecoration: "underline" }}>
+                Pay now
+            </Link>
+            .
         </div>
     );
 }

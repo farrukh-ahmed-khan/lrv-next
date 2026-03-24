@@ -342,7 +342,9 @@ const Header = () => {
                       </>
                     ) : (
                       <>
-
+                        <li className="btn-li">
+                          <Link href="/profile"><Person /></Link>
+                        </li>
                         <li className="btn-li">
                           <Link href="/login">Dashboard</Link>
                         </li>

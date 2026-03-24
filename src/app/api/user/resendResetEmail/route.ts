@@ -17,7 +17,7 @@ export async function POST(req: Request) {
     const token = authHeader.split(" ")[1];
     const decoded = verifyToken(token);
 
-    if (!decoded || decoded.role !== "home owner") {
+    if (!decoded || !["home owner", "board member"].includes(decoded.role)) {
       return NextResponse.json({ message: "Forbidden" }, { status: 403 });
     }
 

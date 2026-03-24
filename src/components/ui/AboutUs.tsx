@@ -18,7 +18,7 @@ interface AboutUsProps {
 const AboutUs: React.FC<AboutUsProps>  = ({ title, paragraphs = [], button, image }) => {
     return (
         <section className="aboutUs-wrapper">
-            <div className="container">
+            <div className="container" style={{position: "relative", zIndex: 1}}>
                 <div className="row">
                     <div className="col-lg-6">
                         <div className="content-wrap">

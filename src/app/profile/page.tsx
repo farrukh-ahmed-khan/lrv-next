@@ -76,7 +76,7 @@ const Profile = () => {
             setUserData(fetchedData)
         } catch (error: any) {
             console.error(error);
-            toast.error("Error orders data:", error);
+            toast.error("Error fetching user data:", error);
         }
     };
 
@@ -124,7 +124,7 @@ const Profile = () => {
             setEditingMember(null);
         } catch (error: any) {
             console.error(error);
-            toast.error(error?.response?.data?.message || "Something went wrong!");
+            toast.error(error?.response?.data?.message || error?.message || "Something went wrong!");
         } finally {
             setIsSubmitting(false);
         }
@@ -314,7 +314,7 @@ const Profile = () => {
                         </Card>
                     </div>
                     {
-                        user.role === "home owner" ? (
+                        user.role === "home owner" || user.role === "board member" ? (
                             <div className="row">
                                 <div className="col-md-12">
                                     <div className="row store-wrap">

@@ -131,17 +131,17 @@ const Sidebar: React.FC<SidebarProps> = ({ isNavClosed }) => {
                 link: "/dashboard/boardmember/upcomingEvents",
             },
             {
-                title: "Send Email",
+                title: "Email HOA Members",
                 icon: <Email />,
                 link: "/dashboard/boardmember/sendMail",
             },
+            // {
+            //     title: "My Profile",
+            //     icon: <Person />,
+            //     link: "/dashboard/boardmember/myProfile",
+            // },
             {
-                title: "My Profile",
-                icon: <Person />,
-                link: "/dashboard/boardmember/myProfile",
-            },
-            {
-                title: "Add Nominee",
+                title: "Voting",
                 icon: <Person />,
                 link: "/dashboard/boardmember/nominees",
             },

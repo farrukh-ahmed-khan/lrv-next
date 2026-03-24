@@ -7,8 +7,13 @@ import { getAllNominee } from "@/lib/VotingApi/api";
 import { FaUser } from "react-icons/fa";
 
 // Keep this in sync with backend allowed positions (or fetch from an endpoint if you add one)
-const POSITIONS = ["president", "prime_minister", "minister", "secretary", "treasurer"] as const;
+const POSITIONS = ["president", "vice_president", "treasurer", "secretary"] as const;
 type Position = (typeof POSITIONS)[number];
+
+const formatPosition = (value: string) =>
+  value
+    .replace(/_/g, " ")
+    .replace(/\b\w/g, (c) => c.toUpperCase());
 
 interface Nominee {
   _id: string;
@@ -56,7 +61,7 @@ const NomineeVote = () => {
         { nomineeId, position }, // <-- include position
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      message.success(`Vote for ${position.replace("_", " ")} submitted!`);
+      message.success(`Vote for ${formatPosition(position)} submitted!`);
       setVotedByPosition((prev) => ({ ...prev, [position]: true }));
     } catch (err: any) {
       message.error(err?.response?.data?.message || "Vote failed");
@@ -80,7 +85,7 @@ const NomineeVote = () => {
         <div style={{ display: "flex", justifyContent: "center", marginTop: 16 }}>
           <Segmented
             options={POSITIONS.map((p) => ({
-              label: p.replace("_", " "),
+              label: formatPosition(p),
               value: p,
             }))}
             value={selectedPosition}
@@ -96,7 +101,7 @@ const NomineeVote = () => {
           <div className="row">
             {filteredNominees.length === 0 ? (
               <div className="col-12 my-5" style={{ textAlign: "center" }}>
-                No nominees for {selectedPosition.replace("_", " ")} yet.
+                No nominees for {formatPosition(selectedPosition)} yet.
               </div>
             ) : (
               filteredNominees.map((nominee) => (
@@ -108,7 +113,7 @@ const NomineeVote = () => {
                         {`${nominee.firstname} ${nominee.lastname}`}
                       </span>
                     }
-                    extra={<span style={{ textTransform: "capitalize" }}>{nominee.position.replace("_", " ")}</span>}
+                    extra={<span>{formatPosition(nominee.position)}</span>}
                   >
                     <p>
                       <b>Email:</b> {nominee.email}

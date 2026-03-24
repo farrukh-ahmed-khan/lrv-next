@@ -14,11 +14,15 @@ const { Option } = Select;
 // Keep this in sync with backend allowed positions (or fetch from API if you add an endpoint)
 const POSITIONS = [
   "president",
-  "prime_minister",
-  "minister",
-  "secretary",
+  "vice_president",
   "treasurer",
+  "secretary",
 ];
+
+const formatPosition = (value: string) =>
+  value
+    .replace(/_/g, " ")
+    .replace(/\b\w/g, (c) => c.toUpperCase());
 
 interface User {
   _id: string;
@@ -152,7 +156,12 @@ const Page = () => {
     { title: "First Name", dataIndex: "firstname", key: "firstname" },
     { title: "Last Name", dataIndex: "lastname", key: "lastname" },
     { title: "Role", dataIndex: "role", key: "role" }, 
-    { title: "Position", dataIndex: "position", key: "position" }, 
+    {
+      title: "Position",
+      dataIndex: "position",
+      key: "position",
+      render: (value: string) => formatPosition(value),
+    },
     { title: "Email", dataIndex: "email", key: "email" },
     { title: "Phone Number", dataIndex: "phonenumber", key: "phonenumber" },
     {
@@ -201,7 +210,7 @@ const Page = () => {
               <div className="col-md-12">
                 <div className="row store-wrap">
                   <div className="col-lg-6 col-md-2">
-                    <h6>Nominees List</h6>
+                    <h6>Voting</h6>
                   </div>
                   <div className="col-lg-6 col-md-10">
                     <div className="d-flex justify-content-end search-wrap">
@@ -271,7 +280,7 @@ const Page = () => {
                   <Select placeholder="Select position">
                     {POSITIONS.map((p) => (
                       <Option key={p} value={p}>
-                        {p.replace("_", " ")}
+                        {formatPosition(p)}
                       </Option>
                     ))}
                   </Select>

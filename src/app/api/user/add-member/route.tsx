@@ -18,7 +18,7 @@ export async function POST(req: Request) {
         const token = authHeader.split(" ")[1];
         const decoded = verifyToken(token);
 
-        if (!decoded || decoded.role !== "home owner") {
+        if (!decoded || !["home owner", "board member"].includes(decoded.role)) {
             return NextResponse.json({ message: "Forbidden" }, { status: 403 });
         }
 
@@ -27,6 +27,14 @@ export async function POST(req: Request) {
 
         if (!firstname || !lastname || !email || !phoneNumber || !streetAddress || !ownerId) {
             return NextResponse.json({ message: "All fields are required" }, { status: 400 });
+        }
+
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return NextResponse.json(
+                { message: "A user with this email already exists." },
+                { status: 400 }
+            );
         }
 
         const newMember = new User({
@@ -63,6 +71,12 @@ export async function POST(req: Request) {
 
     } catch (error: any) {
         console.error("Add Member Error:", error);
+        if (error?.code === 11000 || String(error?.message || "").includes("E11000")) {
+            return NextResponse.json(
+                { message: "A user with this email already exists." },
+                { status: 400 }
+            );
+        }
         return NextResponse.json({ message: "Server Error", error: error.message }, { status: 500 });
     }
 }

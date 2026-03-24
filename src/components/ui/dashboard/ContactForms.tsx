@@ -9,6 +9,7 @@ interface User {
     email: string;
     phone: string;
     message: string;
+    createdAt?: string;
 }
 
 
@@ -20,13 +21,19 @@ const ContactForms = () => {
         try {
             const data = await getContactForms();
             const fetchedData = data.contacts
-                .map((data: User, index: number) => ({
+                .map((data: User) => ({
                     id: data._id,
                     fullName: data.fullName,
                     email: data.email,
                     phone: data.phone,
                     message: data.message,
-                }));
+                    createdAt: data.createdAt,
+                }))
+                .sort((a: any, b: any) => {
+                    const aTime = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+                    const bTime = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+                    return bTime - aTime;
+                });
             setUserData(fetchedData)
         } catch (error: any) {
             console.error(error);
@@ -75,6 +82,12 @@ const ContactForms = () => {
             key: "message",
         },
         {
+            title: "Submitted At",
+            dataIndex: "createdAt",
+            key: "createdAt",
+            render: (date: string) => date ? new Date(date).toLocaleString() : "—",
+        },
+        {
             title: "Actions",
             key: "actions",
             render: (_: any, record: any) => {
@@ -109,7 +122,7 @@ const ContactForms = () => {
                     <div className="row store-wrap">
                         <div className="col-lg-6 col-md-2">
                             <div>
-                                <h6>Contacts Users List</h6>
+                                <h6>Contact Forms</h6>
                             </div>
                         </div>
 
